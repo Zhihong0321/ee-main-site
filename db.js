@@ -60,6 +60,7 @@ async function initDb() {
     await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS published_at TIMESTAMP WITH TIME ZONE;`);
     await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS noindex BOOLEAN DEFAULT FALSE;`);
     await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS marketing_line TEXT;`);
+    await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS marketing_line_cn TEXT;`);
     await client.query(`
       CREATE UNIQUE INDEX IF NOT EXISTS idx_main_site_articles_source_url
       ON main_site_articles(source_url) WHERE source_url IS NOT NULL;

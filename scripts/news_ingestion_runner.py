@@ -242,7 +242,8 @@ def ask_minimax_to_process(title, raw_content, article_url, source_name=None):
         "5. Classify the article's relevance to Solar PV, EV Charging, or Renewable Energy in Malaysia or ASEAN. Set 'relevant': true only if it is directly relevant; set 'relevant': false if it is off-topic.\n"
         "6. Create a 'marketing_line' in English (max 200 chars) that promotes Eternalgy Sdn Bhd while being relevant to this article, including a backlink to https://eternalgy.me/{article_slug} (use placeholder {article_slug} for now, we'll replace it later). Use the following company information:\n"
         f"{COMPANY_INFO}\n\n"
-        "7. Output your result strictly in JSON format matching the schema."
+        "7. Create a 'marketing_line_cn' in Chinese (max 200 chars) — a Chinese translation of the marketing_line, also including the backlink placeholder. This will be used for Chinese social media platforms.\n\n"
+        "8. Output your result strictly in JSON format matching the schema."
     )
 
     user_prompt = (
@@ -257,7 +258,8 @@ def ask_minimax_to_process(title, raw_content, article_url, source_name=None):
         "- 'meta_description': A short 150-character SEO description\n"
         "- 'tags': A comma-separated list of applicable tags selected from: " + ", ".join(TAXONOMY_TAGS) + "\n"
         "- 'relevant': A boolean flag (true/false) indicating relevance\n"
-        "- 'marketing_line': The promotional marketing line with backlink placeholder"
+        "- 'marketing_line': The promotional marketing line in English with backlink placeholder\n"
+        "- 'marketing_line_cn': The promotional marketing line in Chinese with backlink placeholder"
     )
 
     try:
@@ -404,9 +406,11 @@ def main():
         temp_slug = re.sub(r'[^a-zA-Z0-9\-]', '-', title.lower().replace(' ', '-'))
         temp_slug = re.sub(r'-+', '-', temp_slug).strip('-')
         
-        # Replace placeholder in marketing line with actual URL
+        # Replace placeholder in marketing lines with actual URL
         marketing_line = llm_result.get("marketing_line", "")
         marketing_line = marketing_line.replace("{article_slug}", temp_slug)
+        marketing_line_cn = llm_result.get("marketing_line_cn", "")
+        marketing_line_cn = marketing_line_cn.replace("{article_slug}", temp_slug)
 
         # Step E: Post payload assembly
         post_payload = {
@@ -420,7 +424,8 @@ def main():
             "source_name": item.get("source_name") or "News Wire",
             "published_at": item.get("published_at"),
             "published": True,
-            "marketing_line": marketing_line
+            "marketing_line": marketing_line,
+            "marketing_line_cn": marketing_line_cn
         }
 
         # Step F: POST to Eternalgy backend

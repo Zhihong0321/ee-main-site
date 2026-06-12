@@ -280,7 +280,7 @@ function getSchemaData(item, type, baseUrl) {
 async function upsertArticle(fields) {
   const {
     title, category, summary, content, author, tags,
-    meta_description, slug, published, source_url, source_name, published_at, marketing_line
+    meta_description, slug, published, source_url, source_name, published_at, marketing_line, marketing_line_cn
   } = fields;
 
   const baseSlug = slug || slugify(title, { lower: true, strict: true });
@@ -292,6 +292,7 @@ async function upsertArticle(fields) {
   const finalPublished = published !== undefined ? published : true;
   const pubAt = published_at || null;
   const finalMarketingLine = marketing_line || null;
+  const finalMarketingLineCn = marketing_line_cn || null;
 
   if (source_url) {
     const dup = await db.pool.query(
@@ -315,18 +316,18 @@ async function upsertArticle(fields) {
 
     const insert = await db.pool.query(
       `INSERT INTO main_site_articles
-         (slug, title, category, summary, content, html_content, author, tags, meta_description, published, source_url, source_name, published_at, marketing_line, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, COALESCE($13, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP)
+         (slug, title, category, summary, content, html_content, author, tags, meta_description, published, source_url, source_name, published_at, marketing_line, marketing_line_cn, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, COALESCE($13, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP)
        RETURNING *;`,
-      [finalSlug, title, category, finalSummary, cleanContent, htmlContent, author || 'Solar EPC AI', tags || '', finalMeta, finalPublished, source_url, source_name || null, pubAt, finalMarketingLine]
+      [finalSlug, title, category, finalSummary, cleanContent, htmlContent, author || 'Solar EPC AI', tags || '', finalMeta, finalPublished, source_url, source_name || null, pubAt, finalMarketingLine, finalMarketingLineCn]
     );
     return { action: 'inserted', data: insert.rows[0] };
   }
 
   const upsert = await db.pool.query(
     `INSERT INTO main_site_articles
-       (slug, title, category, summary, content, html_content, author, tags, meta_description, published, source_name, published_at, marketing_line, created_at, updated_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, COALESCE($12, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP)
+       (slug, title, category, summary, content, html_content, author, tags, meta_description, published, source_name, published_at, marketing_line, marketing_line_cn, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, COALESCE($12, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP)
      ON CONFLICT (slug)
      DO UPDATE SET
        title = EXCLUDED.title,
@@ -341,9 +342,10 @@ async function upsertArticle(fields) {
        source_name = EXCLUDED.source_name,
        published_at = EXCLUDED.published_at,
        marketing_line = EXCLUDED.marketing_line,
+       marketing_line_cn = EXCLUDED.marketing_line_cn,
        updated_at = CURRENT_TIMESTAMP
      RETURNING *;`,
-    [baseSlug, title, category, finalSummary, cleanContent, htmlContent, author || 'Solar PV Expert', tags || '', finalMeta, finalPublished, source_name || null, pubAt, finalMarketingLine]
+    [baseSlug, title, category, finalSummary, cleanContent, htmlContent, author || 'Solar PV Expert', tags || '', finalMeta, finalPublished, source_name || null, pubAt, finalMarketingLine, finalMarketingLineCn]
   );
   return { action: 'upserted', data: upsert.rows[0] };
 }
@@ -1146,7 +1148,7 @@ app.get('/api/articles/:slug', authenticateApiKey, async (req, res) => {
 });
 
 app.post('/api/articles', authenticateApiKey, async (req, res) => {
-  const { title, category, summary, content, author, tags, meta_description, slug, published, source_url, source_name, published_at, marketing_line } = req.body;
+  const { title, category, summary, content, author, tags, meta_description, slug, published, source_url, source_name, published_at, marketing_line, marketing_line_cn } = req.body;
   if (!title || !category || !content) {
     return res.status(400).json({ error: 'title, category, and content are required' });
   }
@@ -1157,7 +1159,7 @@ app.post('/api/articles', authenticateApiKey, async (req, res) => {
   try {
     const result = await upsertArticle({
       title, category, summary, content, author, tags,
-      meta_description, slug, published, source_url, source_name, published_at, marketing_line
+      meta_description, slug, published, source_url, source_name, published_at, marketing_line, marketing_line_cn
     });
     res.status(200).json({
       success: true,
@@ -1612,7 +1614,7 @@ app.delete('/api/faqs/:id', authenticateApiKey, async (req, res) => {
 
 // 8. Legacy Mapping API Endpoint
 app.post('/api/content', authenticateApiKey, async (req, res) => {
-  const { title, category, summary, content, author, tags, meta_description, slug: customSlug, source_url, source_name, published_at, marketing_line } = req.body;
+  const { title, category, summary, content, author, tags, meta_description, slug: customSlug, source_url, source_name, published_at, marketing_line, marketing_line_cn } = req.body;
 
   if (!title || !category || !content) {
     return res.status(400).json({ error: 'title, category, and content are required' });
@@ -1650,7 +1652,7 @@ app.post('/api/content', authenticateApiKey, async (req, res) => {
     } else {
       const result = await upsertArticle({
         title, category, summary, content, author, tags,
-        meta_description, slug: customSlug, source_url, source_name, published_at, marketing_line
+        meta_description, slug: customSlug, source_url, source_name, published_at, marketing_line, marketing_line_cn
       });
       return res.status(200).json({
         success: true,
