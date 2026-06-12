@@ -1,3 +1,4 @@
+// ee-main-site database layer - auto-migrations run on startup
 const { Pool } = require('pg');
 require('dotenv').config();
 const fs = require('fs');
