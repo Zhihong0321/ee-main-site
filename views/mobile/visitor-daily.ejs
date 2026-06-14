@@ -1,0 +1,116 @@
+<%- include('partials/header') %>
+
+<style>
+  .report-head-mobile { margin:1rem 0 1rem; padding-bottom:1rem; border-bottom:1px solid var(--border-glass); text-align:center; }
+  .report-head-mobile h1 { font-size:1.85rem; font-weight:800; margin:0; }
+  .report-head-mobile p { color:var(--text-secondary); font-size:.85rem; margin:.35rem 0 0; }
+  .report-actions-mobile { display:grid; grid-template-columns:repeat(3, 1fr); gap:.5rem; margin:1rem 0; }
+  .report-btn-mobile { display:flex; align-items:center; justify-content:center; min-height:38px; padding:.4rem .55rem; border:1px solid var(--border-glass); border-radius:10px; color:var(--text-primary); text-decoration:none; background:var(--bg-secondary); font-weight:700; font-size:.78rem; }
+  .metric-stack { display:grid; grid-template-columns:repeat(2, 1fr); gap:.75rem; margin-bottom:1rem; }
+  .metric { background:var(--bg-secondary); border:1px solid var(--border-glass); border-radius:12px; padding:.85rem; }
+  .metric span { display:block; color:var(--text-muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; }
+  .metric strong { display:block; color:var(--text-primary); margin-top:.25rem; font-size:1.35rem; }
+  .panel { background:var(--bg-secondary); border:1px solid var(--border-glass); border-radius:14px; padding:1rem; margin-bottom:1rem; overflow:hidden; }
+  .panel h2 { font-size:1rem; margin:0 0:.8rem; }
+  .bars { display:flex; align-items:end; gap:2px; height:105px; }
+  .bar { flex:1; min-width:0; border-radius:3px 3px 0 0; background:linear-gradient(180deg, #fbbf24, rgba(251,191,36,.28)); }
+  .highlight-list { display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:1rem; }
+  .highlight { padding:.35rem .55rem; border-radius:999px; border:1px solid var(--border-glass); color:var(--text-secondary); font-size:.75rem; }
+  .highlight-warning { color:#fca5a5; border-color:rgba(252,165,165,.35); }
+  .highlight-positive { color:#86efac; border-color:rgba(134,239,172,.35); }
+  table { width:100%; border-collapse:collapse; font-size:.78rem; }
+  th, td { padding:.55rem .3rem; border-bottom:1px solid var(--border-glass); text-align:left; }
+  th { color:var(--text-muted); font-size:.68rem; text-transform:uppercase; }
+  td:first-child { max-width:170px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+</style>
+
+<%
+  const data = report.data || {};
+  const highlights = report.highlights || [];
+  const hourly = data.hourly || [];
+  const maxHour = Math.max.apply(null, hourly.concat([1]));
+%>
+
+<div class="wrap" style="padding-bottom:5rem;">
+  <header class="report-head-mobile">
+    <h1><%= report.report_date %></h1>
+    <p><%= data.weekday || 'Daily' %> · GMT+8 visitor report</p>
+  </header>
+
+  <nav class="report-actions-mobile">
+    <a class="report-btn-mobile" href="/visitor-analysis/daily">Reports</a>
+    <a class="report-btn-mobile" href="/visitor-analysis">Live</a>
+    <a class="report-btn-mobile" href="/visitor-analysis/daily/<%= report.report_date %>?format=json">JSON</a>
+  </nav>
+
+  <div class="highlight-list">
+    <% if (highlights.length > 0) { %>
+      <% highlights.forEach(function(h) { %>
+        <span class="highlight highlight-<%= h.severity %>" title="<%= h.message %>"><%= h.message %></span>
+      <% }); %>
+    <% } else { %>
+      <span class="highlight">No unusual traffic signals.</span>
+    <% } %>
+  </div>
+
+  <section class="metric-stack">
+    <div class="metric"><span>Total</span><strong><%= report.total_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Unique IPs</span><strong><%= report.unique_ips.toLocaleString() %></strong></div>
+    <div class="metric"><span>Human</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Avg ms</span><strong><%= report.avg_exec_ms.toLocaleString() %></strong></div>
+    <div class="metric"><span>AI</span><strong><%= report.ai_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>SEO</span><strong><%= report.seo_hits.toLocaleString() %></strong></div>
+  </section>
+
+  <section class="panel">
+    <h2>Hourly Traffic</h2>
+    <div class="bars">
+      <% hourly.forEach(function(count, hour) { %>
+        <div class="bar" title="<%= hour %>:00 - <%= count %> hits" style="height:<%= Math.max(4, Math.round((count / maxHour) * 100)) %>%;"></div>
+      <% }); %>
+    </div>
+    <p style="color:var(--text-muted); font-size:.78rem;">Peak hour: <%= data.peakHour == null ? 'none' : data.peakHour + ':00' %></p>
+  </section>
+
+  <section class="panel">
+    <h2>Visitor Mix</h2>
+    <table>
+      <tbody>
+        <tr><td>Human</td><td style="text-align:right;"><%= report.human_hits.toLocaleString() %></td></tr>
+        <tr><td>AI crawler</td><td style="text-align:right;"><%= report.ai_hits.toLocaleString() %></td></tr>
+        <tr><td>SEO crawler</td><td style="text-align:right;"><%= report.seo_hits.toLocaleString() %></td></tr>
+        <tr><td>Other bot</td><td style="text-align:right;"><%= report.other_hits.toLocaleString() %></td></tr>
+        <tr><td>Mobile</td><td style="text-align:right;"><%= report.mobile_hits.toLocaleString() %></td></tr>
+        <tr><td>Desktop</td><td style="text-align:right;"><%= report.desktop_hits.toLocaleString() %></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Top Pages</h2>
+    <table>
+      <thead><tr><th>Path</th><th style="text-align:right;">Hits</th></tr></thead>
+      <tbody>
+        <% (data.topPages || []).forEach(function(row) { %>
+          <tr><td><%= row.url %></td><td style="text-align:right;"><%= row.hits.toLocaleString() %></td></tr>
+        <% }); %>
+        <% if (!data.topPages || data.topPages.length === 0) { %><tr><td colspan="2">No page hits.</td></tr><% } %>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>AI Crawlers</h2>
+    <table>
+      <thead><tr><th>Bot</th><th style="text-align:right;">Hits</th></tr></thead>
+      <tbody>
+        <% (data.aiBots || []).forEach(function(row) { %>
+          <tr><td><%= row.bot_name %></td><td style="text-align:right;"><%= row.count.toLocaleString() %></td></tr>
+        <% }); %>
+        <% if (!data.aiBots || data.aiBots.length === 0) { %><tr><td colspan="2">No AI crawler hits.</td></tr><% } %>
+      </tbody>
+    </table>
+  </section>
+</div>
+
+<%- include('partials/footer') %>

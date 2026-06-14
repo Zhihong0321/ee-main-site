@@ -1,0 +1,90 @@
+<%- include('partials/header') %>
+
+<style>
+  .daily-head { display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; margin:2rem 0 1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border-glass); }
+  .daily-head h1 { font-size:2.35rem; font-weight:800; margin:0; }
+  .daily-head p { color:var(--text-secondary); margin:.35rem 0 0; }
+  .daily-actions { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .daily-btn { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:.5rem 1rem; border:1px solid var(--border-glass); border-radius:10px; color:var(--text-primary); text-decoration:none; background:var(--bg-secondary); font-weight:700; }
+  .daily-table { background:var(--bg-secondary); border:1px solid var(--border-glass); border-radius:16px; overflow:hidden; margin-bottom:2.5rem; }
+  .daily-table table { width:100%; border-collapse:collapse; font-size:.92rem; }
+  .daily-table th, .daily-table td { padding:.85rem 1rem; border-bottom:1px solid var(--border-glass); text-align:left; }
+  .daily-table th { color:var(--text-muted); text-transform:uppercase; letter-spacing:.05em; font-size:.78rem; }
+  .daily-table tr:last-child td { border-bottom:0; }
+  .daily-table a { color:var(--accent-solar); font-weight:700; text-decoration:none; }
+  .mix-bar { display:grid; grid-template-columns:var(--human,1fr) var(--ai,1fr) var(--seo,1fr) var(--other,1fr); height:9px; min-width:160px; border-radius:999px; overflow:hidden; background:rgba(255,255,255,.06); }
+  .mix-human { background:#34d399; }
+  .mix-ai { background:#ef4444; }
+  .mix-seo { background:#3b82f6; }
+  .mix-other { background:#a855f7; }
+  .highlight-pills { display:flex; gap:.35rem; flex-wrap:wrap; }
+  .pill { display:inline-flex; align-items:center; padding:.2rem .45rem; border-radius:999px; font-size:.75rem; border:1px solid var(--border-glass); color:var(--text-secondary); }
+  .pill-warning { color:#fca5a5; border-color:rgba(252,165,165,.35); }
+  .pill-positive { color:#86efac; border-color:rgba(134,239,172,.35); }
+  .empty { padding:3rem; text-align:center; color:var(--text-muted); }
+</style>
+
+<div class="wrap">
+  <header class="daily-head">
+    <div>
+      <h1>Daily Visitor Reports</h1>
+      <p>Complete GMT+8 calendar-day summaries from stored visitor telemetry.</p>
+    </div>
+    <div class="daily-actions">
+      <a class="daily-btn" href="/visitor-analysis">Live Dashboard</a>
+      <a class="daily-btn" href="/visitor-analysis/daily?format=json">JSON</a>
+    </div>
+  </header>
+
+  <section class="daily-table">
+    <% if (reports && reports.length > 0) { %>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Total</th>
+            <th>Human</th>
+            <th>AI</th>
+            <th>SEO</th>
+            <th>Mix</th>
+            <th>Highlights</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% reports.forEach(function(report) {
+            const total = Math.max(report.total_hits || 0, 1);
+            const human = Math.max(report.human_hits || 0, 0);
+            const ai = Math.max(report.ai_hits || 0, 0);
+            const seo = Math.max(report.seo_hits || 0, 0);
+            const other = Math.max(report.other_hits || 0, 0);
+          %>
+            <tr>
+              <td><a href="/visitor-analysis/daily/<%= report.report_date %>"><%= report.report_date %></a><br><span style="color:var(--text-muted); font-size:.8rem;"><%= report.data.weekday || '' %></span></td>
+              <td><strong><%= report.total_hits.toLocaleString() %></strong><br><span style="color:var(--text-muted); font-size:.8rem;"><%= report.unique_ips.toLocaleString() %> IPs</span></td>
+              <td><%= report.human_hits.toLocaleString() %></td>
+              <td><%= report.ai_hits.toLocaleString() %></td>
+              <td><%= report.seo_hits.toLocaleString() %></td>
+              <td>
+                <div class="mix-bar" style="--human:<%= human || 0.001 %>fr; --ai:<%= ai || 0.001 %>fr; --seo:<%= seo || 0.001 %>fr; --other:<%= other || 0.001 %>fr;">
+                  <span class="mix-human"></span><span class="mix-ai"></span><span class="mix-seo"></span><span class="mix-other"></span>
+                </div>
+              </td>
+              <td>
+                <div class="highlight-pills">
+                  <% (report.highlights || []).slice(0, 3).forEach(function(h) { %>
+                    <span class="pill pill-<%= h.severity %>" title="<%= h.message %>"><%= h.type.replace(/_/g, ' ') %></span>
+                  <% }); %>
+                  <% if (!report.highlights || report.highlights.length === 0) { %><span class="pill">normal</span><% } %>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } else { %>
+      <div class="empty">No complete daily reports have been generated yet.</div>
+    <% } %>
+  </section>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,152 @@
+<%- include('partials/header') %>
+
+<style>
+  .report-head { display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; margin:2rem 0 1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border-glass); }
+  .report-head h1 { font-size:2.25rem; font-weight:800; margin:0; }
+  .report-head p { color:var(--text-secondary); margin:.35rem 0 0; }
+  .report-actions { display:flex; gap:.5rem; flex-wrap:wrap; }
+  .report-btn { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:.5rem 1rem; border:1px solid var(--border-glass); border-radius:10px; color:var(--text-primary); text-decoration:none; background:var(--bg-secondary); font-weight:700; }
+  .metric-grid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:1rem; margin-bottom:1.5rem; }
+  .metric { background:var(--bg-secondary); border:1px solid var(--border-glass); border-radius:14px; padding:1.15rem; }
+  .metric span { display:block; color:var(--text-muted); font-size:.78rem; text-transform:uppercase; letter-spacing:.05em; }
+  .metric strong { display:block; margin-top:.35rem; font-size:1.8rem; color:var(--text-primary); }
+  .section-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.25rem; margin-bottom:1.5rem; }
+  .panel { background:var(--bg-secondary); border:1px solid var(--border-glass); border-radius:14px; padding:1.25rem; }
+  .panel h2 { font-size:1.1rem; margin:0 0 1rem; }
+  .bars { display:flex; align-items:end; gap:3px; height:130px; padding-top:.5rem; }
+  .bar { flex:1; min-width:0; border-radius:4px 4px 0 0; background:linear-gradient(180deg, #fbbf24, rgba(251,191,36,.28)); }
+  table { width:100%; border-collapse:collapse; font-size:.9rem; }
+  th, td { padding:.65rem .35rem; border-bottom:1px solid var(--border-glass); text-align:left; }
+  th { color:var(--text-muted); font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; }
+  .highlight-list { display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .highlight { padding:.45rem .65rem; border-radius:999px; border:1px solid var(--border-glass); color:var(--text-secondary); font-size:.85rem; }
+  .highlight-warning { color:#fca5a5; border-color:rgba(252,165,165,.35); }
+  .highlight-positive { color:#86efac; border-color:rgba(134,239,172,.35); }
+  @media (max-width: 900px) { .metric-grid, .section-grid { grid-template-columns:1fr 1fr; } }
+</style>
+
+<%
+  const data = report.data || {};
+  const highlights = report.highlights || [];
+  const hourly = data.hourly || [];
+  const maxHour = Math.max.apply(null, hourly.concat([1]));
+%>
+
+<div class="wrap">
+  <header class="report-head">
+    <div>
+      <h1><%= report.report_date %></h1>
+      <p><%= data.weekday || 'Daily' %> visitor report, bucketed by GMT+8.</p>
+    </div>
+    <div class="report-actions">
+      <a class="report-btn" href="/visitor-analysis/daily">All Reports</a>
+      <a class="report-btn" href="/visitor-analysis">Live Dashboard</a>
+      <a class="report-btn" href="/visitor-analysis/daily/<%= report.report_date %>?format=json">JSON</a>
+    </div>
+  </header>
+
+  <div class="highlight-list">
+    <% if (highlights.length > 0) { %>
+      <% highlights.forEach(function(h) { %>
+        <span class="highlight highlight-<%= h.severity %>" title="<%= h.message %>"><%= h.message %></span>
+      <% }); %>
+    <% } else { %>
+      <span class="highlight">No unusual traffic signals.</span>
+    <% } %>
+  </div>
+
+  <section class="metric-grid">
+    <div class="metric"><span>Total requests</span><strong><%= report.total_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Unique IPs</span><strong><%= report.unique_ips.toLocaleString() %></strong></div>
+    <div class="metric"><span>Human visits</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Avg response</span><strong><%= report.avg_exec_ms.toLocaleString() %>ms</strong></div>
+    <div class="metric"><span>AI crawlers</span><strong><%= report.ai_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>SEO crawlers</span><strong><%= report.seo_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Mobile hits</span><strong><%= report.mobile_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Error hits</span><strong><%= report.error_hits.toLocaleString() %></strong></div>
+  </section>
+
+  <section class="section-grid">
+    <div class="panel">
+      <h2>Hourly Traffic</h2>
+      <div class="bars">
+        <% hourly.forEach(function(count, hour) { %>
+          <div class="bar" title="<%= hour %>:00 - <%= count %> hits" style="height:<%= Math.max(4, Math.round((count / maxHour) * 100)) %>%;"></div>
+        <% }); %>
+      </div>
+      <p style="color:var(--text-muted); font-size:.85rem;">Peak hour: <%= data.peakHour == null ? 'none' : data.peakHour + ':00' %></p>
+    </div>
+
+    <div class="panel">
+      <h2>Visitor Mix</h2>
+      <table>
+        <tbody>
+          <tr><td>Human</td><td style="text-align:right;"><%= report.human_hits.toLocaleString() %></td></tr>
+          <tr><td>AI crawler</td><td style="text-align:right;"><%= report.ai_hits.toLocaleString() %></td></tr>
+          <tr><td>SEO crawler</td><td style="text-align:right;"><%= report.seo_hits.toLocaleString() %></td></tr>
+          <tr><td>Other bot</td><td style="text-align:right;"><%= report.other_hits.toLocaleString() %></td></tr>
+          <tr><td>Desktop</td><td style="text-align:right;"><%= report.desktop_hits.toLocaleString() %></td></tr>
+          <tr><td>Mobile</td><td style="text-align:right;"><%= report.mobile_hits.toLocaleString() %></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="panel">
+      <h2>Top Pages</h2>
+      <table>
+        <thead><tr><th>Path</th><th style="text-align:right;">Hits</th><th style="text-align:right;">Human</th><th style="text-align:right;">AI</th></tr></thead>
+        <tbody>
+          <% (data.topPages || []).forEach(function(row) { %>
+            <tr><td><%= row.url %></td><td style="text-align:right;"><%= row.hits.toLocaleString() %></td><td style="text-align:right;"><%= row.human.toLocaleString() %></td><td style="text-align:right;"><%= row.ai.toLocaleString() %></td></tr>
+          <% }); %>
+          <% if (!data.topPages || data.topPages.length === 0) { %><tr><td colspan="4">No page hits.</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Top Referers</h2>
+      <table>
+        <thead><tr><th>Referer</th><th style="text-align:right;">Count</th></tr></thead>
+        <tbody>
+          <% (data.topReferers || []).forEach(function(row) { %>
+            <tr><td><%= row.referer %></td><td style="text-align:right;"><%= row.count.toLocaleString() %></td></tr>
+          <% }); %>
+          <% if (!data.topReferers || data.topReferers.length === 0) { %><tr><td colspan="2">No referer data.</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="panel">
+      <h2>AI Crawlers</h2>
+      <table>
+        <thead><tr><th>Bot</th><th style="text-align:right;">Hits</th></tr></thead>
+        <tbody>
+          <% (data.aiBots || []).forEach(function(row) { %>
+            <tr><td><%= row.bot_name %></td><td style="text-align:right;"><%= row.count.toLocaleString() %></td></tr>
+          <% }); %>
+          <% if (!data.aiBots || data.aiBots.length === 0) { %><tr><td colspan="2">No AI crawler hits.</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2>Search Crawlers</h2>
+      <table>
+        <thead><tr><th>Bot</th><th style="text-align:right;">Hits</th></tr></thead>
+        <tbody>
+          <% (data.seoBots || []).forEach(function(row) { %>
+            <tr><td><%= row.bot_name %></td><td style="text-align:right;"><%= row.count.toLocaleString() %></td></tr>
+          <% }); %>
+          <% if (!data.seoBots || data.seoBots.length === 0) { %><tr><td colspan="2">No search crawler hits.</td></tr><% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<%- include('partials/footer') %>

@@ -7,6 +7,7 @@ require('dotenv').config();
 
 const db = require('./db');
 const { trackVisitor } = require('./scripts/visitorTracker');
+const { generateMissingReports } = require('./scripts/dailyReport');
 
 const app = express();
 app.set('trust proxy', true);
@@ -26,10 +27,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Initialize DB on startup
-db.initDb().catch(err => {
-  console.error('Database initialization failed:', err);
-});
+async function backfillDailyReports() {
+  try {
+    await generateMissingReports();
+  } catch (err) {
+    console.error('Daily report backfill failed:', err);
+  }
+}
+
+// Initialize DB on startup, then backfill complete GMT+8 daily reports.
+db.initDb()
+  .then(backfillDailyReports)
+  .catch(err => {
+    console.error('Database initialization failed:', err);
+  });
+
+const dailyReportTimer = setInterval(backfillDailyReports, 60 * 60 * 1000);
+if (dailyReportTimer.unref) dailyReportTimer.unref();
 
 // Middleware: Device Detection & Dynamic Serving
 function detectDevice(req, res, next) {
@@ -1907,6 +1921,85 @@ app.get('/sitemap-news.xml', async (req, res) => {
 
 
 // Route: Visitor Analysis Dashboard
+app.get('/visitor-analysis/daily', async (req, res) => {
+  try {
+    await backfillDailyReports();
+
+    const reportsRes = await db.pool.query(`
+      SELECT report_date::text AS report_date, total_hits, unique_ips, human_hits,
+             ai_hits, seo_hits, other_hits, mobile_hits, desktop_hits, error_hits,
+             avg_exec_ms, data, highlights, generated_at
+      FROM main_site_daily_reports
+      ORDER BY report_date DESC
+    `);
+
+    const reports = reportsRes.rows.map(row => ({
+      ...row,
+      data: row.data || {},
+      highlights: row.highlights || []
+    }));
+
+    if (req.query.format === 'json') {
+      return res.json({ reports });
+    }
+
+    res.render('visitor-daily-list', {
+      reports,
+      title: 'Daily Visitor Reports - Eternalgy',
+      meta_description: 'Complete GMT+8 daily visitor reports for Eternalgy website traffic, crawlers, and page activity.',
+      schemaData: null,
+      currentTab: 'analytics'
+    });
+  } catch (err) {
+    console.error('Daily visitor reports query failed:', err);
+    res.status(500).send('Failed to fetch daily visitor reports');
+  }
+});
+
+app.get('/visitor-analysis/daily/:date', async (req, res) => {
+  const { date } = req.params;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return res.status(404).send('Daily report not found');
+  }
+
+  try {
+    await backfillDailyReports();
+
+    const reportRes = await db.pool.query(`
+      SELECT report_date::text AS report_date, total_hits, unique_ips, human_hits,
+             ai_hits, seo_hits, other_hits, mobile_hits, desktop_hits, error_hits,
+             avg_exec_ms, data, highlights, generated_at
+      FROM main_site_daily_reports
+      WHERE report_date = $1
+    `, [date]);
+
+    if (reportRes.rows.length === 0) {
+      return res.status(404).send('Daily report not found');
+    }
+
+    const report = {
+      ...reportRes.rows[0],
+      data: reportRes.rows[0].data || {},
+      highlights: reportRes.rows[0].highlights || []
+    };
+
+    if (req.query.format === 'json') {
+      return res.json({ report });
+    }
+
+    res.render('visitor-daily', {
+      report,
+      title: `Daily Visitor Report ${date} - Eternalgy`,
+      meta_description: `GMT+8 visitor traffic report for ${date}.`,
+      schemaData: null,
+      currentTab: 'analytics'
+    });
+  } catch (err) {
+    console.error('Daily visitor report detail query failed:', err);
+    res.status(500).send('Failed to fetch daily visitor report');
+  }
+});
+
 app.get('/visitor-analysis', async (req, res) => {
   const timeframe = req.query.timeframe || '24h';
   

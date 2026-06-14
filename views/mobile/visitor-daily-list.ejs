@@ -1,0 +1,58 @@
+<%- include('partials/header') %>
+
+<style>
+  .daily-head-mobile { margin:1rem 0 1rem; padding-bottom:1rem; border-bottom:1px solid var(--border-glass); text-align:center; }
+  .daily-head-mobile h1 { font-size:1.8rem; font-weight:800; margin:0; }
+  .daily-head-mobile p { color:var(--text-secondary); font-size:.85rem; margin:.35rem 0 0; }
+  .daily-actions-mobile { display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin:1rem 0; }
+  .daily-btn-mobile { display:flex; align-items:center; justify-content:center; min-height:38px; padding:.45rem .7rem; border:1px solid var(--border-glass); border-radius:10px; color:var(--text-primary); text-decoration:none; background:var(--bg-secondary); font-weight:700; font-size:.85rem; }
+  .report-card { background:var(--bg-secondary); border:1px solid var(--border-glass); border-radius:14px; padding:1rem; margin-bottom:1rem; }
+  .report-card a { color:var(--accent-solar); text-decoration:none; font-weight:800; font-size:1.05rem; }
+  .report-meta { color:var(--text-muted); font-size:.78rem; margin-top:.15rem; }
+  .report-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:.5rem; margin:.85rem 0; }
+  .report-stat { background:rgba(255,255,255,.03); border-radius:10px; padding:.55rem .35rem; text-align:center; }
+  .report-stat span { display:block; color:var(--text-muted); font-size:.65rem; text-transform:uppercase; }
+  .report-stat strong { display:block; color:var(--text-primary); margin-top:.2rem; font-size:.95rem; }
+  .highlight-pills { display:flex; gap:.35rem; flex-wrap:wrap; }
+  .pill { display:inline-flex; padding:.2rem .45rem; border-radius:999px; font-size:.72rem; border:1px solid var(--border-glass); color:var(--text-secondary); }
+  .pill-warning { color:#fca5a5; border-color:rgba(252,165,165,.35); }
+  .pill-positive { color:#86efac; border-color:rgba(134,239,172,.35); }
+  .empty { padding:2rem 1rem; text-align:center; color:var(--text-muted); }
+</style>
+
+<div class="wrap" style="padding-bottom:5rem;">
+  <header class="daily-head-mobile">
+    <h1>Daily Reports</h1>
+    <p>GMT+8 complete-day visitor summaries.</p>
+  </header>
+
+  <nav class="daily-actions-mobile">
+    <a class="daily-btn-mobile" href="/visitor-analysis">Live</a>
+    <a class="daily-btn-mobile" href="/visitor-analysis/daily?format=json">JSON</a>
+  </nav>
+
+  <% if (reports && reports.length > 0) { %>
+    <% reports.forEach(function(report) { %>
+      <article class="report-card">
+        <a href="/visitor-analysis/daily/<%= report.report_date %>"><%= report.report_date %></a>
+        <div class="report-meta"><%= report.data.weekday || '' %> · <%= report.unique_ips.toLocaleString() %> unique IPs</div>
+        <div class="report-grid">
+          <div class="report-stat"><span>Total</span><strong><%= report.total_hits.toLocaleString() %></strong></div>
+          <div class="report-stat"><span>Human</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
+          <div class="report-stat"><span>AI</span><strong><%= report.ai_hits.toLocaleString() %></strong></div>
+          <div class="report-stat"><span>SEO</span><strong><%= report.seo_hits.toLocaleString() %></strong></div>
+        </div>
+        <div class="highlight-pills">
+          <% (report.highlights || []).slice(0, 3).forEach(function(h) { %>
+            <span class="pill pill-<%= h.severity %>" title="<%= h.message %>"><%= h.type.replace(/_/g, ' ') %></span>
+          <% }); %>
+          <% if (!report.highlights || report.highlights.length === 0) { %><span class="pill">normal</span><% } %>
+        </div>
+      </article>
+    <% }); %>
+  <% } else { %>
+    <div class="empty">No complete daily reports have been generated yet.</div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

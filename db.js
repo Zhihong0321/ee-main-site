@@ -594,7 +594,30 @@ The capital expenditure for residential battery energy storage systems (BESS) is
     await client.query(`
       CREATE INDEX IF NOT EXISTS idx_visitor_logs_bot_name ON main_site_visitor_logs(bot_name);
     `);
-    
+
+    // 9. Table: main_site_daily_reports (Pre-computed daily visitor summaries, bucketed by GMT+8)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS main_site_daily_reports (
+        report_date   DATE PRIMARY KEY,
+        total_hits    INTEGER NOT NULL DEFAULT 0,
+        unique_ips    INTEGER NOT NULL DEFAULT 0,
+        human_hits    INTEGER NOT NULL DEFAULT 0,
+        ai_hits       INTEGER NOT NULL DEFAULT 0,
+        seo_hits      INTEGER NOT NULL DEFAULT 0,
+        other_hits    INTEGER NOT NULL DEFAULT 0,
+        mobile_hits   INTEGER NOT NULL DEFAULT 0,
+        desktop_hits  INTEGER NOT NULL DEFAULT 0,
+        error_hits    INTEGER NOT NULL DEFAULT 0,
+        avg_exec_ms   INTEGER NOT NULL DEFAULT 0,
+        data          JSONB NOT NULL DEFAULT '{}'::jsonb,
+        highlights    JSONB NOT NULL DEFAULT '[]'::jsonb,
+        generated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+      );
+    `);
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_daily_reports_date ON main_site_daily_reports(report_date DESC);
+    `);
+
     await client.query('COMMIT');
   } catch (e) {
     await client.query('ROLLBACK');
