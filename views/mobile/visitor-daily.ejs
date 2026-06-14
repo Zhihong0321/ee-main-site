@@ -100,6 +100,32 @@
   </section>
 
   <section class="panel">
+    <h2>Status Breakdown</h2>
+    <table>
+      <thead><tr><th>Status</th><th style="text-align:right;">Requests</th></tr></thead>
+      <tbody>
+        <% (data.statusCodes || []).forEach(function(row) { %>
+          <tr><td><%= row.status_code %></td><td style="text-align:right;"><%= row.count.toLocaleString() %></td></tr>
+        <% }); %>
+        <% if (!data.statusCodes || data.statusCodes.length === 0) { %><tr><td colspan="2">No status-code data.</td></tr><% } %>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Top Error URLs</h2>
+    <table>
+      <thead><tr><th>Path</th><th>Status</th><th style="text-align:right;">Count</th></tr></thead>
+      <tbody>
+        <% (data.errorPages || []).forEach(function(row) { %>
+          <tr><td><%= row.url %></td><td><%= row.status_code %></td><td style="text-align:right;"><%= row.count.toLocaleString() %></td></tr>
+        <% }); %>
+        <% if (!data.errorPages || data.errorPages.length === 0) { %><tr><td colspan="3">No 4xx/5xx responses.</td></tr><% } %>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
     <h2>AI Crawlers</h2>
     <table>
       <thead><tr><th>Bot</th><th style="text-align:right;">Hits</th></tr></thead>

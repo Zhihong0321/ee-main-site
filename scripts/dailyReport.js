@@ -92,13 +92,41 @@ async function computeDailyReport(dateStr) {
     GROUP BY hr ORDER BY hr
   `;
 
-  const [totals, topPages, aiBots, seoBots, referers, hourly] = await Promise.all([
+  const statusCodesQ = `
+    SELECT status_code, COUNT(*)::int AS count
+    FROM main_site_visitor_logs
+    WHERE ${dayFilter}
+    GROUP BY status_code
+    ORDER BY count DESC, status_code
+  `;
+
+  const errorPagesQ = `
+    SELECT url, status_code, visitor_type, COUNT(*)::int AS count
+    FROM main_site_visitor_logs
+    WHERE ${dayFilter} AND status_code >= 400
+    GROUP BY url, status_code, visitor_type
+    ORDER BY count DESC, url
+    LIMIT 25
+  `;
+
+  const errorByTypeQ = `
+    SELECT visitor_type, status_code, COUNT(*)::int AS count
+    FROM main_site_visitor_logs
+    WHERE ${dayFilter} AND status_code >= 400
+    GROUP BY visitor_type, status_code
+    ORDER BY count DESC, visitor_type, status_code
+  `;
+
+  const [totals, topPages, aiBots, seoBots, referers, hourly, statusCodes, errorPages, errorByType] = await Promise.all([
     db.pool.query(totalsQ, [dateStr]),
     db.pool.query(topPagesQ, [dateStr]),
     db.pool.query(aiBotsQ, [dateStr]),
     db.pool.query(seoBotsQ, [dateStr]),
     db.pool.query(referersQ, [dateStr]),
-    db.pool.query(hourlyQ, [dateStr])
+    db.pool.query(hourlyQ, [dateStr]),
+    db.pool.query(statusCodesQ, [dateStr]),
+    db.pool.query(errorPagesQ, [dateStr]),
+    db.pool.query(errorByTypeQ, [dateStr])
   ]);
 
   const t = totals.rows[0];
@@ -134,7 +162,10 @@ async function computeDailyReport(dateStr) {
       seoBots: seoBots.rows,
       topReferers: referers.rows,
       hourly: hourlyArr,
-      peakHour
+      peakHour,
+      statusCodes: statusCodes.rows,
+      errorPages: errorPages.rows,
+      errorByType: errorByType.rows
     }
   };
 }
@@ -158,7 +189,7 @@ function evaluateHighlights(report, history) {
   // --- warnings ---
   if (r.total_hits >= TH.ERROR_MIN_HITS && pct(r.error_hits, r.total_hits) / 100 > TH.ERROR_RATE) {
     out.push({ type: 'elevated_errors', severity: 'warning', icon: '⚠️',
-      message: `Elevated error rate: ${pct(r.error_hits, r.total_hits).toFixed(1)}% of ${r.total_hits} requests returned 4xx/5xx.` });
+      message: `Elevated error rate: ${r.error_hits} of ${r.total_hits} requests (${pct(r.error_hits, r.total_hits).toFixed(1)}%) returned 4xx/5xx.` });
   }
   if (r.avg_exec_ms > TH.SLOW_MS) {
     out.push({ type: 'slow_responses', severity: 'warning', icon: '🐌',

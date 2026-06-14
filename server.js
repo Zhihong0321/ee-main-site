@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const db = require('./db');
 const { trackVisitor } = require('./scripts/visitorTracker');
-const { generateMissingReports } = require('./scripts/dailyReport');
+const { computeDailyReport, generateMissingReports } = require('./scripts/dailyReport');
 
 const app = express();
 app.set('trust proxy', true);
@@ -1982,6 +1982,25 @@ app.get('/visitor-analysis/daily/:date', async (req, res) => {
       data: reportRes.rows[0].data || {},
       highlights: reportRes.rows[0].highlights || []
     };
+
+    if (report.error_hits > 0 && (!report.data.errorPages || !report.data.statusCodes)) {
+      const fresh = await computeDailyReport(date);
+      report.data = {
+        ...report.data,
+        statusCodes: fresh.data.statusCodes,
+        errorPages: fresh.data.errorPages,
+        errorByType: fresh.data.errorByType
+      };
+    }
+
+    report.highlights = report.highlights.map(highlight => {
+      if (highlight.type !== 'elevated_errors') return highlight;
+      const rate = report.total_hits > 0 ? ((report.error_hits / report.total_hits) * 100).toFixed(1) : '0.0';
+      return {
+        ...highlight,
+        message: `Elevated error rate: ${report.error_hits} of ${report.total_hits} requests (${rate}%) returned 4xx/5xx.`
+      };
+    });
 
     if (req.query.format === 'json') {
       return res.json({ report });
