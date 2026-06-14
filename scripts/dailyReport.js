@@ -33,6 +33,14 @@ const TH = {
  */
 async function computeDailyReport(dateStr) {
   const dayFilter = `(visited_at AT TIME ZONE '${TZ}')::date = $1`;
+  const cleanPath = `lower(split_part(url, '?', 1))`;
+  const suspiciousPath = `(
+    ${cleanPath} ~ '(^|/)(\\.env|\\.git|wp-|wordpress|xmlrpc\\.php|phpinfo\\.php|admin|administrator|vendor/phpunit|server-status|config|backup|backups)(/|$)'
+    OR ${cleanPath} ~ '\\.(env|ini|conf|config|sql|bak|backup|old|log|php)$'
+  )`;
+  const browserUa = `(user_agent ~* '(mozilla|chrome|safari|firefox|edg|opr)')`;
+  const likelyHuman = `(visitor_type = 'human' AND status_code < 400 AND ${browserUa} AND NOT ${suspiciousPath})`;
+  const unverifiedHuman = `(visitor_type = 'human' AND NOT ${likelyHuman})`;
 
   // 1. Top-level counts (one pass)
   const totalsQ = `
@@ -40,6 +48,9 @@ async function computeDailyReport(dateStr) {
       COUNT(*)::int AS total_hits,
       COUNT(DISTINCT ip_address)::int AS unique_ips,
       COALESCE(SUM(CASE WHEN visitor_type = 'human' THEN 1 ELSE 0 END),0)::int AS human_hits,
+      COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END),0)::int AS likely_human_hits,
+      COALESCE(SUM(CASE WHEN ${unverifiedHuman} THEN 1 ELSE 0 END),0)::int AS unverified_human_hits,
+      COALESCE(SUM(CASE WHEN ${suspiciousPath} THEN 1 ELSE 0 END),0)::int AS scanner_probe_hits,
       COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END),0)::int AS ai_hits,
       COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END),0)::int AS seo_hits,
       COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END),0)::int AS other_hits,
@@ -55,6 +66,7 @@ async function computeDailyReport(dateStr) {
     SELECT url,
       COUNT(*)::int AS hits,
       COALESCE(SUM(CASE WHEN visitor_type = 'human' THEN 1 ELSE 0 END),0)::int AS human,
+      COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END),0)::int AS likely_human,
       COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END),0)::int AS ai,
       COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END),0)::int AS seo,
       COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END),0)::int AS other
@@ -147,7 +159,7 @@ async function computeDailyReport(dateStr) {
     report_date: dateStr,
     total_hits: t.total_hits,
     unique_ips: t.unique_ips,
-    human_hits: t.human_hits,
+    human_hits: t.likely_human_hits,
     ai_hits: t.ai_hits,
     seo_hits: t.seo_hits,
     other_hits: t.other_hits,
@@ -157,6 +169,10 @@ async function computeDailyReport(dateStr) {
     avg_exec_ms: t.avg_exec_ms,
     data: {
       weekday,
+      rawHumanHits: t.human_hits,
+      likelyHumanHits: t.likely_human_hits,
+      unverifiedHumanHits: t.unverified_human_hits,
+      scannerProbeHits: t.scanner_probe_hits,
       topPages: topPages.rows,
       aiBots: aiBots.rows,
       seoBots: seoBots.rows,
@@ -207,7 +223,7 @@ function evaluateHighlights(report, history) {
   }
   if (r.human_hits > 0 && h.allTimeMaxHuman != null && r.human_hits >= h.allTimeMaxHuman) {
     out.push({ type: 'record_human', severity: 'positive', icon: '🏆',
-      message: `Record human traffic: ${r.human_hits} human visits — an all-time daily high.` });
+      message: `Record likely-human traffic: ${r.human_hits} clean browser visits — an all-time daily high.` });
   }
   if (hasBaseline && r.ai_hits >= TH.SURGE_MIN && r.ai_hits > TH.SURGE_RATIO * avg7.ai_hits) {
     out.push({ type: 'ai_surge', severity: 'positive', icon: '🚀',
@@ -251,6 +267,14 @@ function pctDelta(value, base) {
  * @returns {Promise<{generated:number, dates:string[]}>}
  */
 async function generateMissingReports() {
+  const cleanPath = `lower(split_part(url, '?', 1))`;
+  const suspiciousPath = `(
+    ${cleanPath} ~ '(^|/)(\\.env|\\.git|wp-|wordpress|xmlrpc\\.php|phpinfo\\.php|admin|administrator|vendor/phpunit|server-status|config|backup|backups)(/|$)'
+    OR ${cleanPath} ~ '\\.(env|ini|conf|config|sql|bak|backup|old|log|php)$'
+  )`;
+  const browserUa = `(user_agent ~* '(mozilla|chrome|safari|firefox|edg|opr)')`;
+  const likelyHuman = `(visitor_type = 'human' AND status_code < 400 AND ${browserUa} AND NOT ${suspiciousPath})`;
+
   // Earliest logged day and today, both in GMT+8.
   const boundsQ = `
     SELECT
@@ -272,7 +296,7 @@ async function generateMissingReports() {
   // All-time max human hits and the set of AI bots ever seen (for highlight context).
   const maxHumanQ = `SELECT COALESCE(MAX(c),0)::int AS m FROM (
       SELECT COUNT(*) AS c FROM main_site_visitor_logs
-      WHERE visitor_type='human'
+      WHERE ${likelyHuman}
       GROUP BY (visited_at AT TIME ZONE '${TZ}')::date) s`;
   let allTimeMaxHuman = 0;
   try { allTimeMaxHuman = (await db.pool.query(maxHumanQ)).rows[0].m; } catch (_) {}

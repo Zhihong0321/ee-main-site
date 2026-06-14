@@ -35,6 +35,44 @@ async function backfillDailyReports() {
   }
 }
 
+async function enrichDailyReport(report) {
+  const data = report.data || {};
+  if (data.likelyHumanHits != null && data.statusCodes && data.errorPages) {
+    return report;
+  }
+
+  const fresh = await computeDailyReport(report.report_date);
+  return {
+    ...report,
+    human_hits: fresh.human_hits,
+    data: {
+      ...data,
+      rawHumanHits: fresh.data.rawHumanHits,
+      likelyHumanHits: fresh.data.likelyHumanHits,
+      unverifiedHumanHits: fresh.data.unverifiedHumanHits,
+      scannerProbeHits: fresh.data.scannerProbeHits,
+      topPages: fresh.data.topPages,
+      statusCodes: fresh.data.statusCodes,
+      errorPages: fresh.data.errorPages,
+      errorByType: fresh.data.errorByType
+    },
+    highlights: (report.highlights || []).map(highlight => {
+      if (highlight.type === 'record_human') {
+        return {
+          ...highlight,
+          message: `Record likely-human traffic: ${fresh.human_hits} clean browser visits.`
+        };
+      }
+      if (highlight.type !== 'elevated_errors') return highlight;
+      const rate = report.total_hits > 0 ? ((report.error_hits / report.total_hits) * 100).toFixed(1) : '0.0';
+      return {
+        ...highlight,
+        message: `Elevated error rate: ${report.error_hits} of ${report.total_hits} requests (${rate}%) returned 4xx/5xx.`
+      };
+    })
+  };
+}
+
 // Initialize DB on startup, then backfill complete GMT+8 daily reports.
 db.initDb()
   .then(backfillDailyReports)
@@ -1933,11 +1971,11 @@ app.get('/visitor-analysis/daily', async (req, res) => {
       ORDER BY report_date DESC
     `);
 
-    const reports = reportsRes.rows.map(row => ({
+    const reports = await Promise.all(reportsRes.rows.map(row => enrichDailyReport({
       ...row,
       data: row.data || {},
       highlights: row.highlights || []
-    }));
+    })));
 
     if (req.query.format === 'json') {
       return res.json({ reports });
@@ -1983,31 +2021,14 @@ app.get('/visitor-analysis/daily/:date', async (req, res) => {
       highlights: reportRes.rows[0].highlights || []
     };
 
-    if (report.error_hits > 0 && (!report.data.errorPages || !report.data.statusCodes)) {
-      const fresh = await computeDailyReport(date);
-      report.data = {
-        ...report.data,
-        statusCodes: fresh.data.statusCodes,
-        errorPages: fresh.data.errorPages,
-        errorByType: fresh.data.errorByType
-      };
-    }
-
-    report.highlights = report.highlights.map(highlight => {
-      if (highlight.type !== 'elevated_errors') return highlight;
-      const rate = report.total_hits > 0 ? ((report.error_hits / report.total_hits) * 100).toFixed(1) : '0.0';
-      return {
-        ...highlight,
-        message: `Elevated error rate: ${report.error_hits} of ${report.total_hits} requests (${rate}%) returned 4xx/5xx.`
-      };
-    });
+    const enrichedReport = await enrichDailyReport(report);
 
     if (req.query.format === 'json') {
-      return res.json({ report });
+      return res.json({ report: enrichedReport });
     }
 
     res.render('visitor-daily', {
-      report,
+      report: enrichedReport,
       title: `Daily Visitor Report ${date} - Eternalgy`,
       meta_description: `GMT+8 visitor traffic report for ${date}.`,
       schemaData: null,
@@ -2033,13 +2054,24 @@ app.get('/visitor-analysis', async (req, res) => {
     timeframeCondition = "1=1"; // All time
   }
 
+  const cleanPath = `lower(split_part(url, '?', 1))`;
+  const suspiciousPath = `(
+    ${cleanPath} ~ '(^|/)(\\.env|\\.git|wp-|wordpress|xmlrpc\\.php|phpinfo\\.php|admin|administrator|vendor/phpunit|server-status|config|backup|backups)(/|$)'
+    OR ${cleanPath} ~ '\\.(env|ini|conf|config|sql|bak|backup|old|log|php)$'
+  )`;
+  const browserUa = `(user_agent ~* '(mozilla|chrome|safari|firefox|edg|opr)')`;
+  const likelyHuman = `(visitor_type = 'human' AND status_code < 400 AND ${browserUa} AND NOT ${suspiciousPath})`;
+  const unverifiedHuman = `(visitor_type = 'human' AND NOT ${likelyHuman})`;
+
   try {
     // 1. Fetch Summary Stats
     const statsQuery = `
       SELECT 
         COUNT(*)::int as total_hits,
         COUNT(DISTINCT ip_address)::int as unique_ips,
-        COALESCE(SUM(CASE WHEN visitor_type = 'human' THEN 1 ELSE 0 END), 0)::int as human_hits,
+        COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END), 0)::int as human_hits,
+        COALESCE(SUM(CASE WHEN ${unverifiedHuman} THEN 1 ELSE 0 END), 0)::int as unverified_human_hits,
+        COALESCE(SUM(CASE WHEN ${suspiciousPath} THEN 1 ELSE 0 END), 0)::int as scanner_probe_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END), 0)::int as ai_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END), 0)::int as seo_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END), 0)::int as other_hits
@@ -2047,14 +2079,14 @@ app.get('/visitor-analysis', async (req, res) => {
       WHERE ${timeframeCondition}
     `;
     const statsRes = await db.pool.query(statsQuery);
-    const summary = statsRes.rows[0] || { total_hits: 0, unique_ips: 0, human_hits: 0, ai_hits: 0, seo_hits: 0, other_hits: 0 };
+    const summary = statsRes.rows[0] || { total_hits: 0, unique_ips: 0, human_hits: 0, unverified_human_hits: 0, scanner_probe_hits: 0, ai_hits: 0, seo_hits: 0, other_hits: 0 };
 
     // 2. Fetch Timeline Data for Chart
     const truncPeriod = timeframe === '24h' ? 'hour' : 'day';
     const timelineQuery = `
       SELECT 
         DATE_TRUNC('${truncPeriod}', visited_at) as period,
-        COALESCE(SUM(CASE WHEN visitor_type = 'human' THEN 1 ELSE 0 END), 0)::int as human,
+        COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END), 0)::int as human,
         COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END), 0)::int as ai,
         COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END), 0)::int as seo,
         COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END), 0)::int as other,
@@ -2095,7 +2127,7 @@ app.get('/visitor-analysis', async (req, res) => {
     const pagesQuery = `
       SELECT url, 
         COUNT(*)::int as total_hits,
-        COALESCE(SUM(CASE WHEN visitor_type = 'human' THEN 1 ELSE 0 END), 0)::int as human_hits,
+        COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END), 0)::int as human_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END), 0)::int as ai_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END), 0)::int as seo_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END), 0)::int as other_hits

@@ -308,10 +308,10 @@
       <div class="metric-sub">Across <%= summary.unique_ips.toLocaleString() %> unique IPs</div>
     </div>
     <div class="metric-card card-human">
-      <div class="metric-label">Human Traffic</div>
+      <div class="metric-label">Likely Human Traffic</div>
       <div class="metric-value"><%= summary.human_hits.toLocaleString() %></div>
       <div class="metric-sub">
-        <%= summary.total_hits > 0 ? ((summary.human_hits / summary.total_hits) * 100).toFixed(1) : 0 %>% of total requests
+        <%= summary.total_hits > 0 ? ((summary.human_hits / summary.total_hits) * 100).toFixed(1) : 0 %>% of total · <%= (summary.unverified_human_hits || 0).toLocaleString() %> unverified
       </div>
     </div>
     <div class="metric-card card-ai">
@@ -380,7 +380,7 @@
         <thead>
           <tr>
             <th>Resource Path (URL)</th>
-            <th style="text-align: right;">Human Hits</th>
+            <th style="text-align: right;">Likely Human Hits</th>
             <th style="text-align: right;">AI Crawler Hits</th>
             <th style="text-align: right;">SEO Crawler Hits</th>
             <th style="text-align: right; font-weight: 700;">Total Hits</th>
@@ -433,7 +433,7 @@
                 <td style="font-family: monospace; font-size: 0.8rem;"><%= log.ip_address %></td>
                 <td>
                   <% if (log.visitor_type === 'human') { %>
-                    <span class="badge badge-human">Human</span>
+                    <span class="badge badge-human">Browser/Unknown</span>
                   <% } else if (log.visitor_type === 'ai_crawler') { %>
                     <span class="badge badge-ai" title="<%= log.bot_name %>">AI: <%= log.bot_name %></span>
                   <% } else if (log.visitor_type === 'seo_crawler') { %>
@@ -485,7 +485,7 @@
       labels: <%- JSON.stringify(timelineLabels) %>,
       datasets: [
         {
-          label: 'Human Traffic',
+          label: 'Likely Human Traffic',
           data: <%- JSON.stringify(timeline.map(r => r.human)) %>,
           borderColor: '#34d399',
           backgroundColor: 'rgba(52, 211, 153, 0.05)',
@@ -546,7 +546,7 @@
     new Chart(ctxType, {
       type: 'doughnut',
       data: {
-        labels: ['Human', 'AI Crawler', 'SEO Crawler', 'Other Bot'],
+        labels: ['Likely Human', 'AI Crawler', 'SEO Crawler', 'Other Bot'],
         datasets: [{
           data: [
             <%= summary.human_hits %>, 

@@ -5,7 +5,37 @@ const db = require('../db');
  * @param {string} ua User-Agent string
  * @returns {{ type: string, name: string|null }}
  */
-function classifyVisitor(ua) {
+function isSuspiciousProbePath(pathname) {
+  const path = (pathname || '').toLowerCase().split('?')[0];
+  if (!path || path === '/') return false;
+
+  const exactOrPrefix = [
+    '/.env',
+    '/.git',
+    '/wp-',
+    '/wordpress',
+    '/xmlrpc.php',
+    '/phpinfo.php',
+    '/admin',
+    '/administrator',
+    '/vendor/phpunit',
+    '/server-status',
+    '/config',
+    '/backup',
+    '/backups'
+  ];
+  if (exactOrPrefix.some(prefix => path === prefix || path.startsWith(prefix + '/') || path.startsWith(prefix))) {
+    return true;
+  }
+
+  return /\.(env|ini|conf|config|sql|bak|backup|old|log|php)$/i.test(path);
+}
+
+function classifyVisitor(ua, pathname = '') {
+  if (isSuspiciousProbePath(pathname)) {
+    return { type: 'other_bot', name: 'Security Scanner' };
+  }
+
   if (!ua) return { type: 'human', name: null };
   const uaLower = ua.toLowerCase();
 
@@ -58,7 +88,7 @@ function classifyVisitor(ua) {
     }
   }
 
-  // 4. Default to Human
+  // 4. Default to Human; reporting applies stricter quality filters later.
   return { type: 'human', name: null };
 }
 
@@ -96,7 +126,7 @@ function trackVisitor(req, res, next) {
     // req.isMobile is set by the detectDevice middleware
     const deviceType = req.isMobile ? 'mobile' : 'desktop';
 
-    const { type: visitorType, name: botName } = classifyVisitor(ua);
+    const { type: visitorType, name: botName } = classifyVisitor(ua, url);
 
     try {
       await db.pool.query(
@@ -115,5 +145,6 @@ function trackVisitor(req, res, next) {
 
 module.exports = {
   classifyVisitor,
+  isSuspiciousProbePath,
   trackVisitor
 };

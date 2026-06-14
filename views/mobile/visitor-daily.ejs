@@ -56,7 +56,7 @@
   <section class="metric-stack">
     <div class="metric"><span>Total</span><strong><%= report.total_hits.toLocaleString() %></strong></div>
     <div class="metric"><span>Unique IPs</span><strong><%= report.unique_ips.toLocaleString() %></strong></div>
-    <div class="metric"><span>Human</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Likely human</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
     <div class="metric"><span>Avg ms</span><strong><%= report.avg_exec_ms.toLocaleString() %></strong></div>
     <div class="metric"><span>AI</span><strong><%= report.ai_hits.toLocaleString() %></strong></div>
     <div class="metric"><span>SEO</span><strong><%= report.seo_hits.toLocaleString() %></strong></div>
@@ -76,7 +76,9 @@
     <h2>Visitor Mix</h2>
     <table>
       <tbody>
-        <tr><td>Human</td><td style="text-align:right;"><%= report.human_hits.toLocaleString() %></td></tr>
+        <tr><td>Likely human</td><td style="text-align:right;"><%= report.human_hits.toLocaleString() %></td></tr>
+        <tr><td>Unverified / scanner-like</td><td style="text-align:right;"><%= ((data.unverifiedHumanHits || 0) + (data.scannerProbeHits || 0)).toLocaleString() %></td></tr>
+        <tr><td>Raw legacy human label</td><td style="text-align:right;"><%= (data.rawHumanHits == null ? report.human_hits : data.rawHumanHits).toLocaleString() %></td></tr>
         <tr><td>AI crawler</td><td style="text-align:right;"><%= report.ai_hits.toLocaleString() %></td></tr>
         <tr><td>SEO crawler</td><td style="text-align:right;"><%= report.seo_hits.toLocaleString() %></td></tr>
         <tr><td>Other bot</td><td style="text-align:right;"><%= report.other_hits.toLocaleString() %></td></tr>

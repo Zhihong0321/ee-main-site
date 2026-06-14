@@ -43,7 +43,7 @@
           <tr>
             <th>Date</th>
             <th>Total</th>
-            <th>Human</th>
+            <th>Likely Human</th>
             <th>AI</th>
             <th>SEO</th>
             <th>Mix</th>
@@ -61,7 +61,7 @@
             <tr>
               <td><a href="/visitor-analysis/daily/<%= report.report_date %>"><%= report.report_date %></a><br><span style="color:var(--text-muted); font-size:.8rem;"><%= report.data.weekday || '' %></span></td>
               <td><strong><%= report.total_hits.toLocaleString() %></strong><br><span style="color:var(--text-muted); font-size:.8rem;"><%= report.unique_ips.toLocaleString() %> IPs</span></td>
-              <td><%= report.human_hits.toLocaleString() %></td>
+              <td><%= report.human_hits.toLocaleString() %><br><span style="color:var(--text-muted); font-size:.8rem;"><%= (report.data.unverifiedHumanHits || 0).toLocaleString() %> unverified</span></td>
               <td><%= report.ai_hits.toLocaleString() %></td>
               <td><%= report.seo_hits.toLocaleString() %></td>
               <td>

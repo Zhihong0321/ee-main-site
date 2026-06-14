@@ -38,7 +38,7 @@
         <div class="report-meta"><%= report.data.weekday || '' %> · <%= report.unique_ips.toLocaleString() %> unique IPs</div>
         <div class="report-grid">
           <div class="report-stat"><span>Total</span><strong><%= report.total_hits.toLocaleString() %></strong></div>
-          <div class="report-stat"><span>Human</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
+          <div class="report-stat"><span>Likely</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
           <div class="report-stat"><span>AI</span><strong><%= report.ai_hits.toLocaleString() %></strong></div>
           <div class="report-stat"><span>SEO</span><strong><%= report.seo_hits.toLocaleString() %></strong></div>
         </div>

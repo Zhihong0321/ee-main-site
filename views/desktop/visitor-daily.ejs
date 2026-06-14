@@ -58,7 +58,7 @@
   <section class="metric-grid">
     <div class="metric"><span>Total requests</span><strong><%= report.total_hits.toLocaleString() %></strong></div>
     <div class="metric"><span>Unique IPs</span><strong><%= report.unique_ips.toLocaleString() %></strong></div>
-    <div class="metric"><span>Human visits</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
+    <div class="metric"><span>Likely human visits</span><strong><%= report.human_hits.toLocaleString() %></strong></div>
     <div class="metric"><span>Avg response</span><strong><%= report.avg_exec_ms.toLocaleString() %>ms</strong></div>
     <div class="metric"><span>AI crawlers</span><strong><%= report.ai_hits.toLocaleString() %></strong></div>
     <div class="metric"><span>SEO crawlers</span><strong><%= report.seo_hits.toLocaleString() %></strong></div>
@@ -81,7 +81,9 @@
       <h2>Visitor Mix</h2>
       <table>
         <tbody>
-          <tr><td>Human</td><td style="text-align:right;"><%= report.human_hits.toLocaleString() %></td></tr>
+          <tr><td>Likely human</td><td style="text-align:right;"><%= report.human_hits.toLocaleString() %></td></tr>
+          <tr><td>Unverified / scanner-like</td><td style="text-align:right;"><%= ((data.unverifiedHumanHits || 0) + (data.scannerProbeHits || 0)).toLocaleString() %></td></tr>
+          <tr><td>Raw legacy human label</td><td style="text-align:right;"><%= (data.rawHumanHits == null ? report.human_hits : data.rawHumanHits).toLocaleString() %></td></tr>
           <tr><td>AI crawler</td><td style="text-align:right;"><%= report.ai_hits.toLocaleString() %></td></tr>
           <tr><td>SEO crawler</td><td style="text-align:right;"><%= report.seo_hits.toLocaleString() %></td></tr>
           <tr><td>Other bot</td><td style="text-align:right;"><%= report.other_hits.toLocaleString() %></td></tr>
@@ -96,10 +98,10 @@
     <div class="panel">
       <h2>Top Pages</h2>
       <table>
-        <thead><tr><th>Path</th><th style="text-align:right;">Hits</th><th style="text-align:right;">Human</th><th style="text-align:right;">AI</th></tr></thead>
+        <thead><tr><th>Path</th><th style="text-align:right;">Hits</th><th style="text-align:right;">Likely human</th><th style="text-align:right;">AI</th></tr></thead>
         <tbody>
           <% (data.topPages || []).forEach(function(row) { %>
-            <tr><td><%= row.url %></td><td style="text-align:right;"><%= row.hits.toLocaleString() %></td><td style="text-align:right;"><%= row.human.toLocaleString() %></td><td style="text-align:right;"><%= row.ai.toLocaleString() %></td></tr>
+            <tr><td><%= row.url %></td><td style="text-align:right;"><%= row.hits.toLocaleString() %></td><td style="text-align:right;"><%= (row.likely_human == null ? row.human : row.likely_human).toLocaleString() %></td><td style="text-align:right;"><%= row.ai.toLocaleString() %></td></tr>
           <% }); %>
           <% if (!data.topPages || data.topPages.length === 0) { %><tr><td colspan="4">No page hits.</td></tr><% } %>
         </tbody>
