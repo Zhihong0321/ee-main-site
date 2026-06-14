@@ -2087,6 +2087,8 @@ app.get('/visitor-analysis', async (req, res) => {
       SELECT 
         DATE_TRUNC('${truncPeriod}', visited_at) as period,
         COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END), 0)::int as human,
+        COALESCE(SUM(CASE WHEN ${unverifiedHuman} THEN 1 ELSE 0 END), 0)::int as unverified,
+        COALESCE(SUM(CASE WHEN ${suspiciousPath} THEN 1 ELSE 0 END), 0)::int as scanner,
         COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END), 0)::int as ai,
         COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END), 0)::int as seo,
         COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END), 0)::int as other,
@@ -2128,6 +2130,8 @@ app.get('/visitor-analysis', async (req, res) => {
       SELECT url, 
         COUNT(*)::int as total_hits,
         COALESCE(SUM(CASE WHEN ${likelyHuman} THEN 1 ELSE 0 END), 0)::int as human_hits,
+        COALESCE(SUM(CASE WHEN ${unverifiedHuman} THEN 1 ELSE 0 END), 0)::int as unverified_hits,
+        COALESCE(SUM(CASE WHEN ${suspiciousPath} THEN 1 ELSE 0 END), 0)::int as scanner_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'ai_crawler' THEN 1 ELSE 0 END), 0)::int as ai_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'seo_crawler' THEN 1 ELSE 0 END), 0)::int as seo_hits,
         COALESCE(SUM(CASE WHEN visitor_type = 'other_bot' THEN 1 ELSE 0 END), 0)::int as other_hits
@@ -2142,7 +2146,21 @@ app.get('/visitor-analysis', async (req, res) => {
 
     // 6. Recent Logs
     const recentLogsQuery = `
-      SELECT visited_at, ip_address, user_agent, url, referer, method, status_code, device_type, visitor_type, bot_name, execution_time_ms 
+      SELECT visited_at, ip_address, user_agent, url, referer, method, status_code, device_type, visitor_type, bot_name, execution_time_ms,
+        CASE
+          WHEN ${likelyHuman} THEN 'likely_human'
+          WHEN ${suspiciousPath} THEN 'scanner'
+          WHEN visitor_type = 'human' THEN 'unverified'
+          ELSE visitor_type
+        END AS display_type,
+        CASE
+          WHEN ${likelyHuman} THEN 'Likely Human'
+          WHEN ${suspiciousPath} THEN 'Security Scanner'
+          WHEN visitor_type = 'human' THEN 'Unverified Browser'
+          WHEN visitor_type = 'ai_crawler' THEN COALESCE(bot_name, 'AI Crawler')
+          WHEN visitor_type = 'seo_crawler' THEN COALESCE(bot_name, 'Search Crawler')
+          ELSE COALESCE(bot_name, 'Other Bot')
+        END AS display_name
       FROM main_site_visitor_logs 
       ORDER BY visited_at DESC 
       LIMIT 50

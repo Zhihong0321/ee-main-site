@@ -104,6 +104,7 @@
   .card-human::before { background-color: var(--color-human); }
   .card-ai::before { background-color: var(--color-ai); }
   .card-seo::before { background-color: var(--color-seo); }
+  .card-other::before { background-color: var(--color-other); }
 
   .metric-label-mobile {
     font-size: 0.75rem;
@@ -319,6 +320,11 @@
         <%= summary.total_hits > 0 ? ((summary.seo_hits / summary.total_hits) * 100).toFixed(0) : 0 %>% of traffic
       </div>
     </div>
+    <div class="metric-card-mobile card-other">
+      <div class="metric-label-mobile">Unverified</div>
+      <div class="metric-value-mobile"><%= (summary.unverified_human_hits || 0).toLocaleString() %></div>
+      <div class="metric-sub-mobile"><%= (summary.scanner_probe_hits || 0).toLocaleString() %> scanner-like</div>
+    </div>
   </div>
 
   <!-- Charts Stack -->
@@ -368,6 +374,7 @@
           <tr>
             <th>Path</th>
             <th style="text-align: right;">Likely</th>
+            <th style="text-align: right;">Unverified</th>
             <th style="text-align: right;">AI</th>
             <th style="text-align: right;">SEO</th>
             <th style="text-align: right; font-weight: 700;">Total</th>
@@ -379,6 +386,7 @@
               <tr>
                 <td class="url-detail-mobile"><%= row.url %></td>
                 <td style="text-align: right; color: var(--color-human);"><%= row.human_hits.toLocaleString() %></td>
+                <td style="text-align: right; color: var(--color-other);"><%= (row.unverified_hits || 0).toLocaleString() %></td>
                 <td style="text-align: right; color: var(--color-ai);"><%= row.ai_hits.toLocaleString() %></td>
                 <td style="text-align: right; color: var(--color-seo);"><%= row.seo_hits.toLocaleString() %></td>
                 <td style="text-align: right; font-weight: 700; color: var(--text-primary);"><%= row.total_hits.toLocaleString() %></td>
@@ -386,7 +394,7 @@
             <% }); %>
           <% } else { %>
             <tr>
-              <td colspan="5" style="text-align:center; padding:1.5rem; color:var(--text-muted);">No records found.</td>
+              <td colspan="6" style="text-align:center; padding:1.5rem; color:var(--text-muted);">No records found.</td>
             </tr>
           <% } %>
         </tbody>
@@ -416,8 +424,12 @@
               <tr>
                 <td style="font-size:0.75rem;"><%= new Date(log.visited_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}) %></td>
                 <td>
-                  <% if (log.visitor_type === 'human') { %>
-                    <span class="badge-mobile badge-human">Browser/Unknown</span>
+                  <% if (log.display_type === 'likely_human') { %>
+                    <span class="badge-mobile badge-human">Likely</span>
+                  <% } else if (log.display_type === 'scanner') { %>
+                    <span class="badge-mobile badge-other">Scanner</span>
+                  <% } else if (log.display_type === 'unverified') { %>
+                    <span class="badge-mobile badge-other">Unverified</span>
                   <% } else if (log.visitor_type === 'ai_crawler') { %>
                     <span class="badge-mobile badge-ai">AI: <%= log.bot_name %></span>
                   <% } else if (log.visitor_type === 'seo_crawler') { %>
@@ -477,6 +489,16 @@
             pointRadius: 1
           },
           {
+            label: 'Unverified',
+            data: <%- JSON.stringify(timeline.map(r => r.unverified)) %>,
+            borderColor: '#a855f7',
+            backgroundColor: 'rgba(168, 85, 247, 0.03)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 1.5,
+            pointRadius: 1
+          },
+          {
             label: 'AI',
             data: <%- JSON.stringify(timeline.map(r => r.ai)) %>,
             borderColor: '#ef4444',
@@ -516,15 +538,16 @@
     new Chart(ctxType, {
       type: 'doughnut',
       data: {
-        labels: ['Likely human', 'AI', 'SEO', 'Other'],
+        labels: ['Likely human', 'Unverified', 'AI', 'SEO', 'Other'],
         datasets: [{
           data: [
             <%= summary.human_hits %>, 
+            <%= summary.unverified_human_hits || 0 %>,
             <%= summary.ai_hits %>, 
             <%= summary.seo_hits %>, 
             <%= summary.other_hits %>
           ],
-          backgroundColor: ['#34d399', '#ef4444', '#3b82f6', '#a855f7'],
+          backgroundColor: ['#34d399', '#a855f7', '#ef4444', '#3b82f6', '#64748b'],
           borderWidth: 0,
           hoverOffset: 2
         }]

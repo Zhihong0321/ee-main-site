@@ -103,6 +103,7 @@
   .card-human::before { background-color: var(--color-human); }
   .card-ai::before { background-color: var(--color-ai); }
   .card-seo::before { background-color: var(--color-seo); }
+  .card-other::before { background-color: var(--color-other); }
 
   .metric-label {
     font-size: 0.85rem;
@@ -328,6 +329,11 @@
         <%= summary.total_hits > 0 ? ((summary.seo_hits / summary.total_hits) * 100).toFixed(1) : 0 %>% of total requests
       </div>
     </div>
+    <div class="metric-card card-other">
+      <div class="metric-label">Unverified / Scanner</div>
+      <div class="metric-value"><%= (summary.unverified_human_hits || 0).toLocaleString() %></div>
+      <div class="metric-sub"><%= (summary.scanner_probe_hits || 0).toLocaleString() %> scanner-like probes</div>
+    </div>
   </div>
 
   <!-- Row 1: Timeline Trend & Doughnut -->
@@ -381,6 +387,7 @@
           <tr>
             <th>Resource Path (URL)</th>
             <th style="text-align: right;">Likely Human Hits</th>
+            <th style="text-align: right;">Unverified</th>
             <th style="text-align: right;">AI Crawler Hits</th>
             <th style="text-align: right;">SEO Crawler Hits</th>
             <th style="text-align: right; font-weight: 700;">Total Hits</th>
@@ -392,6 +399,7 @@
               <tr>
                 <td class="url-detail"><%= row.url %></td>
                 <td style="text-align: right; color: var(--color-human);"><%= row.human_hits.toLocaleString() %></td>
+                <td style="text-align: right; color: var(--color-other);"><%= (row.unverified_hits || 0).toLocaleString() %></td>
                 <td style="text-align: right; color: var(--color-ai);"><%= row.ai_hits.toLocaleString() %></td>
                 <td style="text-align: right; color: var(--color-seo);"><%= row.seo_hits.toLocaleString() %></td>
                 <td style="text-align: right; font-weight: 700; color: var(--text-primary);"><%= row.total_hits.toLocaleString() %></td>
@@ -399,7 +407,7 @@
             <% }); %>
           <% } else { %>
             <tr>
-              <td colspan="5" style="text-align:center; padding:2rem; color:var(--text-muted);">No records found.</td>
+              <td colspan="6" style="text-align:center; padding:2rem; color:var(--text-muted);">No records found.</td>
             </tr>
           <% } %>
         </tbody>
@@ -432,8 +440,12 @@
                 <td class="time-detail"><%= new Date(log.visited_at).toLocaleString() %></td>
                 <td style="font-family: monospace; font-size: 0.8rem;"><%= log.ip_address %></td>
                 <td>
-                  <% if (log.visitor_type === 'human') { %>
-                    <span class="badge badge-human">Browser/Unknown</span>
+                  <% if (log.display_type === 'likely_human') { %>
+                    <span class="badge badge-human">Likely Human</span>
+                  <% } else if (log.display_type === 'scanner') { %>
+                    <span class="badge badge-other">Scanner</span>
+                  <% } else if (log.display_type === 'unverified') { %>
+                    <span class="badge badge-other">Unverified</span>
                   <% } else if (log.visitor_type === 'ai_crawler') { %>
                     <span class="badge badge-ai" title="<%= log.bot_name %>">AI: <%= log.bot_name %></span>
                   <% } else if (log.visitor_type === 'seo_crawler') { %>
@@ -494,6 +506,15 @@
           borderWidth: 2
         },
         {
+          label: 'Unverified / Scanner',
+          data: <%- JSON.stringify(timeline.map(r => r.unverified)) %>,
+          borderColor: '#a855f7',
+          backgroundColor: 'rgba(168, 85, 247, 0.05)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        },
+        {
           label: 'AI Crawlers',
           data: <%- JSON.stringify(timeline.map(r => r.ai)) %>,
           borderColor: '#ef4444',
@@ -514,8 +535,8 @@
         {
           label: 'Other Bots',
           data: <%- JSON.stringify(timeline.map(r => r.other)) %>,
-          borderColor: '#a855f7',
-          backgroundColor: 'rgba(168, 85, 247, 0.05)',
+          borderColor: '#64748b',
+          backgroundColor: 'rgba(100, 116, 139, 0.05)',
           fill: true,
           tension: 0.35,
           borderWidth: 2
@@ -546,15 +567,16 @@
     new Chart(ctxType, {
       type: 'doughnut',
       data: {
-        labels: ['Likely Human', 'AI Crawler', 'SEO Crawler', 'Other Bot'],
+        labels: ['Likely Human', 'Unverified / Scanner', 'AI Crawler', 'SEO Crawler', 'Other Bot'],
         datasets: [{
           data: [
             <%= summary.human_hits %>, 
+            <%= summary.unverified_human_hits || 0 %>,
             <%= summary.ai_hits %>, 
             <%= summary.seo_hits %>, 
             <%= summary.other_hits %>
           ],
-          backgroundColor: ['#34d399', '#ef4444', '#3b82f6', '#a855f7'],
+          backgroundColor: ['#34d399', '#a855f7', '#ef4444', '#3b82f6', '#64748b'],
           borderWidth: 0,
           hoverOffset: 4
         }]
