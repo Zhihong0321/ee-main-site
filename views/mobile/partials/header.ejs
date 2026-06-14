@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title><%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %></title>
+  <meta name="description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <meta name="robots" content="<%= (typeof noindex !== 'undefined' && noindex) ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' %>">
+  
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
+  <meta property="og:description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : baseUrl + '/logo.png' %>">
+  
+  <!-- Loads DEDICATED Mobile stylesheet -->
+  <link rel="stylesheet" href="/css/mobile.css">
+  
+  <link rel="canonical" href="<%= canonicalUrl %>">
+  <link rel="alternate" type="application/rss+xml" title="Renewable Energy News RSS Feed" href="<%= baseUrl %>/feed.xml">
+  <link rel="alternate" type="application/json" title="Renewable Energy News JSON Feed" href="<%= baseUrl %>/feed.json">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="<%= baseUrl %>/sitemap.xml">
+  
+  <!-- Semantic alternate formats for robots & AI search agents -->
+  <link rel="alternate" type="text/markdown" title="Markdown Content" href="<%= canonicalUrl %>?format=md">
+  <link rel="alternate" type="application/json" title="JSON Content" href="<%= canonicalUrl %>?format=json">
+
+  <!-- Font Awesome Icons for Mobile App Bottom Navigation Bar -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <% if (typeof schemaData !== 'undefined' && schemaData) { %>
+  <script type="application/ld+json">
+    <%- JSON.stringify(schemaData) %>
+  </script>
+  <% } %>
+</head>
+<body id="top">
+
+<!-- ============ HEADER ============ -->
+<header class="mnav">
+  <div class="mnav__bar">
+    <a class="brand" href="/"><img src="/logo.png" alt="Eternalgy" class="brand__logo"></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ============ DRAWER ============ -->
+<nav class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer__top">
+    <a class="brand" href="/" data-close><img src="/logo.png" alt="Eternalgy" class="brand__logo"></a>
+    <button class="drawer__close" id="drawerClose" aria-label="Close menu">✕</button>
+  </div>
+  <ul class="drawer__links">
+    <li><a href="/" data-close><span class="n">01</span>Home</a></li>
+    <li><a href="/about-solar-pv-epc-company" data-close><span class="n">02</span>EPC Services</a></li>
+    <li><a href="/tips" data-close><span class="n">03</span>Solar Tips</a></li>
+    <li><a href="/news" data-close><span class="n">04</span>Energy News</a></li>
+    <li><a href="/faq" data-close><span class="n">05</span>FAQ</a></li>
+    <li><a href="/visitor-analysis" data-close><span class="n">06</span>Visitor Analysis</a></li>
+  </ul>
+  <div class="drawer__foot">
+    <a class="btn btn--accent" href="https://wa.me/601121000099" target="_blank" rel="noopener" data-close>WhatsApp us ↗</a>
+    <p class="drawer__meta">+60 11-2100 0099 · eternalgy.com</p>
+  </div>
+</nav>
+
+<main>

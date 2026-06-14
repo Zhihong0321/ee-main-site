@@ -1,0 +1,59 @@
+<%- include('partials/header') %>
+
+<section class="section">
+  <div class="wrap">
+    <article class="article-body-container" itemscope itemtype="https://schema.org/TechArticle" style="max-width: 900px; margin: 0 auto;">
+      <header class="article-header">
+        <div class="article-category category-<%= article.category %>">
+          <%= article.category === 'tip' ? 'Solar PV Tip' : (article.category === 'news' ? 'Renewable Energy News' : 'Company Profile') %>
+        </div>
+        <h1 class="article-title" itemprop="headline" style="font-family: var(--font-display); font-weight: 500;"><%= article.title %></h1>
+        <div class="article-meta">
+          <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+            By <span itemprop="name"><%= article.author %></span>
+          </span>
+          <span>•</span>
+          <span>
+            Published on 
+            <time itemprop="datePublished" datetime="<%= new Date(article.created_at).toISOString() %>">
+              <%= new Date(article.created_at).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'}) %>
+            </time>
+          </span>
+          <span>•</span>
+          <span>
+            Last Updated:
+            <time itemprop="dateModified" datetime="<%= new Date(article.updated_at).toISOString() %>">
+              <%= new Date(article.updated_at).toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'}) %>
+            </time>
+          </span>
+        </div>
+      </header>
+
+      <div class="article-body" itemprop="articleBody">
+        <%- article.html_content %>
+      </div>
+
+      <% if (article.source_url) { %>
+        <div class="article-source-attribution" style="margin-top: 32px; padding: 16px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.08); background-color: rgba(255,255,255,0.02); font-size: 14px; display: flex; align-items: center; gap: 8px;">
+          <span style="color: #8b948e;">Source:</span>
+          <a href="<%= article.source_url %>" target="_blank" rel="noopener nofollow" style="color: var(--accent); text-decoration: underline; font-weight: 500;">
+            <%= article.source_name || 'Original Article' %> <span style="font-size: 11px;">↗</span>
+          </a>
+        </div>
+      <% } %>
+
+      <% if (article.tags) { %>
+        <div class="article-tags">
+          <% article.tags.split(',').forEach(function(tag) { %>
+            <% const trimmed = tag.trim() %>
+            <% if (trimmed) { %>
+              <a href="/search?q=<%= encodeURIComponent(trimmed) %>" class="tag">#<%= trimmed %></a>
+            <% } %>
+          <% }); %>
+        </div>
+      <% } %>
+    </article>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

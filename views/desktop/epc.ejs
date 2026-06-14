@@ -1,0 +1,108 @@
+<%- include('partials/header') %>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Corporate Profile</span>
+        <h1 class="display" style="margin-top:22px; font-size: clamp(32px, 5vw, 56px);">Company Profile &amp; EPC Services</h1>
+      </div>
+      <p class="sec-head__r lede">Engineering, Procurement, and Construction (EPC) credentials, SEDA RPVSP/RPVI investor status, and corporate setup nationwide.</p>
+    </div>
+
+    <div class="article-body-container" style="max-width: 960px; margin: 40px auto 0 auto;">
+      <!-- Overview Content (HTML formatted from markdown) -->
+      <article class="article-body reveal" style="margin-bottom: 56px;">
+        <%- overview ? overview.html_content : '<p>No overview seeded.</p>' %>
+      </article>
+
+      <!-- Mission & Vision -->
+      <div class="inno" style="grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 72px;">
+        <% if (mission) { %>
+          <div class="inno__card reveal" style="border-top: 4px solid var(--accent); justify-content: space-between;">
+            <div>
+              <span class="inno__tag">OUR MISSION</span>
+              <h3 class="inno__h" style="font-size: 24px; margin-top: 8px;"><%= mission.title %></h3>
+              <div style="font-size: 15.5px; color: var(--ink-2); margin-top: 12px; line-height: 1.6;">
+                <%- mission.html_content %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+        <% if (vision) { %>
+          <div class="inno__card reveal" style="border-top: 4px solid var(--accent-deep); justify-content: space-between;">
+            <div>
+              <span class="inno__tag">OUR VISION</span>
+              <h3 class="inno__h" style="font-size: 24px; margin-top: 8px;"><%= vision.title %></h3>
+              <div style="font-size: 15.5px; color: var(--ink-2); margin-top: 12px; line-height: 1.6;">
+                <%- vision.html_content %>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Accreditations / Certifications Table -->
+      <section class="reveal" style="margin-bottom: 72px;">
+        <div style="border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px;">
+          <h2 class="h-sec" style="font-size: 28px;">Licenses &amp; Accreditations</h2>
+        </div>
+        <p style="color: var(--soft); margin-bottom: 24px; max-width: 70ch;">Eternalgy holds formal licenses from federal development bodies in Malaysia for construction, solar investment, and green equipment usage.</p>
+        
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;">
+            <thead>
+              <tr style="background: var(--panel-2);">
+                <th style="padding: 16px; text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink); text-transform: uppercase;">Certification / License</th>
+                <th style="padding: 16px; text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink); text-transform: uppercase;">Governing Body</th>
+                <th style="padding: 16px; text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink); text-transform: uppercase;">License Number</th>
+                <th style="padding: 16px; text-align: left; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em; color: var(--ink); text-transform: uppercase;">Valid Until</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% certifications.forEach(function(cert) { %>
+                <tr style="border-bottom: 1px solid var(--line);">
+                  <td style="padding: 16px; font-size: 15px; color: var(--ink);">
+                    <strong style="font-family: var(--font-display); font-size: 16px;"><%= cert.name %></strong>
+                    <div style="font-size: 13px; color: var(--soft); margin-top: 4px;"><%= cert.summary %></div>
+                  </td>
+                  <td style="padding: 16px; font-size: 14.5px; color: var(--ink-2);"><%= cert.body %></td>
+                  <td style="padding: 16px; font-size: 13.5px; font-family: var(--font-mono); color: var(--ink-2);"><%= cert.license_number || 'N/A' %></td>
+                  <td style="padding: 16px; font-size: 14px; color: var(--ink-2);"><%= cert.valid_until ? new Date(cert.valid_until).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) : 'Lifetime' %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Branches Section -->
+      <section class="reveal">
+        <div style="border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px;">
+          <h2 class="h-sec" style="font-size: 28px;">Branch Network &amp; Warehouses</h2>
+        </div>
+        <p style="color: var(--soft); margin-bottom: 32px; max-width: 70ch;">We operate cross-state logistics across our Southern and Central warehouses to support project commissioning.</p>
+        
+        <div class="inno" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+          <% branches.forEach(function(branch) { %>
+            <div class="inno__card reveal" style="padding: 24px; background: var(--panel);">
+              <span class="inno__tag">LOCATION</span>
+              <h3 class="inno__h" style="font-size: 20px; margin-top: 8px;"><%= branch.name %></h3>
+              <p style="font-size: 14px; color: var(--ink-2); margin-top: 8px; line-height: 1.5; min-height: 60px;"><%= branch.address %></p>
+              
+              <div style="font-family: var(--font-mono); font-size: 12px; color: var(--soft); margin-top: 16px; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); padding-top: 12px;">
+                <span>Phone: <a href="tel:<%= branch.phone %>" style="color: var(--accent-deep); text-decoration: underline;"><%= branch.phone %></a></span>
+                <span>Email: <a href="mailto:<%= branch.email %>" style="color: var(--accent-deep); text-decoration: underline;"><%= branch.email %></a></span>
+                <span>Coords: <%= branch.latitude %>, <%= branch.longitude %></span>
+              </div>
+              
+              <a href="https://www.google.com/maps/search/?api=1&query=<%= branch.latitude %>,<%= branch.longitude %>" target="_blank" rel="noopener" class="btn btn--ghost" style="margin-top: 20px; font-size: 11px; padding: 10px 16px; align-self: flex-start;">Get Directions <span class="arrow">↗</span></a>
+            </div>
+          <% }); %>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

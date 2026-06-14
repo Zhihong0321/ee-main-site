@@ -1,0 +1,59 @@
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="foot section" style="padding-block:clamp(60px,7vw,96px);">
+  <div class="wrap">
+    <div class="loc-grid">
+      <div class="reveal">
+        <div class="loc__tag">HQ — Johor Bahru</div>
+        <p class="loc__addr">21-01, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor.</p>
+      </div>
+      <div class="reveal">
+        <div class="loc__tag">Kuala Lumpur Branch</div>
+        <p class="loc__addr">Unit 2.08, Level 2, Menara Maxisegar, Jalan Pandan Indah 4/2, 55100 Kuala Lumpur.</p>
+      </div>
+      <div class="reveal">
+        <div class="loc__tag">Seremban</div>
+        <p class="loc__addr">252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Seremban, Negeri Sembilan.</p>
+      </div>
+      <div class="reveal">
+        <div class="loc__tag">Kluang</div>
+        <p class="loc__addr">No. 26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor.</p>
+      </div>
+    </div>
+    
+    <div class="foot__bottom" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+      <div style="width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+        <span>ETERNALGY SDN BHD · 202301029164 (1523087-A)</span>
+        <span>eternalgy.me (Canonical) · eternalgy.com · solarpanels.my · +60 11-2100 0099</span>
+      </div>
+      <div class="crawler-note" style="font-family: var(--font-mono); font-size: 11.5px; color: #8b948e; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 16px; width: 100%; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <span>🤖 AI Agent / LLM Crawler:</span>
+        <span>
+          Get this page in: 
+          <a href="?format=raw" rel="nofollow" style="text-decoration: underline; color: var(--accent);">Clean Markdown</a> · 
+          <a href="?format=json" rel="nofollow" style="text-decoration: underline; color: var(--accent);">JSON</a> · 
+          <a href="/llms.txt" style="text-decoration: underline; color: var(--accent);">llms.txt</a> · 
+          <a href="/sitemap.xml" style="text-decoration: underline; color: var(--accent);">Sitemap.xml</a> · 
+          <a href="/feed.json" style="text-decoration: underline; color: var(--accent);">JSON Feed</a> · 
+          <a href="/visitor-analysis" style="text-decoration: underline; color: var(--accent);">Visitor Analysis</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ REVEAL ============ -->
+<script>
+(function () {
+  const els = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) { els.forEach(e => e.classList.add("in")); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  els.forEach(e => io.observe(e));
+})();
+</script>
+
+</body>
+</html>

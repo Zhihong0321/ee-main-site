@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<section class="section wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Executed Case Study · <%= project.location %></span>
+    <h1 class="h-sec"><%= project.title %></h1>
+    <p class="sec-head__r lede"><%= project.summary %></p>
+  </div>
+
+  <div class="article-body-container" style="padding: 0;">
+    <!-- Project Summary Card -->
+    <div class="inno__card reveal" style="border-top: 4px solid var(--accent); margin-bottom: 32px; padding: 20px; background: var(--panel);">
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;">
+        <span class="eyebrow no-tick" style="font-size: 10px;">CAPACITY</span>
+        <div style="font-family: var(--font-display); font-size: 32px; font-weight: 500; color: var(--ink);">
+          <%= project.capacity_kwp %><span style="font-size: 14px; color: var(--accent-deep); font-family: var(--font-mono); font-weight: 600; margin-left: 2px;">kWp</span>
+        </div>
+        <div style="font-family: var(--font-display); font-size: 16px; font-weight: 500; color: var(--ink); margin-top: 4px;">
+          <%= project.client_name || 'Commercial Solar Partner' %>
+        </div>
+        <% if (project.commission_date) { %>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--soft); margin-top: 4px;">
+            COMMISSIONED: <%= new Date(project.commission_date).toLocaleDateString('en-US', {month: 'long', year: 'numeric'}) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Case Study Details -->
+    <article class="article-body reveal" style="font-size: 15px; line-height: 1.55;">
+      <%- project.html_details %>
+    </article>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

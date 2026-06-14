@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %></title>
+  <meta name="description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <meta name="robots" content="<%= (typeof noindex !== 'undefined' && noindex) ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' %>">
+  
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
+  <meta property="og:description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : baseUrl + '/logo.png' %>">
+  
+  <!-- Loads DEDICATED Desktop stylesheet -->
+  <link rel="stylesheet" href="/css/desktop.css">
+  
+  <link rel="canonical" href="<%= canonicalUrl %>">
+  <link rel="alternate" type="application/rss+xml" title="Renewable Energy News RSS Feed" href="<%= baseUrl %>/feed.xml">
+  <link rel="alternate" type="application/json" title="Renewable Energy News JSON Feed" href="<%= baseUrl %>/feed.json">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="<%= baseUrl %>/sitemap.xml">
+  
+  <!-- Semantic alternate formats for robots & AI search agents -->
+  <link rel="alternate" type="text/markdown" title="Markdown Content" href="<%= canonicalUrl %>?format=md">
+  <link rel="alternate" type="application/json" title="JSON Content" href="<%= canonicalUrl %>?format=json">
+
+  <% if (typeof schemaData !== 'undefined' && schemaData) { %>
+  <script type="application/ld+json">
+    <%- JSON.stringify(schemaData) %>
+  </script>
+  <% } %>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header class="nav">
+  <div class="nav__inner">
+    <a class="brand" href="/"><img src="/logo.png" alt="Eternalgy" class="brand__logo"></a>
+    <nav class="nav__links">
+      <a href="/" class="<%= typeof currentTab !== 'undefined' && currentTab === 'home' ? 'active' : '' %>">Home</a>
+      <a href="/about-solar-pv-epc-company" class="<%= typeof currentTab !== 'undefined' && currentTab === 'epc' ? 'active' : '' %>">EPC Services</a>
+      <a href="/tips" class="<%= typeof currentTab !== 'undefined' && currentTab === 'tips' ? 'active' : '' %>">Solar Tips</a>
+      <a href="/news" class="<%= typeof currentTab !== 'undefined' && currentTab === 'news' ? 'active' : '' %>">Energy News</a>
+      <a href="/faq" class="<%= typeof currentTab !== 'undefined' && currentTab === 'faq' ? 'active' : '' %>">FAQ</a>
+    </nav>
+    <div class="nav__cta">
+      <a class="btn btn--accent" href="/#contact">Get a quote <span class="arrow">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+

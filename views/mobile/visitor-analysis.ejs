@@ -1,0 +1,597 @@
+<%- include('partials/header') %>
+
+<!-- Custom Mobile Dashboard Styling -->
+<style>
+  :root {
+    --color-ai: #ef4444;
+    --color-seo: #3b82f6;
+    --color-human: #34d399;
+    --color-other: #a855f7;
+    --color-total: #fbbf24;
+  }
+
+  .analytics-header-mobile {
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 1rem;
+    text-align: center;
+  }
+
+  .analytics-title-mobile h1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .analytics-title-mobile p {
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  /* Mobile Timeframe Selector */
+  .timeframe-selector-mobile {
+    display: flex;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 10px;
+    padding: 0.2rem;
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .btn-timeframe-mobile {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-grow: 1;
+    text-align: center;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .btn-timeframe-mobile.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent-solar);
+  }
+
+  /* Metrics Stack */
+  .metrics-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 480px) {
+    .metrics-stack {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  .metric-card-mobile {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .metric-card-mobile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .card-total::before { background-color: var(--color-total); }
+  .card-human::before { background-color: var(--color-human); }
+  .card-ai::before { background-color: var(--color-ai); }
+  .card-seo::before { background-color: var(--color-seo); }
+
+  .metric-label-mobile {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metric-value-mobile {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.25rem;
+  }
+
+  .metric-sub-mobile {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.15rem;
+  }
+
+  /* Charts */
+  .chart-box-mobile {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-box-mobile h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    border-left: 3px solid var(--accent-solar);
+    padding-left: 0.5rem;
+  }
+
+  .chart-box-mobile.chart-ai h3 { border-left-color: var(--color-ai); }
+  .chart-box-mobile.chart-seo h3 { border-left-color: var(--color-seo); }
+  .chart-box-mobile.chart-trend h3 { border-left-color: var(--color-total); }
+
+  .chart-container-mobile {
+    position: relative;
+    width: 100%;
+    min-height: 220px;
+  }
+
+  /* Tables */
+  .table-box-mobile {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .table-box-mobile h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+    border-left: 3px solid var(--accent-clean);
+    padding-left: 0.5rem;
+  }
+
+  /* Scroll Helper Indicator */
+  .scroll-hint {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    opacity: 0.65;
+    font-style: italic;
+  }
+
+  .table-wrapper-mobile {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  /* Thin Elegant Scrollbar for mobile tables */
+  .table-wrapper-mobile::-webkit-scrollbar {
+    height: 4px;
+  }
+  .table-wrapper-mobile::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 2px;
+  }
+  .table-wrapper-mobile::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+  }
+  .table-wrapper-mobile::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-solar);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.8rem;
+  }
+
+  th {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid var(--border-glass);
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .badge-mobile {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .badge-human {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--color-human);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+  }
+
+  .badge-ai {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--color-ai);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .badge-seo {
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--color-seo);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .badge-other {
+    background: rgba(168, 85, 247, 0.12);
+    color: var(--color-other);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+  }
+
+  .url-detail-mobile {
+    font-family: monospace;
+    font-size: 0.75rem;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+<div class="wrap" style="padding-top: 1rem; padding-bottom: 5rem;">
+
+  <!-- Page Header -->
+  <div class="analytics-header-mobile">
+    <div class="analytics-title-mobile">
+      <h1>Traffic Analysis</h1>
+      <p>Visitor and crawler telemetry in real-time</p>
+    </div>
+    <div class="timeframe-selector-mobile">
+      <a href="/visitor-analysis?timeframe=24h" class="btn-timeframe-mobile <%= timeframe === '24h' ? 'active' : '' %>">24h</a>
+      <a href="/visitor-analysis?timeframe=7d" class="btn-timeframe-mobile <%= timeframe === '7d' ? 'active' : '' %>">7d</a>
+      <a href="/visitor-analysis?timeframe=30d" class="btn-timeframe-mobile <%= timeframe === '30d' ? 'active' : '' %>">30d</a>
+      <a href="/visitor-analysis?timeframe=all" class="btn-timeframe-mobile <%= timeframe === 'all' ? 'active' : '' %>">All</a>
+    </div>
+  </div>
+
+  <!-- Cards stack -->
+  <div class="metrics-stack">
+    <div class="metric-card-mobile card-total">
+      <div class="metric-label-mobile">Total Hits</div>
+      <div class="metric-value-mobile"><%= summary.total_hits.toLocaleString() %></div>
+      <div class="metric-sub-mobile">From <%= summary.unique_ips.toLocaleString() %> unique IPs</div>
+    </div>
+    <div class="metric-card-mobile card-human">
+      <div class="metric-label-mobile">Humans</div>
+      <div class="metric-value-mobile"><%= summary.human_hits.toLocaleString() %></div>
+      <div class="metric-sub-mobile">
+        <%= summary.total_hits > 0 ? ((summary.human_hits / summary.total_hits) * 100).toFixed(0) : 0 %>% of traffic
+      </div>
+    </div>
+    <div class="metric-card-mobile card-ai">
+      <div class="metric-label-mobile">AI bots</div>
+      <div class="metric-value-mobile"><%= summary.ai_hits.toLocaleString() %></div>
+      <div class="metric-sub-mobile">
+        <%= summary.total_hits > 0 ? ((summary.ai_hits / summary.total_hits) * 100).toFixed(0) : 0 %>% of traffic
+      </div>
+    </div>
+    <div class="metric-card-mobile card-seo">
+      <div class="metric-label-mobile">SEO bots</div>
+      <div class="metric-value-mobile"><%= summary.seo_hits.toLocaleString() %></div>
+      <div class="metric-sub-mobile">
+        <%= summary.total_hits > 0 ? ((summary.seo_hits / summary.total_hits) * 100).toFixed(0) : 0 %>% of traffic
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Stack -->
+  <div class="chart-box-mobile chart-trend">
+    <h3>Traffic Telemetry Trend</h3>
+    <div class="chart-container-mobile">
+      <canvas id="timelineChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-box-mobile">
+    <h3>Traffic Type Distribution</h3>
+    <div class="chart-container-mobile" style="display:flex; align-items:center; justify-content:center;">
+      <canvas id="typeChart"></canvas>
+    </div>
+  </div>
+
+  <div class="chart-box-mobile chart-ai">
+    <h3>Top AI Training Bots</h3>
+    <div class="chart-container-mobile">
+      <% if (aiBots && aiBots.length > 0) { %>
+        <canvas id="aiBotsChart"></canvas>
+      <% } else { %>
+        <div style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--text-muted); font-size:0.85rem;">No AI Bot logs.</div>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="chart-box-mobile chart-seo">
+    <h3>Top Search Engines</h3>
+    <div class="chart-container-mobile">
+      <% if (seoBots && seoBots.length > 0) { %>
+        <canvas id="seoBotsChart"></canvas>
+      <% } else { %>
+        <div style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--text-muted); font-size:0.85rem;">No Search Engine logs.</div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Top Pages -->
+  <div class="table-box-mobile">
+    <h3>Top Requested Resource Paths</h3>
+    <div class="scroll-hint"><span>↔ Swipe horizontally to view full details</span></div>
+    <div class="table-wrapper-mobile">
+      <table>
+        <thead>
+          <tr>
+            <th>Path</th>
+            <th style="text-align: right;">Human</th>
+            <th style="text-align: right;">AI</th>
+            <th style="text-align: right;">SEO</th>
+            <th style="text-align: right; font-weight: 700;">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (topPages && topPages.length > 0) { %>
+            <% topPages.forEach(function(row) { %>
+              <tr>
+                <td class="url-detail-mobile"><%= row.url %></td>
+                <td style="text-align: right; color: var(--color-human);"><%= row.human_hits.toLocaleString() %></td>
+                <td style="text-align: right; color: var(--color-ai);"><%= row.ai_hits.toLocaleString() %></td>
+                <td style="text-align: right; color: var(--color-seo);"><%= row.seo_hits.toLocaleString() %></td>
+                <td style="text-align: right; font-weight: 700; color: var(--text-primary);"><%= row.total_hits.toLocaleString() %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="5" style="text-align:center; padding:1.5rem; color:var(--text-muted);">No records found.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Recent Logs -->
+  <div class="table-box-mobile">
+    <h3>Live Traffic Stream</h3>
+    <div class="scroll-hint"><span>↔ Swipe horizontally to view full details</span></div>
+    <div class="table-wrapper-mobile">
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Type</th>
+            <th>Path</th>
+            <th>Status</th>
+            <th>Latency</th>
+            <th>IP Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (recentLogs && recentLogs.length > 0) { %>
+            <% recentLogs.forEach(function(log) { %>
+              <tr>
+                <td style="font-size:0.75rem;"><%= new Date(log.visited_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'}) %></td>
+                <td>
+                  <% if (log.visitor_type === 'human') { %>
+                    <span class="badge-mobile badge-human">Human</span>
+                  <% } else if (log.visitor_type === 'ai_crawler') { %>
+                    <span class="badge-mobile badge-ai">AI: <%= log.bot_name %></span>
+                  <% } else if (log.visitor_type === 'seo_crawler') { %>
+                    <span class="badge-mobile badge-seo">SEO: <%= log.bot_name %></span>
+                  <% } else { %>
+                    <span class="badge-mobile badge-other">Bot</span>
+                  <% } %>
+                </td>
+                <td class="url-detail-mobile"><%= log.url %></td>
+                <td>
+                  <span style="color: <%= log.status_code >= 400 ? 'var(--color-ai)' : (log.status_code >= 300 ? 'var(--color-total)' : 'var(--color-human)') %>; font-weight: 600;">
+                    <%= log.status_code %>
+                  </span>
+                </td>
+                <td><%= log.execution_time_ms ? log.execution_time_ms + 'ms' : '-' %></td>
+                <td style="font-family: monospace;"><%= log.ip_address %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="6" style="text-align:center; padding:1.5rem; color:var(--text-muted);">Waiting for logs...</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js and Custom Mobile Analytics Code -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const fontColor = '#9ca3af';
+    const gridColor = 'rgba(255, 255, 255, 0.05)';
+    const sansFont = "'Outfit', -apple-system, sans-serif";
+    
+    Chart.defaults.color = fontColor;
+    Chart.defaults.font.family = sansFont;
+
+    // 1. Timeline Chart
+    const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+    new Chart(ctxTimeline, {
+      type: 'line',
+      data: {
+        labels: <%- JSON.stringify(timelineLabels) %>,
+        datasets: [
+          {
+            label: 'Human',
+            data: <%- JSON.stringify(timeline.map(r => r.human)) %>,
+            borderColor: '#34d399',
+            backgroundColor: 'rgba(52, 211, 153, 0.03)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 1.5,
+            pointRadius: 1
+          },
+          {
+            label: 'AI',
+            data: <%- JSON.stringify(timeline.map(r => r.ai)) %>,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.03)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 1.5,
+            pointRadius: 1
+          },
+          {
+            label: 'SEO',
+            data: <%- JSON.stringify(timeline.map(r => r.seo)) %>,
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.03)',
+            fill: true,
+            tension: 0.35,
+            borderWidth: 1.5,
+            pointRadius: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 8, font: { size: 9 } } }
+        },
+        scales: {
+          x: { grid: { color: gridColor }, ticks: { font: { size: 9 } } },
+          y: { grid: { color: gridColor }, beginAtZero: true, ticks: { precision: 0 } }
+        }
+      }
+    });
+
+    // 2. Distribution Chart
+    const ctxType = document.getElementById('typeChart').getContext('2d');
+    new Chart(ctxType, {
+      type: 'doughnut',
+      data: {
+        labels: ['Human', 'AI', 'SEO', 'Other'],
+        datasets: [{
+          data: [
+            <%= summary.human_hits %>, 
+            <%= summary.ai_hits %>, 
+            <%= summary.seo_hits %>, 
+            <%= summary.other_hits %>
+          ],
+          backgroundColor: ['#34d399', '#ef4444', '#3b82f6', '#a855f7'],
+          borderWidth: 0,
+          hoverOffset: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '75%',
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 8, padding: 10, font: { size: 10 } } }
+        }
+      }
+    });
+
+    // 3. Top AI Bots Chart
+    <% if (aiBots && aiBots.length > 0) { %>
+      const ctxAiBots = document.getElementById('aiBotsChart').getContext('2d');
+      new Chart(ctxAiBots, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(aiBots.map(r => r.bot_name)) %>,
+          datasets: [{
+            data: <%- JSON.stringify(aiBots.map(r => r.count)) %>,
+            backgroundColor: '#ef4444',
+            borderRadius: 4,
+            barThickness: 10
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, beginAtZero: true, ticks: { precision: 0 } },
+            y: { grid: { display: false }, ticks: { font: { size: 8 } } }
+          }
+        }
+      });
+    <% } %>
+
+    // 4. Top SEO Bots Chart
+    <% if (seoBots && seoBots.length > 0) { %>
+      const ctxSeoBots = document.getElementById('seoBotsChart').getContext('2d');
+      new Chart(ctxSeoBots, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(seoBots.map(r => r.bot_name)) %>,
+          datasets: [{
+            data: <%- JSON.stringify(seoBots.map(r => r.count)) %>,
+            backgroundColor: '#3b82f6',
+            borderRadius: 4,
+            barThickness: 10
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, beginAtZero: true, ticks: { precision: 0 } },
+            y: { grid: { display: false }, ticks: { font: { size: 8 } } }
+          }
+        }
+      });
+    <% } %>
+  });
+</script>
+
+<%- include('partials/footer') %>

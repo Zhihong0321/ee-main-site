@@ -1,0 +1,275 @@
+<%- include('partials/header') %>
+
+<style>
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 32px 0;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  
+  .filter-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--soft);
+    margin-right: 8px;
+    letter-spacing: 0.05em;
+  }
+  
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  
+  .filter-btn:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+    background: var(--panel-2);
+  }
+  
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 28px;
+    margin-top: 16px;
+  }
+  
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 32px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .news-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--line-strong);
+    box-shadow: 0 12px 30px rgba(14, 19, 16, 0.06);
+    background: var(--panel-2);
+  }
+  
+  .news-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--soft);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  
+  .news-card-title {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 500;
+    line-height: 1.35;
+    margin: 0 0 14px 0;
+  }
+  
+  .news-card-title a {
+    color: var(--ink);
+    transition: color 0.2s ease;
+  }
+  
+  .news-card-title a:hover {
+    color: var(--accent-deep);
+  }
+  
+  .news-card-summary {
+    font-size: 14.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin: 0 0 24px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .news-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid rgba(14, 19, 16, 0.05);
+  }
+  
+  .news-card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  
+  .news-card-tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--soft);
+    background: rgba(14, 19, 16, 0.04);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .news-card-tag:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  
+  .news-card-link {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink);
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: transform 0.2s ease;
+  }
+  
+  .news-card:hover .news-card-link {
+    color: var(--accent-deep);
+  }
+</style>
+
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Renewable Energy Portal</span>
+        <h1 class="display" style="margin-top:22px; font-size: clamp(32px, 5vw, 56px);">Energy News</h1>
+      </div>
+      <p class="sec-head__r lede">Stay up to date with global renewable energy trends, solar technology market shifts, corporate power purchase agreements, and investment profiles.</p>
+    </div>
+
+    <!-- Interactive Tag Filter -->
+    <div class="filter-container">
+      <span class="filter-label">Filter by Topic:</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="malaysia">Malaysia</button>
+      <button class="filter-btn" data-filter="solar">Solar</button>
+      <button class="filter-btn" data-filter="ev">EV</button>
+      <button class="filter-btn" data-filter="wind">Wind</button>
+      <button class="filter-btn" data-filter="policy">Policy</button>
+      <button class="filter-btn" data-filter="market">Market</button>
+      <button class="filter-btn" data-filter="tech">Tech</button>
+    </div>
+
+    <!-- News Grid -->
+    <div class="news-grid">
+      <% if (news && news.length > 0) { %>
+        <% news.forEach(function(item) { %>
+          <article class="news-card reveal" data-tags="<%= item.tags || '' %>">
+            <div>
+              <div class="news-card-header">
+                <span><%= item.source_name || 'News Wire' %></span>
+                <span><%= new Date(item.published_at || item.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></span>
+              </div>
+              <h2 class="news-card-title">
+                <a href="/<%= item.slug %>"><%= item.title %></a>
+              </h2>
+              <p class="news-card-summary"><%= item.summary %></p>
+            </div>
+            
+            <div class="news-card-footer">
+              <div class="news-card-tags">
+                <% if (item.tags) { %>
+                  <% item.tags.split(',').forEach(function(tag) { tag = tag.trim(); if (tag) { %>
+                    <span class="news-card-tag">#<%= tag %></span>
+                  <% } }); %>
+                <% } else { %>
+                  <span class="news-card-tag">#news</span>
+                <% } %>
+              </div>
+              <a class="news-card-link" href="/<%= item.slug %>">Read ↗</a>
+            </div>
+          </article>
+        <% }); %>
+      <% } else { %>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 64px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px;">
+          <p style="color: var(--soft); font-family: var(--font-mono); font-size: 14px;">No news articles found. Our AI Agent is scanning and indexing content regularly!</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.news-card');
+    
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Active pill class swap
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const selectedTag = btn.getAttribute('data-filter').toLowerCase();
+        
+        cards.forEach(card => {
+          const cardTags = (card.getAttribute('data-tags') || '').toLowerCase().split(',').map(t => t.trim());
+          
+          if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+            card.style.display = 'flex';
+            card.style.opacity = '0';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transition = 'opacity 0.25s ease';
+            }, 10);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+    // Clicking tags inside cards triggers the filter bar
+    const tagElements = document.querySelectorAll('.news-card-tag');
+    tagElements.forEach(tagEl => {
+      tagEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const tagText = tagEl.innerText.replace('#', '').trim().toLowerCase();
+        const targetBtn = document.querySelector(`.filter-btn[data-filter="${tagText}"]`);
+        if (targetBtn) {
+          targetBtn.click();
+          document.querySelector('.filter-container').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

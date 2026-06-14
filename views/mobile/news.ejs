@@ -1,0 +1,235 @@
+<%- include('partials/header') %>
+
+<style>
+  .filter-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px 4px 16px 4px;
+    margin: 16px -4vw 20px -4vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    scrollbar-width: none; /* Hide standard scrollbar */
+  }
+  .filter-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Safari/Chrome */
+  }
+  
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--soft);
+    cursor: pointer;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  
+  .filter-btn.active {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 8px;
+  }
+  
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    transition: opacity 0.3s ease;
+  }
+  
+  .news-card-header {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--soft);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  
+  .news-card-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.35;
+    margin: 0 0 10px 0;
+  }
+  
+  .news-card-title a {
+    color: var(--ink);
+  }
+  
+  .news-card-summary {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .news-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 14px;
+    border-top: 1px solid rgba(14, 19, 16, 0.05);
+    margin-top: auto;
+  }
+  
+  .news-card-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  
+  .news-card-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--soft);
+    background: rgba(14, 19, 16, 0.04);
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+  }
+  
+  .news-card-link {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink);
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+</style>
+
+<section class="section wrap" style="padding-top: 24px;">
+  <div class="sec-head">
+    <span class="eyebrow">Renewable Energy Portal</span>
+    <h1 class="h-sec" style="margin-top: 8px;">Energy News</h1>
+    <p class="sec-head__r lede">Stay up to date with global renewable energy trends, solar technology market shifts, and policy releases.</p>
+  </div>
+
+  <!-- Swipeable Filter Pills -->
+  <div class="filter-container">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="malaysia">Malaysia</button>
+    <button class="filter-btn" data-filter="solar">Solar</button>
+    <button class="filter-btn" data-filter="ev">EV</button>
+    <button class="filter-btn" data-filter="wind">Wind</button>
+    <button class="filter-btn" data-filter="policy">Policy</button>
+    <button class="filter-btn" data-filter="market">Market</button>
+    <button class="filter-btn" data-filter="tech">Tech</button>
+  </div>
+
+  <!-- Mobile News Cards List -->
+  <div class="news-list">
+    <% if (news && news.length > 0) { %>
+      <% news.forEach(function(item) { %>
+        <article class="news-card reveal" data-tags="<%= item.tags || '' %>">
+          <div>
+            <div class="news-card-header">
+              <span><%= item.source_name || 'News Wire' %></span>
+              <span><%= new Date(item.published_at || item.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %></span>
+            </div>
+            <h2 class="news-card-title">
+              <a href="/<%= item.slug %>"><%= item.title %></a>
+            </h2>
+            <p class="news-card-summary"><%= item.summary %></p>
+          </div>
+          
+          <div class="news-card-footer">
+            <div class="news-card-tags">
+              <% if (item.tags) { %>
+                <% item.tags.split(',').forEach(function(tag) { tag = tag.trim(); if (tag) { %>
+                  <span class="news-card-tag">#<%= tag %></span>
+                <% } }); %>
+              <% } else { %>
+                <span class="news-card-tag">#news</span>
+              <% } %>
+            </div>
+            <a class="news-card-link" href="/<%= item.slug %>">Read ↗</a>
+          </div>
+        </article>
+      <% }); %>
+    <% } else { %>
+      <div style="text-align: center; padding: 48px 24px; background: var(--panel); border: 1px solid var(--line); border-radius: 12px;">
+        <p style="color: var(--soft); font-family: var(--font-mono); font-size: 13px;">No news articles found. Our AI Agent is scanning and indexing content regularly!</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.news-card');
+    
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Active pill class swap
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const selectedTag = btn.getAttribute('data-filter').toLowerCase();
+        
+        cards.forEach(card => {
+          const cardTags = (card.getAttribute('data-tags') || '').toLowerCase().split(',').map(t => t.trim());
+          
+          if (selectedTag === 'all' || cardTags.includes(selectedTag)) {
+            card.style.display = 'flex';
+            card.style.opacity = '0';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transition = 'opacity 0.2s ease';
+            }, 10);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+    
+    // Clicking tags inside cards triggers filtering
+    const tagElements = document.querySelectorAll('.news-card-tag');
+    tagElements.forEach(tagEl => {
+      tagEl.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const tagText = tagEl.innerText.replace('#', '').trim().toLowerCase();
+        const targetBtn = document.querySelector(`.filter-btn[data-filter="${tagText}"]`);
+        if (targetBtn) {
+          targetBtn.click();
+          // Scroll filter container so selected pill is visible on screen
+          targetBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      });
+    });
+  });
+</script>
+
+<%- include('partials/footer') %>

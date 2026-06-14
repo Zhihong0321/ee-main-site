@@ -1,0 +1,53 @@
+<%- include('partials/header') %>
+
+<section class="section wrap">
+  <div class="sec-head">
+    <span class="eyebrow"><%= product.brand %> · <%= product.type.toUpperCase() %></span>
+    <h1 class="h-sec"><%= product.name %></h1>
+    <p class="sec-head__r lede"><%= product.summary %></p>
+  </div>
+
+  <div class="article-body-container" style="padding: 0;" itemscope itemtype="https://schema.org/Product">
+    <!-- Specifications Table -->
+    <section class="reveal" style="margin-bottom: 40px; margin-top: 24px;">
+      <div style="border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px;">
+        <h2 class="h-sec" style="font-size: 20px;">Technical Specifications</h2>
+      </div>
+      
+      <div style="display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 320px; background: var(--panel);">
+          <thead>
+            <tr style="background: var(--panel-2);">
+              <th style="padding: 12px; text-align: left; font-family: var(--font-mono); font-size: 11px; color: var(--ink); text-transform: uppercase; width: 45%;">Parameter</th>
+              <th style="padding: 12px; text-align: left; font-family: var(--font-mono); font-size: 11px; color: var(--ink); text-transform: uppercase;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% Object.entries(specifications).forEach(function([key, value]) { %>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px; font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase; color: var(--soft); font-weight: 500;">
+                  <%= key.replace(/_/g, ' ') %>
+                </td>
+                <td style="padding: 12px; font-size: 13.5px; font-family: var(--font-mono); color: var(--ink); font-weight: 500;">
+                  <%= value %>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Detailed Description -->
+    <section class="reveal">
+      <div style="border-bottom: 2px solid var(--ink); padding-bottom: 8px; margin-bottom: 16px;">
+        <h2 class="h-sec" style="font-size: 20px;">Overview &amp; Details</h2>
+      </div>
+      <div class="article-body" style="font-size: 15px; line-height: 1.55;">
+        <%- product.html_description %>
+      </div>
+    </section>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

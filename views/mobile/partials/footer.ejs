@@ -1,0 +1,73 @@
+</main>
+  
+  <!-- App-like mobile bottom navigation bar -->
+  <nav class="bottom-nav-bar">
+    <a href="/" class="bottom-nav-item <%= typeof currentTab !== 'undefined' && currentTab === 'home' ? 'active' : '' %>">
+      <i class="fa-solid fa-house bottom-nav-icon"></i>
+      <span>Home</span>
+    </a>
+    <a href="/about-solar-pv-epc-company" class="bottom-nav-item <%= typeof currentTab !== 'undefined' && currentTab === 'epc' ? 'active' : '' %>">
+      <i class="fa-solid fa-solar-panel bottom-nav-icon"></i>
+      <span>EPC</span>
+    </a>
+    <a href="/tips" class="bottom-nav-item <%= typeof currentTab !== 'undefined' && currentTab === 'tips' ? 'active' : '' %>">
+      <i class="fa-solid fa-lightbulb bottom-nav-icon"></i>
+      <span>Tips</span>
+    </a>
+    <a href="/news" class="bottom-nav-item <%= typeof currentTab !== 'undefined' && currentTab === 'news' ? 'active' : '' %>">
+      <i class="fa-solid fa-newspaper bottom-nav-icon"></i>
+      <span>News</span>
+    </a>
+    <a href="/faq" class="bottom-nav-item <%= typeof currentTab !== 'undefined' && currentTab === 'faq' ? 'active' : '' %>">
+      <i class="fa-solid fa-circle-question bottom-nav-icon"></i>
+      <span>FAQ</span>
+    </a>
+  </nav>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="foot wrap" style="padding-bottom: calc(80px + var(--safe-bottom));">
+    <div class="loc reveal"><div class="loc__tag">HQ — Johor Bahru</div><p class="loc__addr">21-01, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor.</p></div>
+    <div class="loc reveal"><div class="loc__tag">Kuala Lumpur Branch</div><p class="loc__addr">Unit 2.08, Level 2, Menara Maxisegar, Jalan Pandan Indah 4/2, 55100 Kuala Lumpur.</p></div>
+    <div class="loc reveal"><div class="loc__tag">Seremban</div><p class="loc__addr">252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Seremban, Negeri Sembilan.</p></div>
+    <div class="loc reveal"><div class="loc__tag">Kluang</div><p class="loc__addr">No. 26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor.</p></div>
+    <div class="foot__bottom">
+      ETERNALGY SDN BHD · 202301029164 (1523087-A)<br>eternalgy.me (Canonical) · eternalgy.com · solarpanels.my · +60 11-2100 0099
+      
+      <div class="crawler-note" style="font-family: var(--font-mono); font-size: 11px; color: #8b948e; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 12px; margin-top: 12px; width: 100%; display: flex; flex-direction: column; gap: 4px;">
+        <span>🤖 AI Agent / LLM Crawler:</span>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <a href="?format=raw" rel="nofollow" style="text-decoration: underline; color: var(--accent);">Clean Markdown</a> · 
+          <a href="?format=json" rel="nofollow" style="text-decoration: underline; color: var(--accent);">JSON</a> · 
+          <a href="/llms.txt" style="text-decoration: underline; color: var(--accent);">llms.txt</a> · 
+          <a href="/sitemap.xml" style="text-decoration: underline; color: var(--accent);">Sitemap.xml</a> · 
+          <a href="/feed.json" style="text-decoration: underline; color: var(--accent);">JSON Feed</a> · 
+          <a href="/visitor-analysis" style="text-decoration: underline; color: var(--accent);">Visitor Analysis</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    const drawer = document.getElementById('drawer');
+    const burger = document.getElementById('burger');
+    const closeBtn = document.getElementById('drawerClose');
+    function open() { drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); burger.setAttribute('aria-expanded','true'); document.body.style.overflow='hidden'; }
+    function close() { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); burger.setAttribute('aria-expanded','false'); document.body.style.overflow=''; }
+    burger.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    drawer.querySelectorAll('[data-close]').forEach(a => a.addEventListener('click', close));
+
+    // reveal on scroll
+    const els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) { els.forEach(e => e.classList.add('in')); }
+    else {
+      const io = new IntersectionObserver((ents) => {
+        ents.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+      els.forEach(e => io.observe(e));
+    }
+  })();
+  </script>
+</body>
+</html>

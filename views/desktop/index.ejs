@@ -1,0 +1,413 @@
+<%- include('partials/header') %>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero__grid"></div>
+  <div class="wrap hero__inner">
+    <div class="hero__top">
+      <span class="eyebrow">Solar EPC · Engineering · O&amp;M</span>
+      <h1 class="display">Solar,<br>engineered<br>to <span class="mark">last.</span></h1>
+    </div>
+
+    <div class="hero__sub">
+      <div>
+        <% if (companyAbout) { %>
+          <p class="lede"><%= companyAbout.summary || "Eternalgy designs, installs and maintains commercial & industrial solar PV with one accountable, first-party engineering team." %></p>
+        <% } else { %>
+          <p class="lede">Eternalgy designs, installs and maintains commercial &amp; industrial solar PV with one accountable, first-party engineering team — from the first site survey to decades of operation.</p>
+        <% } %>
+        <div class="hero__actions">
+          <a class="btn" href="#contact">Talk to an engineer <span class="arrow">↗</span></a>
+          <a class="btn btn--ghost" href="#services">Our services</a>
+        </div>
+      </div>
+      <div class="ph" data-label="Drone shot — rooftop PV array" style="aspect-ratio: 16/11;"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats" aria-label="Track record at a glance">
+  <div class="stats__grid">
+    <div class="stat">
+      <div class="stat__num">1.65<span class="u">MWp</span></div>
+      <div class="stat__label">Deployed<br>solar PV</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">501</div>
+      <div class="stat__label">Managed<br>PV sites</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">1.65<span class="u">GWh</span></div>
+      <div class="stat__label">Lifetime solar<br>generation</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">24<span class="u">+</span></div>
+      <div class="stat__label">EV charging<br>stations</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">60<span class="u">+</span></div>
+      <div class="stat__label">Staff &amp;<br>contractors</div>
+    </div>
+    <div class="stat">
+      <div class="stat__num">4</div>
+      <div class="stat__label">Offices<br>nationwide</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES ============ -->
+<section class="section" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Our line of business</span>
+        <h2 class="h-sec" style="margin-top:22px;">Six capabilities,<br>one integrated team.</h2>
+      </div>
+      <p class="sec-head__r lede">Because every discipline sits in-house — engineering, installation, software and O&amp;M — there is no finger-pointing between vendors. One team is accountable for your system end to end.</p>
+    </div>
+
+    <div class="svc">
+      <article class="svc__item reveal">
+        <span class="svc__no">01</span>
+        <h3 class="svc__title">Solar PV System</h3>
+        <p class="svc__desc">Full EPC for commercial &amp; industrial rooftops and ground mount — design, engineering, supply and installation.</p>
+        <div class="svc__tags">EPC · C&amp;I · DESIGN</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">02</span>
+        <h3 class="svc__title">Solar PV Investment</h3>
+        <p class="svc__desc">Zero-capex solar. We fund, build and operate the system; you buy clean power at a lower rate.</p>
+        <div class="svc__tags">RPVI · PPA · ZERO-CAPEX</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">03</span>
+        <h3 class="svc__title">Solar PV O&amp;M</h3>
+        <p class="svc__desc">Monitoring, cleaning, fault response and performance reporting that keeps systems generating at spec.</p>
+        <div class="svc__tags">MONITORING · UPTIME</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">04</span>
+        <h3 class="svc__title">EV Charging</h3>
+        <p class="svc__desc">AC and DC charging infrastructure, integrated with solar generation and load management.</p>
+        <div class="svc__tags">AC · DC · INTEGRATION</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">05</span>
+        <h3 class="svc__title">Electrical Engineering</h3>
+        <p class="svc__desc">In-house, first-party electrical works — switchgear, cabling and grid interconnection done right.</p>
+        <div class="svc__tags">CIDB G3 · LICENSED</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">06</span>
+        <h3 class="svc__title">Software Engineering</h3>
+        <p class="svc__desc">Our own platforms for generation monitoring, inventory and logistics — built and maintained internally.</p>
+        <div class="svc__tags">PLATFORM · DATA</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="why section" id="why">
+  <div class="wrap">
+    <div class="why__grid">
+      <div>
+        <span class="eyebrow">Why Eternalgy</span>
+        <h2 class="h-sec" style="margin-top:22px;">No ball-kicking.<br>One team owns it.</h2>
+        <p class="lede" style="color:#aab2ac; margin-top:24px;">The industry's common failure is finger-pointing between vendors when something goes wrong. Our engineers are first-party — so accountability never leaves the building.</p>
+      </div>
+      <div class="why__points">
+        <div class="point reveal">
+          <span class="point__n">01</span>
+          <div>
+            <div class="point__t">First-party engineers</div>
+            <p class="point__d">Design, installation and resolution under one roof. One number to call, one team responsible — from drawing to decades of operation.</p>
+          </div>
+        </div>
+        <div class="point reveal">
+          <span class="point__n">02</span>
+          <div>
+            <div class="point__t">SAJ sole distributor</div>
+            <p class="point__d">As SAJ Malaysia's sole distributor, we control the supply chain — MyHijau-certified inverters and fast, direct replacement.</p>
+          </div>
+        </div>
+        <div class="point reveal">
+          <span class="point__n">03</span>
+          <div>
+            <div class="point__t">Digitalised logistics</div>
+            <p class="point__d">Two warehouses and automated stock-keeping mean minimal downtime, fast installation schedules and quick replacement.</p>
+          </div>
+        </div>
+        <div class="point reveal">
+          <span class="point__n">04</span>
+          <div>
+            <div class="point__t">Built for the long run</div>
+            <p class="point__d">O&amp;M and live monitoring hold systems to their design output — protecting your return year after year.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS (TRACK RECORD CASE STUDIES) ============ -->
+<section class="section" id="projects-cases">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Executed Case Studies</span>
+        <h2 class="h-sec" style="margin-top:22px;">Commissioned<br>PV Installations.</h2>
+      </div>
+      <p class="sec-head__r lede">Our commercial rooftop and utility-scale solar PV installations, fully designed and commissioned by our first-party engineering team.</p>
+    </div>
+
+    <div class="inno" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px;">
+      <% if (projects && projects.length > 0) { %>
+        <% projects.forEach(function(project) { %>
+          <article class="inno__card reveal" style="justify-content: space-between;">
+            <div>
+              <span class="inno__tag">📍 <%= project.location %> · <%= project.capacity_kwp %> kWp</span>
+              <h3 class="inno__h"><%= project.title %></h3>
+              <p class="inno__p" style="font-size: 15px; color: var(--soft); margin-top: 12px;"><%= project.summary %></p>
+            </div>
+            <div>
+              <div class="ph" data-label="Commissioned Solar Array — <%= project.title %>" style="aspect-ratio: 16/9; margin-top: 24px; margin-bottom: 24px;"></div>
+              <a class="btn btn--ghost" href="/<%= project.slug %>" style="align-self: flex-start; width: 100%; justify-content: center;">View Case Study <span class="arrow">↗</span></a>
+            </div>
+          </article>
+        <% }); %>
+      <% } else { %>
+        <p>No projects commissioned yet.</p>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS CATALOGUE ============ -->
+<section class="section" id="hardware" style="background: var(--panel);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Solar Hardware Catalogue</span>
+        <h2 class="h-sec" style="margin-top:22px;">Premium components,<br>built to perform.</h2>
+      </div>
+      <p class="sec-head__r lede">Authorized, tier-1 hardware components featuring N-type TOPCon modules, stackable energy storage batteries, and smart inverter systems.</p>
+    </div>
+
+    <div class="cert-grid" style="background: var(--paper);">
+      <% if (products && products.length > 0) { %>
+        <% products.forEach(function(product) { %>
+          <div class="cert reveal" style="min-height: 240px; display: flex; flex-direction: column; justify-content: space-between; padding: 32px;">
+            <div>
+              <span class="eyebrow no-tick" style="font-size: 11px; margin-bottom: 8px;"><%= product.brand %> · <%= product.type.toUpperCase() %></span>
+              <div class="cert__name" style="font-size: 20px; margin-top: 8px;"><%= product.name %></div>
+              <p style="font-size: 14px; color: var(--soft); margin-top: 12px; line-height: 1.5;"><%= product.summary %></p>
+            </div>
+            <a class="btn btn--ghost" href="/<%= product.slug %>" style="font-size: 11px; padding: 8px 14px; margin-top: 16px; align-self: flex-start;">View Specs <span class="arrow">↗</span></a>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div style="padding: 32px; grid-column: span 4; text-align: center; color: var(--soft);">No products in catalogue yet.</div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INNOVATION ============ -->
+<section class="section" id="innovation">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Innovation</span>
+        <h2 class="h-sec" style="margin-top:22px;">Engineering the<br>extra yield.</h2>
+      </div>
+      <p class="sec-head__r lede">We don't stop at the standard install. Our team mixes hardware topologies and digitises operations to squeeze more generation from every roof.</p>
+    </div>
+
+    <div class="inno">
+      <article class="inno__card reveal">
+        <span class="inno__tag">Duo Mix Solution</span>
+        <h3 class="inno__h">String + microinverter, on one system.</h3>
+        <p class="inno__p">We combine string and microinverters on a single PV solution for maximum generation and panel placement — ideal for large, multi-facet roofs where a single topology leaves yield on the table.</p>
+        <div class="ph" data-label="Diagram — Duo Mix topology" style="aspect-ratio: 16/9; margin-top: 26px;"></div>
+      </article>
+      <article class="inno__card reveal">
+        <span class="inno__tag">Digitalised Logistics</span>
+        <h3 class="inno__h">Cloud inventory, automated stock.</h3>
+        <p class="inno__p">Cloud invoicing and inventory, automated stock-keeping and scheduled delivery across our Southern (Johor) and Central (Selangor) warehouses — the Eternalgy promise of minimal downtime and quick replacement.</p>
+        <div class="ph" data-label="Screenshot — logistics dashboard" style="aspect-ratio: 16/9; margin-top: 26px;"></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRACK RECORD ============ -->
+<section class="section" id="record" style="background:var(--panel);">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Achieved milestones</span>
+        <h2 class="h-sec" style="margin-top:22px;">Zero to 1.65&nbsp;MWp<br>in 24 months.</h2>
+      </div>
+      <p class="sec-head__r lede">The magnitude of an achievement accumulates over time — but the pace of growth is the proof of strength. Founded September 2023.</p>
+    </div>
+
+    <div class="tl">
+      <div class="tl__row reveal">
+        <div class="tl__date">2023 · SEP</div>
+        <div><div class="tl__h">Incorporated as Eternalgy Sdn Bhd</div><p class="tl__d">Officially registered with RM1,000,000 paid-up capital.</p></div>
+      </div>
+      <div class="tl__row reveal">
+        <div class="tl__date">2023–24</div>
+        <div><div class="tl__h">Appointed SAJ Malaysia Sole Distributor</div><p class="tl__d">A 50MW + 10MWh PV &amp; ESS agreement formalised in Shanghai, China.</p></div>
+      </div>
+      <div class="tl__row reveal">
+        <div class="tl__date">2024</div>
+        <div><div class="tl__h">SEDA Registered PV Service Provider</div><p class="tl__d">Registered RPVSP — and later approved as a Registered PV Investor (RPVI).</p></div>
+      </div>
+      <div class="tl__row reveal is-peak">
+        <div class="tl__date">10M</div>
+        <div><div class="tl__h">Fastest RPVSP to RM10M revenue</div><p class="tl__d">The fastest of any RPVSP in Malaysia to reach its first RM10M in revenue.</p></div>
+      </div>
+      <div class="tl__row reveal">
+        <div class="tl__date">2024</div>
+        <div><div class="tl__h">Outstanding Bull Award</div><p class="tl__d">Golden Bull Award — Outstanding Bull, for 2024 performance.</p></div>
+      </div>
+      <div class="tl__row reveal">
+        <div class="tl__date">2025 · MAR</div>
+        <div><div class="tl__h">CIDB Certified — Grade G3</div><p class="tl__d">Categories B (B04), CE (CE21) and ME (M15).</p></div>
+      </div>
+      <div class="tl__row reveal is-peak">
+        <div class="tl__date">1.65 MWp</div>
+        <div><div class="tl__h">Commissioned 1.65 MWp of solar PV</div><p class="tl__d">From zero to 1.65 MWp (1,653.55 MWh) deployed in 24 months — and counting.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ KNOWLEDGE PORTAL (TIPS & NEWS) ============ -->
+<section class="section" id="news-tips">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Eternalgy Portal</span>
+        <h2 class="h-sec" style="margin-top:22px;">Solar engineering<br>&amp; market insights.</h2>
+      </div>
+      <p class="sec-head__r lede">Technical calculations, roof warranty advice, and global policy updates. Curated for engineers, clients, and crawler agents.</p>
+    </div>
+
+    <div class="inno" style="grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 64px);">
+      <!-- Column 1: Solar PV Tips -->
+      <div>
+        <div style="border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: baseline;">
+          <h3 class="h-sec" style="font-size: 24px; letter-spacing: -0.01em;">Technical Guidelines &amp; Tips</h3>
+          <a href="/tips" style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-deep); text-decoration: underline;">All Tips ↗</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <% if (tips && tips.length > 0) { %>
+            <% tips.forEach(function(tip) { %>
+              <article class="reveal" style="border-bottom: 1px solid var(--line); padding-bottom: 20px;">
+                <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--soft); margin-bottom: 8px;">
+                  BY <%= tip.author %> · <%= new Date(tip.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %>
+                </div>
+                <h4 style="font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 8px 0; line-height: 1.3;">
+                  <a href="/<%= tip.slug %>" style="color: var(--ink);"><%= tip.title %></a>
+                </h4>
+                <p style="font-size: 14.5px; color: var(--soft); margin: 0;"><%= tip.summary %></p>
+              </article>
+            <% }); %>
+          <% } else { %>
+            <p style="color: var(--soft);">No tips available.</p>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Column 2: Renewable Energy News -->
+      <div>
+        <div style="border-bottom: 2px solid var(--ink); padding-bottom: 12px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: baseline;">
+          <h3 class="h-sec" style="font-size: 24px; letter-spacing: -0.01em;">Energy News Portal</h3>
+          <a href="/news" style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-deep); text-decoration: underline;">All News ↗</a>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+          <% if (news && news.length > 0) { %>
+            <% news.forEach(function(item) { %>
+              <article class="reveal" style="border-bottom: 1px solid var(--line); padding-bottom: 20px;">
+                <div style="font-family: var(--font-mono); font-size: 11.5px; color: var(--soft); margin-bottom: 8px;">
+                  BY <%= item.author %> · <%= new Date(item.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) %>
+                </div>
+                <h4 style="font-family: var(--font-display); font-size: 18px; font-weight: 500; margin: 0 0 8px 0; line-height: 1.3;">
+                  <a href="/<%= item.slug %>" style="color: var(--ink);"><%= item.title %></a>
+                </h4>
+                <p style="font-size: 14.5px; color: var(--soft); margin: 0;"><%= item.summary %></p>
+              </article>
+            <% }); %>
+          <% } else { %>
+            <p style="color: var(--soft);">No news articles available.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PARTNER HIGHLIGHT ============ -->
+<section class="section" style="background:var(--ink); color:var(--paper);">
+  <div class="wrap">
+    <div class="partner">
+      <div class="ph ph--ink" data-label="Photo — SAJ signing, Shanghai" style="aspect-ratio: 4/3;"></div>
+      <div>
+        <span class="eyebrow" style="color:#97a09a;">Strategic partnership</span>
+        <h2 class="h-sec" style="color:var(--paper); margin-top:22px;">Sole distributor for SAJ in Malaysia.</h2>
+        <p class="lede" style="color:#aab2ac; margin-top:22px;">SAJ chose Eternalgy for our rapid market growth and our fully integrated, first-party team — covering sales, technical consulting, installation and long-term O&amp;M. It puts complete, cutting-edge energy solutions directly in our hands.</p>
+        <a class="btn btn--accent" href="#contact" style="margin-top:30px;">Partner with us <span class="arrow">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CERTIFICATIONS ============ -->
+<section class="cert-band section" id="certs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Certification &amp; recognition</span>
+        <h2 class="h-sec" style="margin-top:22px;">Credentials you<br>can verify.</h2>
+      </div>
+      <p class="sec-head__r lede">Registered, certified and recognised across Malaysia's renewable-energy ecosystem — the trust layer beneath every Eternalgy project.</p>
+    </div>
+
+    <div class="cert-grid">
+      <div class="cert reveal"><div><div class="cert__name">SEDA RPVSP</div><div class="cert__sub">Registered PV Service Provider</div></div><div class="cert__tick">✓ Registered</div></div>
+      <div class="cert reveal"><div><div class="cert__name">SEDA RPVI</div><div class="cert__sub">Registered PV Investor</div></div><div class="cert__tick">✓ Approved</div></div>
+      <div class="cert reveal"><div><div class="cert__name">CIDB · Grade G3</div><div class="cert__sub">B04 · CE21 · M15</div></div><div class="cert__tick">✓ Certified</div></div>
+      <div class="cert reveal"><div><div class="cert__name">MyHijau</div><div class="cert__sub">Certified Equipment — SAJ Inverter</div></div><div class="cert__tick">✓ Listed</div></div>
+      <div class="cert reveal"><div><div class="cert__name">Maybank</div><div class="cert__sub">Selected Solar PV Partner</div></div><div class="cert__tick">✓ Appointed</div></div>
+      <div class="cert reveal"><div><div class="cert__name">SAJ</div><div class="cert__sub">Malaysia Sole Distributor</div></div><div class="cert__tick">✓ Exclusive</div></div>
+      <div class="cert reveal"><div><div class="cert__name">SHRDC</div><div class="cert__sub">Center of Excellence Partner</div></div><div class="cert__tick">✓ Partner</div></div>
+      <div class="cert reveal"><div><div class="cert__name">Golden Bull</div><div class="cert__sub">Outstanding Bull 2024</div></div><div class="cert__tick">✓ Awarded</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta section" id="contact">
+  <div class="wrap">
+    <div class="cta__grid">
+      <div>
+        <span class="eyebrow no-tick" style="color:var(--on-accent); opacity:.7;">Get started</span>
+        <h2 class="display" style="margin-top:18px;">Let's size<br>your system.</h2>
+      </div>
+      <div>
+        <p style="font-size:19px; line-height:1.5; max-width:38ch;">Tell us your roof, your tariff and your goals. Our engineers will come back with a system design and a return you can hold us to.</p>
+        <div class="hero__actions" style="margin-top:26px;">
+          <a class="btn btn--light" href="https://wa.me/601121000099" target="_blank" rel="noopener">WhatsApp us <span class="arrow">↗</span></a>
+          <a class="btn" href="https://wa.me/601121000099" target="_blank" rel="noopener" style="background:transparent;border-color:var(--on-accent);color:var(--on-accent);">Request a quote</a>
+        </div>
+        <p class="cta__meta" style="margin-top:24px;">+60 11-2100 0099 &nbsp;·&nbsp; <a href="https://eternalgy.me" target="_blank" rel="noopener">eternalgy.me</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

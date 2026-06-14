@@ -1,0 +1,629 @@
+<%- include('partials/header') %>
+
+<!-- Custom Dashboard Styling -->
+<style>
+  :root {
+    --color-ai: #ef4444; /* Rose/Red for AI Crawler */
+    --color-seo: #3b82f6; /* Blue for Search Indexers */
+    --color-human: #34d399; /* Green for Human Visitors */
+    --color-other: #a855f7; /* Purple for Scrapers/Other */
+    --color-total: #fbbf24; /* Solar gold */
+  }
+
+  .analytics-header {
+    margin-bottom: 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 1.5rem;
+  }
+
+  .analytics-title h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .analytics-title p {
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+    font-size: 0.95rem;
+  }
+
+  /* Timeframe Selector */
+  .timeframe-selector {
+    display: flex;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 12px;
+    padding: 0.25rem;
+  }
+
+  .btn-timeframe {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+  }
+
+  .btn-timeframe:hover {
+    color: var(--text-primary);
+  }
+
+  .btn-timeframe.active {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent-solar);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  /* Summary Metrics Cards */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .metric-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+
+  .metric-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+  }
+
+  .card-total::before { background-color: var(--color-total); }
+  .card-human::before { background-color: var(--color-human); }
+  .card-ai::before { background-color: var(--color-ai); }
+  .card-seo::before { background-color: var(--color-seo); }
+
+  .metric-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .metric-sub {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  /* Charts Container */
+  .charts-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .charts-row-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .chart-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chart-box h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    border-left: 3px solid var(--accent-solar);
+    padding-left: 0.5rem;
+  }
+
+  .chart-box.chart-ai h3 { border-left-color: var(--color-ai); }
+  .chart-box.chart-seo h3 { border-left-color: var(--color-seo); }
+  .chart-box.chart-trend h3 { border-left-color: var(--color-total); }
+
+  .chart-container {
+    position: relative;
+    flex-grow: 1;
+    width: 100%;
+    min-height: 250px;
+  }
+
+  /* Tables */
+  .table-box {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+  }
+
+  .table-box h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    border-left: 4px solid var(--accent-clean);
+    padding-left: 0.75rem;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: 500px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.925rem;
+  }
+
+  th {
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--border-glass);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-glass);
+    color: var(--text-secondary);
+    vertical-align: middle;
+  }
+
+  tr:hover td {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.01);
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .badge-human {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--color-human);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+  }
+
+  .badge-ai {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--color-ai);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .badge-seo {
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--color-seo);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .badge-other {
+    background: rgba(168, 85, 247, 0.12);
+    color: var(--color-other);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+  }
+
+  /* Browser Agent details */
+  .ua-detail {
+    display: inline-block;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: SFMono-Regular, Consolas, monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .url-detail {
+    font-family: SFMono-Regular, Consolas, monospace;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+  }
+
+  .time-detail {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+</style>
+
+<div class="wrap" style="padding-top: 2rem;">
+  
+  <!-- Analytics Page Header -->
+  <div class="analytics-header">
+    <div class="analytics-title">
+      <h1>Visitor Traffic Analysis</h1>
+      <p>Real-time telemetry and classification of search engines, AI models, and human interactions.</p>
+    </div>
+    <div class="timeframe-selector">
+      <a href="/visitor-analysis?timeframe=24h" class="btn-timeframe <%= timeframe === '24h' ? 'active' : '' %>">24h</a>
+      <a href="/visitor-analysis?timeframe=7d" class="btn-timeframe <%= timeframe === '7d' ? 'active' : '' %>">7d</a>
+      <a href="/visitor-analysis?timeframe=30d" class="btn-timeframe <%= timeframe === '30d' ? 'active' : '' %>">30d</a>
+      <a href="/visitor-analysis?timeframe=all" class="btn-timeframe <%= timeframe === 'all' ? 'active' : '' %>">All Time</a>
+    </div>
+  </div>
+
+  <!-- Cards Grid -->
+  <div class="metrics-grid">
+    <div class="metric-card card-total">
+      <div class="metric-label">Total Requests</div>
+      <div class="metric-value"><%= summary.total_hits.toLocaleString() %></div>
+      <div class="metric-sub">Across <%= summary.unique_ips.toLocaleString() %> unique IPs</div>
+    </div>
+    <div class="metric-card card-human">
+      <div class="metric-label">Human Traffic</div>
+      <div class="metric-value"><%= summary.human_hits.toLocaleString() %></div>
+      <div class="metric-sub">
+        <%= summary.total_hits > 0 ? ((summary.human_hits / summary.total_hits) * 100).toFixed(1) : 0 %>% of total requests
+      </div>
+    </div>
+    <div class="metric-card card-ai">
+      <div class="metric-label">LLM AI Crawlers</div>
+      <div class="metric-value"><%= summary.ai_hits.toLocaleString() %></div>
+      <div class="metric-sub">
+        <%= summary.total_hits > 0 ? ((summary.ai_hits / summary.total_hits) * 100).toFixed(1) : 0 %>% of total requests
+      </div>
+    </div>
+    <div class="metric-card card-seo">
+      <div class="metric-label">SEO Search Bots</div>
+      <div class="metric-value"><%= summary.seo_hits.toLocaleString() %></div>
+      <div class="metric-sub">
+        <%= summary.total_hits > 0 ? ((summary.seo_hits / summary.total_hits) * 100).toFixed(1) : 0 %>% of total requests
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 1: Timeline Trend & Doughnut -->
+  <div class="charts-row">
+    <!-- Trend Area Chart -->
+    <div class="chart-box chart-trend">
+      <h3>Traffic Telemetry Timeline</h3>
+      <div class="chart-container">
+        <canvas id="timelineChart"></canvas>
+      </div>
+    </div>
+    <!-- Doughnut Breakdown -->
+    <div class="chart-box">
+      <h3>Traffic Classification Breakdown</h3>
+      <div class="chart-container" style="display:flex; align-items:center; justify-content:center;">
+        <canvas id="typeChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row 2: Top LLM AI Crawlers & Top Search Bots -->
+  <div class="charts-row-split">
+    <div class="chart-box chart-ai">
+      <h3>Top 10 LLM AI Training Bots</h3>
+      <div class="chart-container">
+        <% if (aiBots && aiBots.length > 0) { %>
+          <canvas id="aiBotsChart"></canvas>
+        <% } else { %>
+          <div style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--text-muted); font-size:0.95rem;">No AI Bot requests recorded in this timeframe.</div>
+        <% } %>
+      </div>
+    </div>
+    <div class="chart-box chart-seo">
+      <h3>Top 10 Search Engine Spiders</h3>
+      <div class="chart-container">
+        <% if (seoBots && seoBots.length > 0) { %>
+          <canvas id="seoBotsChart"></canvas>
+        <% } else { %>
+          <div style="display:flex; justify-content:center; align-items:center; height:100%; color:var(--text-muted); font-size:0.95rem;">No Search Engine requests recorded in this timeframe.</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Visited Pages -->
+  <div class="table-box">
+    <h3>Top Requested Resource Paths</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Resource Path (URL)</th>
+            <th style="text-align: right;">Human Hits</th>
+            <th style="text-align: right;">AI Crawler Hits</th>
+            <th style="text-align: right;">SEO Crawler Hits</th>
+            <th style="text-align: right; font-weight: 700;">Total Hits</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (topPages && topPages.length > 0) { %>
+            <% topPages.forEach(function(row) { %>
+              <tr>
+                <td class="url-detail"><%= row.url %></td>
+                <td style="text-align: right; color: var(--color-human);"><%= row.human_hits.toLocaleString() %></td>
+                <td style="text-align: right; color: var(--color-ai);"><%= row.ai_hits.toLocaleString() %></td>
+                <td style="text-align: right; color: var(--color-seo);"><%= row.seo_hits.toLocaleString() %></td>
+                <td style="text-align: right; font-weight: 700; color: var(--text-primary);"><%= row.total_hits.toLocaleString() %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="5" style="text-align:center; padding:2rem; color:var(--text-muted);">No records found.</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Live Visitor Activity Stream -->
+  <div class="table-box">
+    <h3>Live Visitor Activity Stream (Recent 50 Hits)</h3>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>IP Address</th>
+            <th>Type</th>
+            <th>Method</th>
+            <th>Resource Path</th>
+            <th>Status</th>
+            <th>Device</th>
+            <th>Latency</th>
+            <th>User-Agent / Bot Signature</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (recentLogs && recentLogs.length > 0) { %>
+            <% recentLogs.forEach(function(log) { %>
+              <tr>
+                <td class="time-detail"><%= new Date(log.visited_at).toLocaleString() %></td>
+                <td style="font-family: monospace; font-size: 0.8rem;"><%= log.ip_address %></td>
+                <td>
+                  <% if (log.visitor_type === 'human') { %>
+                    <span class="badge badge-human">Human</span>
+                  <% } else if (log.visitor_type === 'ai_crawler') { %>
+                    <span class="badge badge-ai" title="<%= log.bot_name %>">AI: <%= log.bot_name %></span>
+                  <% } else if (log.visitor_type === 'seo_crawler') { %>
+                    <span class="badge badge-seo" title="<%= log.bot_name %>">SEO: <%= log.bot_name %></span>
+                  <% } else { %>
+                    <span class="badge badge-other">Bot</span>
+                  <% } %>
+                </td>
+                <td style="font-weight:700;"><%= log.method %></td>
+                <td class="url-detail"><%= log.url %></td>
+                <td>
+                  <span style="color: <%= log.status_code >= 400 ? 'var(--color-ai)' : (log.status_code >= 300 ? 'var(--color-total)' : 'var(--color-human)') %>; font-weight: 600;">
+                    <%= log.status_code %>
+                  </span>
+                </td>
+                <td style="text-transform: capitalize;"><%= log.device_type %></td>
+                <td style="font-family: monospace; font-size: 0.8rem; text-align: right;"><%= log.execution_time_ms ? log.execution_time_ms + 'ms' : '-' %></td>
+                <td>
+                  <span class="ua-detail" title="<%= log.user_agent %>"><%= log.user_agent %></span>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="9" style="text-align:center; padding:2rem; color:var(--text-muted);">Waiting for site traffic to populate logs...</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js and Custom Analytics Code -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Shared Chart.js styling variables
+    const fontColor = '#9ca3af';
+    const gridColor = 'rgba(255, 255, 255, 0.05)';
+    const sansFont = "'Outfit', -apple-system, sans-serif";
+    
+    Chart.defaults.color = fontColor;
+    Chart.defaults.font.family = sansFont;
+
+    // 1. Timeline Chart (Area)
+    const timelineData = {
+      labels: <%- JSON.stringify(timelineLabels) %>,
+      datasets: [
+        {
+          label: 'Human Traffic',
+          data: <%- JSON.stringify(timeline.map(r => r.human)) %>,
+          borderColor: '#34d399',
+          backgroundColor: 'rgba(52, 211, 153, 0.05)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        },
+        {
+          label: 'AI Crawlers',
+          data: <%- JSON.stringify(timeline.map(r => r.ai)) %>,
+          borderColor: '#ef4444',
+          backgroundColor: 'rgba(239, 68, 68, 0.05)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        },
+        {
+          label: 'SEO Search Bots',
+          data: <%- JSON.stringify(timeline.map(r => r.seo)) %>,
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59, 130, 246, 0.05)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        },
+        {
+          label: 'Other Bots',
+          data: <%- JSON.stringify(timeline.map(r => r.other)) %>,
+          borderColor: '#a855f7',
+          backgroundColor: 'rgba(168, 85, 247, 0.05)',
+          fill: true,
+          tension: 0.35,
+          borderWidth: 2
+        }
+      ]
+    };
+
+    const ctxTimeline = document.getElementById('timelineChart').getContext('2d');
+    new Chart(ctxTimeline, {
+      type: 'line',
+      data: timelineData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+          tooltip: { mode: 'index', intersect: false }
+        },
+        scales: {
+          x: { grid: { color: gridColor }, ticks: { font: { size: 10 } } },
+          y: { grid: { color: gridColor }, beginAtZero: true, ticks: { precision: 0 } }
+        }
+      }
+    });
+
+    // 2. Traffic Classification Pie/Doughnut Chart
+    const ctxType = document.getElementById('typeChart').getContext('2d');
+    new Chart(ctxType, {
+      type: 'doughnut',
+      data: {
+        labels: ['Human', 'AI Crawler', 'SEO Crawler', 'Other Bot'],
+        datasets: [{
+          data: [
+            <%= summary.human_hits %>, 
+            <%= summary.ai_hits %>, 
+            <%= summary.seo_hits %>, 
+            <%= summary.other_hits %>
+          ],
+          backgroundColor: ['#34d399', '#ef4444', '#3b82f6', '#a855f7'],
+          borderWidth: 0,
+          hoverOffset: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+          legend: { position: 'bottom', labels: { boxWidth: 10, padding: 15, font: { size: 11 } } }
+        }
+      }
+    });
+
+    // 3. Top AI Bots Horizontal Bar Chart
+    <% if (aiBots && aiBots.length > 0) { %>
+      const ctxAiBots = document.getElementById('aiBotsChart').getContext('2d');
+      new Chart(ctxAiBots, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(aiBots.map(r => r.bot_name)) %>,
+          datasets: [{
+            label: 'Hits',
+            data: <%- JSON.stringify(aiBots.map(r => r.count)) %>,
+            backgroundColor: '#ef4444',
+            borderRadius: 6,
+            barThickness: 16
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, beginAtZero: true, ticks: { precision: 0 } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    <% } %>
+
+    // 4. Top SEO Bots Horizontal Bar Chart
+    <% if (seoBots && seoBots.length > 0) { %>
+      const ctxSeoBots = document.getElementById('seoBotsChart').getContext('2d');
+      new Chart(ctxSeoBots, {
+        type: 'bar',
+        data: {
+          labels: <%- JSON.stringify(seoBots.map(r => r.bot_name)) %>,
+          datasets: [{
+            label: 'Hits',
+            data: <%- JSON.stringify(seoBots.map(r => r.count)) %>,
+            backgroundColor: '#3b82f6',
+            borderRadius: 6,
+            barThickness: 16
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { display: false }, beginAtZero: true, ticks: { precision: 0 } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    <% } %>
+  });
+</script>
+
+<%- include('partials/footer') %>
