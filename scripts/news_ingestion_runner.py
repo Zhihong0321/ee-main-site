@@ -6,6 +6,7 @@ import urllib.error
 import xml.etree.ElementTree as ET
 import re
 import requests
+import subprocess
 import time
 from google import genai
 from google.genai import types
@@ -41,7 +42,7 @@ if not MINIMAX_API_KEY:
 
 GEMINI_BASE_URL = os.environ.get("GEMINI_BASE_URL", "https://api.uniapi.io/gemini")
 GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
-MINIMAX_BASE_URL = os.environ.get("MINIMAX_BASE_URL", "https://api.minimax.chat/v1/text/chatcompletion_v2")
+MINIMAX_BASE_URL = os.environ.get("MINIMAX_BASE_URL", "https://api.minimax.io/v1/text/chatcompletion_v2")
 MINIMAX_MODEL = os.environ.get("MINIMAX_MODEL", "MiniMax-M3")
 
 FEEDS = [
@@ -175,39 +176,59 @@ def get_original_url(google_rss_url):
     return google_rss_url
 
 def extract_article_text(resolved_url):
-    """Fetch resolved article HTML and extract core plain-text body content."""
+    """Fetch article content using multiple strategies (markitdown → requests regex)."""
+    # Strategy 1: markitdown CLI (best quality — handles JS, PDFs, complex HTML)
+    try:
+        result = subprocess.run(
+            ["markitdown", resolved_url],
+            capture_output=True, text=True, timeout=30
+        )
+        if result.returncode == 0 and len(result.stdout.strip()) > 300:
+            text = result.stdout.strip()
+            print(f"[scrape] markitdown extracted {len(text)} chars")
+            return text[:6000]
+        else:
+            print(f"[scrape] markitdown returned {len(result.stdout.strip())} chars (too short), trying regex...")
+    except FileNotFoundError:
+        print("[scrape] markitdown not installed, falling back to regex")
+    except Exception as e:
+        print(f"[scrape] markitdown failed: {e}")
+
+    # Strategy 2: requests + regex HTML stripping (original fallback)
     try:
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
         resp = requests.get(resolved_url, headers=headers, timeout=15)
         if resp.status_code != 200:
-            print(f"Request returned status code {resp.status_code}")
+            print(f"[scrape] requests returned status code {resp.status_code}")
             return ""
-            
+
         html = resp.text
-        # Simple regex-based body extraction (stripping script/style tags)
         html = re.sub(r"<script.*?>.*?</script>", "", html, flags=re.DOTALL | re.IGNORECASE)
         html = re.sub(r"<style.*?>.*?</style>", "", html, flags=re.DOTALL | re.IGNORECASE)
-        text = re.sub(r"<[^>]+>", " ", html) # Strip HTML tags
-        text = re.sub(r"\s+", " ", text).strip() # Collapse whitespace
-        
-        # Return first 6000 characters to keep context size manageable
+        text = re.sub(r"<[^>]+>", " ", html)
+        text = re.sub(r"\s+", " ", text).strip()
+        print(f"[scrape] regex extracted {len(text)} chars")
         return text[:6000]
     except Exception as e:
-        print(f"Failed to scrape content: {e}")
+        print(f"[scrape] regex scraping failed: {e}")
         return ""
 
 def ask_gemini_for_search_grounding(client, title, source_name=None):
-    """Use Gemini ONLY for web search grounding to get raw article data."""
+    """Use Gemini search grounding to write a detailed article summary."""
     system_prompt = (
-        "You are a web search assistant. Use your Google Search tool to find and extract "
-        "the full content of the specified news article. Return ONLY the raw article text "
-        "in JSON format under 'raw_article_text'."
+        "You are a professional news researcher. Use your Google Search tool to find "
+        "information about the specified news article. Then write a DETAILED 400-600 word "
+        "news article covering all key facts, figures, dates, names, capacity numbers, "
+        "and policy details you find. Do NOT just return the headline — write the full story. "
+        "Return your result as JSON with key 'raw_article_text' containing the detailed article."
     )
 
     user_prompt = (
         f"Article Title: {title}\n"
         f"Source Outlet: {source_name or 'News'}\n\n"
-        "Search for this article and extract the full raw text content. Return JSON with key 'raw_article_text'."
+        "Search for this article and write a detailed 400-600 word news report based on "
+        "what you find. Include all specific numbers, dates, company names, capacity figures, "
+        "and policy details. Return JSON with key 'raw_article_text'."
     )
 
     # Configure Google Search Grounding tool
@@ -400,6 +421,12 @@ def main():
         # Step C2: Check relevance
         if not llm_result.get("relevant", True):
             print(f"Skipping article '{title}' because it is classified as not relevant.")
+            continue
+
+        # Step C3: Content length gate — reject if content is too short
+        content_text = llm_result.get("content", "")
+        if len(content_text) < 500:
+            print(f"Skipping: Content too short ({len(content_text)} chars < 500 minimum). Likely incomplete rewrite.")
             continue
 
         # Step D: Create a temporary slug to generate marketing line
