@@ -257,6 +257,23 @@ h1, h2, h3 {
   background-image: repeating-linear-gradient(-45deg, transparent 0 13px, rgba(255,255,255,0.05) 13px 14px); }
 .ph--ink::after { background: var(--ink); color: #9aa39d; border-color: rgba(255,255,255,.16); }
 
+/* ---------- generated site imagery ---------- */
+.media {
+  position: relative;
+  display: block;
+  margin: 0;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.media--ink { background: var(--ink-2); border-color: rgba(255,255,255,.12); }
+.media--dashboard img { object-position: center top; }
+
 /* ---------- stats band ---------- */
 .stats {
   background: var(--ink);

@@ -15,7 +15,9 @@
       <a class="btn" href="#contact">Talk to an engineer ↗</a>
       <a class="btn btn--ghost" href="#services">Our services</a>
     </div>
-    <div class="ph" data-label="Drone shot — rooftop PV" style="aspect-ratio: 16/12; margin-top:30px;"></div>
+    <figure class="media" style="aspect-ratio: 16/12; margin-top:30px;">
+      <img src="/images/eternalgy-rooftop-hero-v1.webp" width="1600" height="854" alt="Aerial view of a commercial rooftop solar PV installation in Malaysia" fetchpriority="high" decoding="async">
+    </figure>
   </div>
 </section>
 
@@ -75,7 +77,9 @@
           <span class="inno__tag">📍 <%= project.location %> · <%= project.capacity_kwp %> kWp</span>
           <h3 class="inno__h"><%= project.title %></h3>
           <p class="inno__p" style="font-size: 14px; color: var(--soft); margin-top: 8px;"><%= project.summary %></p>
-          <div class="ph" data-label="PV Installation — <%= project.title %>" style="aspect-ratio: 16/9; margin-top: 20px; margin-bottom: 20px;"></div>
+          <figure class="media" style="aspect-ratio: 16/9; margin-top: 20px; margin-bottom: 20px;">
+            <img src="/images/eternalgy-commercial-project-v1.webp" width="1500" height="844" alt="Commissioned <%= project.capacity_kwp %> kWp commercial rooftop solar installation in <%= project.location %>" loading="lazy" decoding="async">
+          </figure>
           <a class="btn btn--ghost" href="/<%= project.slug %>">View Case Study ↗</a>
         </article>
       <% }); %>
@@ -122,13 +126,17 @@
       <span class="inno__tag">Duo Mix Solution</span>
       <h3 class="inno__h">String + microinverter, on one system.</h3>
       <p class="inno__p">We combine string and microinverters on a single PV solution for maximum generation — ideal for large, multi-facet roofs.</p>
-      <div class="ph" data-label="Diagram — Duo Mix" style="aspect-ratio: 16/9; margin-top: 20px;"></div>
+      <figure class="media" style="aspect-ratio: 16/9; margin-top: 20px;">
+        <img src="/images/eternalgy-duo-mix-v1.webp" width="1500" height="844" alt="Hybrid solar topology combining string and microinverters" loading="lazy" decoding="async">
+      </figure>
     </article>
     <article class="inno__card reveal">
       <span class="inno__tag">Digitalised Logistics</span>
       <h3 class="inno__h">Cloud inventory, automated stock.</h3>
       <p class="inno__p">Cloud invoicing, automated stock-keeping and scheduled delivery across our Southern and Central warehouses.</p>
-      <div class="ph" data-label="Screenshot — dashboard" style="aspect-ratio: 16/9; margin-top: 20px;"></div>
+      <figure class="media media--dashboard" style="aspect-ratio: 16/9; margin-top: 20px;">
+        <img src="/images/eternalgy-logistics-dashboard-v1.webp" width="1500" height="844" alt="Cloud inventory and logistics dashboard for solar hardware operations" loading="lazy" decoding="async">
+      </figure>
     </article>
   </div>
 </section>
@@ -215,7 +223,9 @@
 <!-- ============ PARTNER ============ -->
 <section class="section wrap" style="background:var(--ink); color:var(--paper); margin-inline: calc(var(--pad) * -1); padding-inline: var(--pad);">
   <div class="partner">
-    <div class="ph ph--ink" data-label="Photo — SAJ signing" style="aspect-ratio:4/3; margin-bottom:26px;"></div>
+    <figure class="media media--ink" style="aspect-ratio:4/3; margin-bottom:26px;">
+      <img src="/images/eternalgy-saj-partnership-v1.webp" width="1200" height="900" alt="Renewable energy distribution agreement signing in Shanghai" loading="lazy" decoding="async">
+    </figure>
     <span class="eyebrow" style="color:#97a09a;">Strategic partnership</span>
     <h2 class="h-sec" style="color:var(--paper); margin-top:16px;">Sole distributor for SAJ in Malaysia.</h2>
     <p class="lede" style="color:#aab2ac; margin-top:18px;">SAJ chose Eternalgy for our rapid market growth and fully integrated, first-party team — from sales and technical consulting to installation and long-term O&amp;M.</p>
