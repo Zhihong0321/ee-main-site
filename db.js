@@ -8,15 +8,32 @@ const { marked } = require('marked');
 const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/eedb';
 
 // Enable SSL only if in production or connecting to a non-localhost remote database
-const isProduction = process.env.NODE_ENV === 'production' || 
-                     (process.env.DATABASE_URL && 
-                      !process.env.DATABASE_URL.includes('localhost') && 
+const isProduction = process.env.NODE_ENV === 'production' ||
+                     (process.env.DATABASE_URL &&
+                      !process.env.DATABASE_URL.includes('localhost') &&
                       !process.env.DATABASE_URL.includes('127.0.0.1'));
 
 const pool = new Pool({
   connectionString,
   ssl: isProduction ? { rejectUnauthorized: false } : false
 });
+
+// Separate pool for writing to shared activity_log in prod_main
+const logDbUrl = process.env.LOG_DATABASE_URL;
+const logPool = logDbUrl ? new Pool({
+  connectionString: logDbUrl,
+  ssl: isProduction ? { rejectUnauthorized: false } : false
+}) : null;
+
+if (logPool) {
+  logPool.query('SELECT NOW()', (err, res) => {
+    if (err) {
+      console.error('LOG_DATABASE_URL connection error:', err.stack);
+    } else {
+      console.log('LOG_DATABASE_URL connected successfully at:', res.rows[0].now);
+    }
+  });
+}
 
 // Test connection
 pool.query('SELECT NOW()', (err, res) => {
@@ -618,41 +635,6 @@ The capital expenditure for residential battery energy storage systems (BESS) is
       CREATE INDEX IF NOT EXISTS idx_daily_reports_date ON main_site_daily_reports(report_date DESC);
     `);
 
-    // 10. Table: activity_log (shared-schema audit log, written by visitorTracker)
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS activity_log (
-        id             BIGSERIAL PRIMARY KEY,
-        app            TEXT,
-        app_env        TEXT,
-        source_url     TEXT,
-        actor_kind     TEXT,
-        actor_user_id  INTEGER,
-        actor_ref      TEXT,
-        actor_name     TEXT,
-        actor_role     TEXT,
-        action         TEXT,
-        entity_type    TEXT,
-        entity_id      TEXT,
-        entity_label   TEXT,
-        description    TEXT,
-        fields         TEXT[],
-        status         TEXT,
-        error_message  TEXT,
-        request_id     TEXT,
-        ip             TEXT,
-        user_agent     TEXT,
-        metadata       JSONB,
-        occurred_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-        retain_until   TIMESTAMP WITH TIME ZONE
-      );
-    `);
-    await client.query(`
-      CREATE INDEX IF NOT EXISTS idx_activity_log_occurred_at ON activity_log(occurred_at DESC);
-    `);
-    await client.query(`
-      CREATE INDEX IF NOT EXISTS idx_activity_log_app ON activity_log(app, occurred_at DESC);
-    `);
-
     await client.query('COMMIT');
   } catch (e) {
     await client.query('ROLLBACK');
@@ -664,5 +646,6 @@ The capital expenditure for residential battery energy storage systems (BESS) is
 
 module.exports = {
   pool,
+  logPool,
   initDb
 };
