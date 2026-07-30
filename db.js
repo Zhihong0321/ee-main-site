@@ -243,11 +243,11 @@ async function initDb() {
       console.log('Seeding main_site_certifications...');
       const certSeeds = [
         {
-          name: 'CIDB Grade G3 Member',
+          name: 'CIDB Grade G7 Contractor',
           body: 'Lembaga Pembangunan Industri Pembinaan Malaysia (CIDB)',
           license_number: '0120250324-WP152634',
           valid_until: '2027-03-25',
-          summary: 'Registered under Category B (Building), CE (Civil Engineering), and ME (Mechanical & Electrical) with Specializations B04, CE21, and M15.'
+          summary: 'Highest Grade G7 Certification with Unlimited Tender Capacity under Category B (Building Works B04), CE (Civil Engineering & Solar Structures CE21), and ME (Mechanical & Electrical M15).'
         },
         {
           name: 'SEDA Registered PV Investor',
@@ -616,6 +616,41 @@ The capital expenditure for residential battery energy storage systems (BESS) is
     `);
     await client.query(`
       CREATE INDEX IF NOT EXISTS idx_daily_reports_date ON main_site_daily_reports(report_date DESC);
+    `);
+
+    // 10. Table: activity_log (shared-schema audit log, written by visitorTracker)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS activity_log (
+        id             BIGSERIAL PRIMARY KEY,
+        app            TEXT,
+        app_env        TEXT,
+        source_url     TEXT,
+        actor_kind     TEXT,
+        actor_user_id  INTEGER,
+        actor_ref      TEXT,
+        actor_name     TEXT,
+        actor_role     TEXT,
+        action         TEXT,
+        entity_type    TEXT,
+        entity_id      TEXT,
+        entity_label   TEXT,
+        description    TEXT,
+        fields         TEXT[],
+        status         TEXT,
+        error_message  TEXT,
+        request_id     TEXT,
+        ip             TEXT,
+        user_agent     TEXT,
+        metadata       JSONB,
+        occurred_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+        retain_until   TIMESTAMP WITH TIME ZONE
+      );
+    `);
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_activity_log_occurred_at ON activity_log(occurred_at DESC);
+    `);
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_activity_log_app ON activity_log(app, occurred_at DESC);
     `);
 
     await client.query('COMMIT');
