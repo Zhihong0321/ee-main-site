@@ -130,13 +130,56 @@ function trackVisitor(req, res, next) {
 
     try {
       await db.pool.query(
-        `INSERT INTO main_site_visitor_logs 
+        `INSERT INTO main_site_visitor_logs
          (ip_address, user_agent, url, referer, method, status_code, device_type, visitor_type, bot_name, execution_time_ms)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
         [ip, ua, url, referer, method, statusCode, deviceType, visitorType, botName, duration]
       );
     } catch (err) {
       console.error('Failed to log visitor details:', err);
+    }
+
+    // Mirror to shared activity_log so visitor data appears in cross-app reports
+    try {
+      const actorKindMap = {
+        human:       'visitor',
+        ai_crawler:  'ai_bot',
+        seo_crawler: 'seo_bot',
+        other_bot:   'bot'
+      };
+      const actorKind  = actorKindMap[visitorType] || 'visitor';
+      const actorName  = botName || 'Anonymous Visitor';
+      const statusStr  = statusCode < 400 ? 'success' : 'error';
+      const errorMsg   = statusCode >= 400 ? `HTTP ${statusCode}` : null;
+      const pagePath   = url.split('?')[0];
+      const appEnv     = process.env.NODE_ENV || 'production';
+      const host       = req.get('host') || 'eternalgy.me';
+      const sourceUrl  = `${req.protocol || 'https'}://${host}${url}`;
+      const description = `${actorName} (${visitorType}) visited ${pagePath} [${statusCode}, ${deviceType}, ${duration}ms]`;
+      const metadata   = JSON.stringify({
+        visitor_type:      visitorType,
+        bot_name:          botName   || null,
+        device_type:       deviceType,
+        referer:           referer   || null,
+        status_code:       statusCode,
+        execution_time_ms: duration,
+        method
+      });
+
+      await db.pool.query(
+        `INSERT INTO activity_log
+           (app, app_env, source_url, actor_kind, actor_name, action,
+            entity_type, entity_id, entity_label, description,
+            status, error_message, ip, user_agent, metadata, occurred_at)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,NOW())`,
+        [
+          'ee-main-site', appEnv, sourceUrl, actorKind, actorName, 'visit',
+          'page', pagePath, pagePath, description,
+          statusStr, errorMsg, ip, ua, metadata
+        ]
+      );
+    } catch (err) {
+      console.error('Failed to log to activity_log:', err);
     }
   });
 
