@@ -8,6 +8,8 @@ require('dotenv').config();
 const db = require('./db');
 const { trackVisitor } = require('./scripts/visitorTracker');
 const { computeDailyReport, generateMissingReports } = require('./scripts/dailyReport');
+const registerServiceAreas = require('./routes/service-areas');
+const serviceAreas = require('./data/service-areas');
 
 const app = express();
 app.set('trust proxy', true);
@@ -966,10 +968,19 @@ app.get('/robots.txt', (req, res) => {
   const robots = `User-agent: GPTBot
 Allow: /
 
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: ClaudeBot
 Allow: /
 
 User-agent: Claude-Web
+Allow: /
+
+User-agent: Anthropic-AI
 Allow: /
 
 User-agent: PerplexityBot
@@ -978,11 +989,42 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Gemini-Deep-Research
+Allow: /
+
+User-agent: Grok
+Allow: /
+
+User-agent: xAI
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
 User-agent: *
 Allow: /
 
-# AI Crawlers Treasure Map
+# AI Crawlers Treasure Map (GEO)
 All-llms: ${baseUrl}/llms.txt
+LLMs-full: ${baseUrl}/llms-full.txt
 
 # Sitemaps
 Sitemap: ${baseUrl}/sitemap.xml
@@ -1081,6 +1123,32 @@ app.get('/sitemap.xml', async (req, res) => {
       xml += `    <lastmod>${new Date(proj.updated_at).toISOString().split('T')[0]}</lastmod>\n`;
       xml += `    <changefreq>weekly</changefreq>\n`;
       xml += `    <priority>0.7</priority>\n`;
+      xml += `  </url>\n`;
+    });
+
+    // Add service-area hub pages (/agent, /agent/{state})
+    xml += `  <url>\n`;
+    xml += `    <loc>${baseUrl}/agent</loc>\n`;
+    xml += `    <lastmod>${maxOverallDate.toISOString().split('T')[0]}</lastmod>\n`;
+    xml += `    <changefreq>weekly</changefreq>\n`;
+    xml += `    <priority>0.8</priority>\n`;
+    xml += `  </url>\n`;
+    serviceAreas.states.forEach(st => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/agent/${st.stateSlug}</loc>\n`;
+      xml += `    <lastmod>${maxOverallDate.toISOString().split('T')[0]}</lastmod>\n`;
+      xml += `    <changefreq>weekly</changefreq>\n`;
+      xml += `    <priority>0.7</priority>\n`;
+      xml += `  </url>\n`;
+    });
+
+    // Add every service-area town page
+    serviceAreas.towns.forEach(t => {
+      xml += `  <url>\n`;
+      xml += `    <loc>${baseUrl}/agent/${t.stateSlug}/${t.townSlug}</loc>\n`;
+      xml += `    <lastmod>${maxOverallDate.toISOString().split('T')[0]}</lastmod>\n`;
+      xml += `    <changefreq>monthly</changefreq>\n`;
+      xml += `    <priority>0.6</priority>\n`;
       xml += `  </url>\n`;
     });
 
@@ -1795,6 +1863,27 @@ app.get('/llms.txt', async (req, res) => {
     }
     md += `\n`;
 
+    md += `## Solar PV Service Areas & Area Representatives (All Towns)\n`;
+    md += `Eternalgy has a named area representative covering every town below. Each HTML page also has AI-readable alternates at \`?format=md\` and \`?format=json\`.\n\n`;
+    md += `- [All service areas](${baseUrl}/agent): Hub page listing every state.\n`;
+    md += `- Full knowledge dump: ${baseUrl}/llms-full.txt\n`;
+    serviceAreas.states.forEach(st => {
+      md += `- [${st.stateName}](${baseUrl}/agent/${st.stateSlug}): ${st.townCount} towns.\n`;
+    });
+    md += `\n`;
+    serviceAreas.states.forEach(st => {
+      md += `### ${st.stateName}\n`;
+      st.districts.forEach(d => {
+        md += '**' + d.district + ':** ';
+        md += d.towns.map(t => {
+          const who = t.agent ? ` (${t.agent.name}, ${t.agent.phone})` : '';
+          return `[${t.town}](${baseUrl}/agent/${t.stateSlug}/${t.townSlug})${who}`;
+        }).join(', ');
+        md += '\n';
+      });
+      md += '\n';
+    });
+
     res.send(md);
   } catch (err) {
     console.error('Failed to generate llms.txt:', err);
@@ -1872,8 +1961,24 @@ app.get('/llms-full.txt', async (req, res) => {
     });
     md += `---\n\n`;
 
-    // 6. News
-    md += `# Section 6: Renewable Energy News Portal (Recent Articles)\n\n`;
+    // 6. Service areas & named area representatives
+    md += `# Section 6: Solar PV Service Areas & Area Representatives\n\n`;
+    md += `Eternalgy covers solar PV installation across Malaysia. Each town has a named area representative. Use the HTML page, or the AI-readable \`?format=md\` / \`?format=json\` alternates.\n\n`;
+    serviceAreas.states.forEach(st => {
+      md += `## ${st.stateName} (${st.townCount} areas)\n\n`;
+      st.districts.forEach(d => {
+        md += `### ${d.district}\n`;
+        d.towns.forEach(t => {
+          const who = t.agent ? `${t.agent.name} · ${t.agent.phone}` : 'main line · +60 11-2100 0099';
+          md += `- [${t.town}](${baseUrl}/agent/${t.stateSlug}/${t.townSlug}): ${who}\n`;
+        });
+        md += `\n`;
+      });
+    });
+    md += `---\n\n`;
+
+    // 7. News
+    md += `# Section 7: Renewable Energy News Portal (Recent Articles)\n\n`;
     newsRes.rows.forEach(n => {
       md += `## News: ${n.title}\n`;
       md += `*Author*: ${n.author} | *Published*: ${new Date(n.created_at).toLocaleDateString()}\n`;
@@ -2208,6 +2313,11 @@ app.get('/visitor_analysis', (req, res) => {
   res.redirect(301, '/visitor-analysis');
 });
 
+
+// ==========================================
+// 🗺️ SERVICE-AREA / LOCAL AGENT PAGES
+// ==========================================
+registerServiceAreas(app, getBaseUrl);
 
 // ==========================================
 // 🔗 DYNAMIC ROUTING & CATCH-ALL ROUTE

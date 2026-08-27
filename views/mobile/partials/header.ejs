@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-MY">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -10,7 +10,17 @@
   <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
   <meta property="og:description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
   <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  <meta property="og:url" content="<%= canonicalUrl %>">
+  <meta property="og:locale" content="en_MY">
+  <meta property="og:site_name" content="Eternalgy">
   <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : baseUrl + '/logo.png' %>">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
+  <meta name="twitter:description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <% if (typeof geoPlacename !== 'undefined' && geoPlacename) { %>
+  <meta name="geo.placename" content="<%= geoPlacename %>">
+  <meta name="geo.region" content="<%= typeof geoRegion !== 'undefined' ? geoRegion : 'MY' %>">
+  <% } %>
   
   <!-- Loads DEDICATED Mobile stylesheet -->
   <link rel="stylesheet" href="/css/mobile.css">
@@ -54,10 +64,11 @@
   <ul class="drawer__links">
     <li><a href="/" data-close><span class="n">01</span>Home</a></li>
     <li><a href="/about-solar-pv-epc-company" data-close><span class="n">02</span>EPC Services</a></li>
-    <li><a href="/tips" data-close><span class="n">03</span>Solar Tips</a></li>
-    <li><a href="/news" data-close><span class="n">04</span>Energy News</a></li>
-    <li><a href="/faq" data-close><span class="n">05</span>FAQ</a></li>
-    <li><a href="/visitor-analysis" data-close><span class="n">06</span>Visitor Analysis</a></li>
+    <li><a href="/agent" data-close><span class="n">03</span>Service Areas</a></li>
+    <li><a href="/tips" data-close><span class="n">04</span>Solar Tips</a></li>
+    <li><a href="/news" data-close><span class="n">05</span>Energy News</a></li>
+    <li><a href="/faq" data-close><span class="n">06</span>FAQ</a></li>
+    <li><a href="/visitor-analysis" data-close><span class="n">07</span>Visitor Analysis</a></li>
   </ul>
   <div class="drawer__foot">
     <a class="btn btn--accent" href="https://wa.me/601121000099" target="_blank" rel="noopener" data-close>WhatsApp us ↗</a>

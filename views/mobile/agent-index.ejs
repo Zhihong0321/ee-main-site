@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<section class="section wrap">
+  <div class="sec-head">
+    <span class="eyebrow">Area representatives nationwide</span>
+    <h1 class="h-sec">Solar PV Service Areas in Malaysia</h1>
+    <p class="sec-head__r lede">Eternalgy covers every state in Malaysia with a named area representative per town. Pick your state, find your town, and call the representative listed on that page.</p>
+  </div>
+
+  <div style="display: grid; gap: 12px; margin-top: 24px;">
+    <% states.forEach(function(st) { %>
+      <a href="/agent/<%= st.stateSlug %>" class="reveal" style="display:flex; flex-direction:column; gap:4px; background: var(--panel); border: 1px solid var(--line); padding: 18px; text-decoration: none;">
+        <span class="eyebrow no-tick" style="font-size: 10.5px; color: var(--accent-deep);"><%= st.townCount %> service areas</span>
+        <span style="font-family: var(--font-display); font-size: 18px; font-weight: 500; color: var(--ink);"><%= st.stateName %></span>
+        <span style="font-size: 13px; color: var(--ink-2);">View towns <span class="arrow">↗</span></span>
+      </a>
+    <% }); %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

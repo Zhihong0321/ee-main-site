@@ -1,0 +1,49 @@
+<%- include('partials/header') %>
+
+<section class="section" style="padding-top: clamp(56px, 8vw, 96px);">
+  <div class="wrap">
+    <nav aria-label="Breadcrumb" style="font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-2); margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 6px;">
+      <a href="/" style="color: var(--accent-deep);">Home</a><span>/</span>
+      <span>Service Areas</span>
+    </nav>
+
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Area representatives nationwide</span>
+        <h1 class="display" style="margin-top:22px; font-size: clamp(34px, 5vw, 60px);">Solar PV Service Areas in Malaysia</h1>
+      </div>
+      <p class="sec-head__r lede">Eternalgy covers every state in Malaysia with a named area representative per town. Pick your state, find your town, and call the representative listed on that page for a free solar PV consultation and quote.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 48px;">
+      <% states.forEach(function(st) { %>
+        <a href="/agent/<%= st.stateSlug %>" class="reveal" style="display:flex; flex-direction:column; gap:8px; background: var(--panel); border: 1px solid var(--line); padding: 24px; text-decoration: none;">
+          <span class="eyebrow no-tick" style="font-size: 12px; color: var(--accent-deep);"><%= st.townCount %> service areas</span>
+          <span style="font-family: var(--font-display); font-size: 22px; font-weight: 500; color: var(--ink);"><%= st.stateName %></span>
+          <span style="font-size: 14px; color: var(--ink-2);">View towns &nbsp;<span class="arrow">↗</span></span>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="cta section" id="contact">
+  <div class="wrap">
+    <div class="cta__grid">
+      <div>
+        <span class="eyebrow no-tick" style="color:var(--on-accent); opacity:.7;">Get started</span>
+        <h2 class="display" style="margin-top:18px;">Let's size<br>your system.</h2>
+      </div>
+      <div>
+        <p style="font-size:19px; line-height:1.5; max-width:38ch;">Tell us your roof, your tariff and your goals. Our engineers will come back with a system design and a return you can hold us to.</p>
+        <div class="hero__actions" style="margin-top:26px;">
+          <a class="btn btn--light" href="https://wa.me/601121000099" target="_blank" rel="noopener">WhatsApp us <span class="arrow">↗</span></a>
+          <a class="btn" href="https://wa.me/601121000099" target="_blank" rel="noopener" style="background:transparent;border-color:var(--on-accent);color:var(--on-accent);">Request a quote</a>
+        </div>
+        <p class="cta__meta" style="margin-top:24px;">+60 11-2100 0099 &nbsp;·&nbsp; <a href="https://eternalgy.me" target="_blank" rel="noopener">eternalgy.me</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

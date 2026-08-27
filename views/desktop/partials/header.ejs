@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-MY">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +10,17 @@
   <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
   <meta property="og:description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
   <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  <meta property="og:url" content="<%= canonicalUrl %>">
+  <meta property="og:locale" content="en_MY">
+  <meta property="og:site_name" content="Eternalgy">
   <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : baseUrl + '/logo.png' %>">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
+  <meta name="twitter:description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <% if (typeof geoPlacename !== 'undefined' && geoPlacename) { %>
+  <meta name="geo.placename" content="<%= geoPlacename %>">
+  <meta name="geo.region" content="<%= typeof geoRegion !== 'undefined' ? geoRegion : 'MY' %>">
+  <% } %>
   
   <!-- Loads DEDICATED Desktop stylesheet -->
   <link rel="stylesheet" href="/css/desktop.css">
@@ -39,6 +49,7 @@
     <nav class="nav__links">
       <a href="/" class="<%= typeof currentTab !== 'undefined' && currentTab === 'home' ? 'active' : '' %>">Home</a>
       <a href="/about-solar-pv-epc-company" class="<%= typeof currentTab !== 'undefined' && currentTab === 'epc' ? 'active' : '' %>">EPC Services</a>
+      <a href="/agent" class="<%= typeof currentTab !== 'undefined' && currentTab === 'agent' ? 'active' : '' %>">Service Areas</a>
       <a href="/tips" class="<%= typeof currentTab !== 'undefined' && currentTab === 'tips' ? 'active' : '' %>">Solar Tips</a>
       <a href="/news" class="<%= typeof currentTab !== 'undefined' && currentTab === 'news' ? 'active' : '' %>">Energy News</a>
       <a href="/faq" class="<%= typeof currentTab !== 'undefined' && currentTab === 'faq' ? 'active' : '' %>">FAQ</a>

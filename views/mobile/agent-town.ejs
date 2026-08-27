@@ -1,0 +1,80 @@
+<%- include('partials/header') %>
+
+<section class="section wrap">
+  <nav aria-label="Breadcrumb" style="font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); margin-bottom: 18px; display: flex; flex-wrap: wrap; gap: 4px;">
+    <a href="/agent" style="color: var(--accent-deep);">Service Areas</a><span>/</span>
+    <a href="/agent/<%= record.stateSlug %>" style="color: var(--accent-deep);"><%= record.stateName %></a><span>/</span>
+    <span><%= record.town %></span>
+  </nav>
+
+  <div class="sec-head">
+    <span class="eyebrow">Solar PV EPC · <%= record.district %> · <%= record.stateName %></span>
+    <h1 class="h-sec geo-speakable">Solar PV in <%= record.town %></h1>
+    <p class="sec-head__r lede geo-lede"><%= coverage %></p>
+  </div>
+
+  <!-- AGENT CTA -->
+  <div class="reveal geo-speakable" style="background: var(--panel); border: 1px solid var(--line); padding: 22px; display: flex; flex-direction: column; gap: 14px; margin-top: 24px;">
+    <span class="eyebrow no-tick" style="font-size: 11px; color: var(--accent-deep);">Area representative for <%= record.town %></span>
+    <h2 style="font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); line-height: 1.3; margin: 0;">
+      <%= agent.name %> covers <%= record.town %>
+    </h2>
+    <p style="font-size: 14.5px; color: var(--ink-2); line-height: 1.6; margin: 0;">
+      We install, invest in and maintain commercial &amp; industrial solar PV in <%= record.town %>, <%= record.district %>, <%= record.stateName %>. <%= agent.name %> is the named area representative for this locality.
+    </p>
+    <p style="font-family: var(--font-mono); font-size: 12px; color: var(--ink); margin: 0; line-height: 1.7;">
+      Town: <%= record.town %><br>
+      District: <%= record.district %><br>
+      State: <%= record.stateName %>, Malaysia<br>
+      <% if (record.parent) { %>Parent: <%= record.parent %><br><% } %>
+      Representative: <%= agent.name %><br>
+      Mobile: <%= agent.phone %>
+    </p>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <a class="btn btn--accent" href="https://wa.me/<%= agent.wa %>" target="_blank" rel="noopener" style="justify-content: center;">Call / WhatsApp <%= agent.phone %> <span class="arrow">↗</span></a>
+      <a class="btn btn--ghost" href="https://wa.me/<%= agent.wa %>" target="_blank" rel="noopener" style="justify-content: center;">Get a free quote</a>
+    </div>
+    <p class="cta__meta" style="font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-2); margin: 0;">Area representative: <%= agent.name %> · <%= agent.phone %> · enquiry@eternalgy.me</p>
+  </div>
+
+  <!-- SERVICES -->
+  <div style="display: grid; gap: 16px; margin-top: 32px;">
+    <article class="reveal" style="background: var(--panel); border: 1px solid var(--line); padding: 20px;">
+      <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 500; color: var(--ink); margin: 0 0 8px;">Free site survey</h3>
+      <p style="font-size: 14px; color: var(--ink-2); line-height: 1.5; margin: 0;"><%= agent.name %> visits your <%= record.town %> site, checks your roof and tariff, and sizes a system that fits.</p>
+    </article>
+    <article class="reveal" style="background: var(--panel); border: 1px solid var(--line); padding: 20px;">
+      <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 500; color: var(--ink); margin: 0 0 8px;">EPC &amp; installation</h3>
+      <p style="font-size: 14px; color: var(--ink-2); line-height: 1.5; margin: 0;">Engineering, procurement and construction with in-house CIDB G3 licensed electrical engineers for <%= record.town %> projects.</p>
+    </article>
+    <article class="reveal" style="background: var(--panel); border: 1px solid var(--line); padding: 20px;">
+      <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 500; color: var(--ink); margin: 0 0 8px;">O&amp;M &amp; monitoring</h3>
+      <p style="font-size: 14px; color: var(--ink-2); line-height: 1.5; margin: 0;">Cleaning, monitoring and fault response so your <%= record.town %> system keeps generating at spec.</p>
+    </article>
+  </div>
+
+  <!-- FAQ -->
+  <div style="display: grid; gap: 12px; margin-top: 32px;">
+    <span class="eyebrow no-tick" style="font-size: 11px; color: var(--accent-deep);">Solar PV in <%= record.town %> — FAQ</span>
+    <% faqs.forEach(function(f) { %>
+    <article style="background: var(--panel); border: 1px solid var(--line); padding: 18px;">
+      <h3 style="font-family: var(--font-display); font-size: 15px; font-weight: 500; color: var(--ink); margin: 0 0 8px;"><%= f.q %></h3>
+      <p style="font-size: 13.5px; color: var(--ink-2); line-height: 1.5; margin: 0;"><%= f.a %></p>
+    </article>
+    <% }); %>
+  </div>
+
+  <!-- NEARBY -->
+  <% if (nearby && nearby.length) { %>
+  <div style="margin-top: 32px;">
+    <span class="eyebrow no-tick" style="font-size: 11px; color: var(--accent-deep);">Also serving nearby towns</span>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;">
+      <% nearby.forEach(function(t) { %>
+        <a class="btn btn--ghost" style="font-size: 12.5px; padding: 8px 12px;" href="/agent/<%= t.stateSlug %>/<%= t.townSlug %>"><%= t.town %></a>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

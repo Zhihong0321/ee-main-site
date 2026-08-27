@@ -1,0 +1,152 @@
+<%- include('partials/header') %>
+
+<!-- ============ TOWN HERO ============ -->
+<section class="section" style="padding-top: clamp(56px, 8vw, 96px);">
+  <div class="wrap">
+    <nav aria-label="Breadcrumb" style="font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-2); margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 6px;">
+      <a href="/" style="color: var(--accent-deep);">Home</a><span>/</span>
+      <a href="/agent" style="color: var(--accent-deep);">Service Areas</a><span>/</span>
+      <a href="/agent/<%= record.stateSlug %>" style="color: var(--accent-deep);"><%= record.stateName %></a><span>/</span>
+      <span><%= record.town %></span>
+    </nav>
+
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Solar PV EPC · <%= record.district %> · <%= record.stateName %></span>
+        <h1 class="display geo-speakable" style="margin-top:22px; font-size: clamp(34px, 5vw, 60px);">Solar PV in <span class="mark"><%= record.town %></span></h1>
+      </div>
+      <p class="sec-head__r lede geo-lede"><%= coverage %></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AGENT CTA ============ -->
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="reveal geo-speakable" style="background: var(--panel); border: 1px solid var(--line); padding: clamp(28px, 4vw, 48px); display: flex; flex-direction: column; gap: 22px;">
+      <span class="eyebrow no-tick" style="font-size: 13px; color: var(--accent-deep);">Area representative for <%= record.town %></span>
+      <h2 style="font-family: var(--font-display); font-size: clamp(24px, 3.5vw, 34px); font-weight: 500; color: var(--ink); line-height: 1.2; margin: 0;">
+        <%= agent.name %> covers <%= record.town %>
+      </h2>
+      <p style="font-size: 16px; color: var(--ink-2); line-height: 1.6; max-width: 60ch;">
+        We install, invest in and maintain commercial &amp; industrial solar PV in <%= record.town %>, <%= record.district %>, <%= record.stateName %>. <%= agent.name %> is the named area representative for this locality — backed by Eternalgy's in-house CIDB G3 engineering team.
+      </p>
+      <dl style="display:grid; grid-template-columns: max-content 1fr; gap: 8px 18px; margin: 0; font-size: 14.5px; color: var(--ink-2);">
+        <dt style="font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-deep);">Town</dt>
+        <dd style="margin:0; color: var(--ink);"><%= record.town %></dd>
+        <dt style="font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-deep);">District</dt>
+        <dd style="margin:0; color: var(--ink);"><%= record.district %></dd>
+        <dt style="font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-deep);">State</dt>
+        <dd style="margin:0; color: var(--ink);"><%= record.stateName %>, Malaysia</dd>
+        <% if (record.parent) { %>
+        <dt style="font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-deep);">Parent</dt>
+        <dd style="margin:0; color: var(--ink);"><%= record.parent %></dd>
+        <% } %>
+        <dt style="font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-deep);">Representative</dt>
+        <dd style="margin:0; color: var(--ink);"><%= agent.name %></dd>
+        <dt style="font-family: var(--font-mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-deep);">Mobile</dt>
+        <dd style="margin:0; color: var(--ink);"><a href="https://wa.me/<%= agent.wa %>"><%= agent.phone %></a></dd>
+      </dl>
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: center;">
+        <a class="btn btn--accent" href="https://wa.me/<%= agent.wa %>" target="_blank" rel="noopener">Call / WhatsApp <%= agent.phone %><span class="arrow">↗</span></a>
+        <a class="btn btn--ghost" href="https://wa.me/<%= agent.wa %>" target="_blank" rel="noopener">Get a free quote</a>
+      </div>
+      <p class="cta__meta" style="font-family: var(--font-mono); font-size: 13px; color: var(--ink-2);">Area representative: <%= agent.name %> · <%= agent.phone %> · enquiry@eternalgy.me</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY / COVERAGE ============ -->
+<section class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Service region coverage</span>
+        <h2 class="h-sec" style="margin-top:22px;">We serve <%= record.town %>.</h2>
+      </div>
+      <p class="sec-head__r lede">Our coverage includes <%= record.town %> in <%= record.district %>, <%= record.stateName %>. Whether it's a rooftop, factory or commercial building, our team handles design, licensing, installation and maintenance end to end.</p>
+    </div>
+
+    <div class="svc" style="margin-top:40px;">
+      <article class="svc__item reveal">
+        <span class="svc__no">01</span>
+        <h3 class="svc__title">Free site survey</h3>
+        <p class="svc__desc"><%= agent.name %> visits your <%= record.town %> site, checks your roof and tariff, and sizes a system that fits.</p>
+        <div class="svc__tags">SURVEY · DESIGN</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">02</span>
+        <h3 class="svc__title">EPC &amp; installation</h3>
+        <p class="svc__desc">Engineering, procurement and construction with in-house CIDB G3 licensed electrical engineers for <%= record.town %> projects.</p>
+        <div class="svc__tags">EPC · INSTALL</div>
+      </article>
+      <article class="svc__item reveal">
+        <span class="svc__no">03</span>
+        <h3 class="svc__title">O&amp;M &amp; monitoring</h3>
+        <p class="svc__desc">Cleaning, monitoring and fault response so your <%= record.town %> system keeps generating at spec.</p>
+        <div class="svc__tags">O&amp;M · MONITOR</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom: 28px;">
+      <div>
+        <span class="eyebrow">Common questions</span>
+        <h2 class="h-sec" style="margin-top:22px;">Solar PV in <%= record.town %> — FAQ</h2>
+      </div>
+    </div>
+    <div style="display: grid; gap: 20px;">
+      <% faqs.forEach(function(f) { %>
+      <article style="background: var(--panel); border: 1px solid var(--line); padding: clamp(24px, 3vw, 36px);">
+        <h3 style="font-family: var(--font-display); font-size: 19px; font-weight: 500; color: var(--ink); margin: 0 0 10px;"><%= f.q %></h3>
+        <p style="font-size: 15.5px; color: var(--ink-2); line-height: 1.6; margin: 0;"><%= f.a %></p>
+      </article>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEARBY TOWNS ============ -->
+<% if (nearby && nearby.length) { %>
+<section class="section" style="padding-top:0;">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">More areas in <%= record.district %></span>
+        <h2 class="h-sec" style="margin-top:22px;">Also serving nearby towns</h2>
+      </div>
+    </div>
+    <div style="margin-top:32px; display: flex; flex-wrap: wrap; gap: 10px;">
+      <% nearby.forEach(function(t) { %>
+        <a class="btn btn--ghost" style="font-size: 13.5px; padding: 10px 16px;" href="/agent/<%= t.stateSlug %>/<%= t.townSlug %>"><%= t.town %></a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- ============ CTA ============ -->
+<section class="cta section" id="contact">
+  <div class="wrap">
+    <div class="cta__grid">
+      <div>
+        <span class="eyebrow no-tick" style="color:var(--on-accent); opacity:.7;">Your <%= record.town %> area representative</span>
+        <h2 class="display" style="margin-top:18px;">Solar PV in<br><%= record.town %>.</h2>
+      </div>
+      <div>
+        <p style="font-size:19px; line-height:1.5; max-width:38ch;">Call <%= agent.name %> for a free solar consultation and quote in <%= record.town %>, <%= record.stateName %>. Our service region covers this area.</p>
+        <div class="hero__actions" style="margin-top:26px;">
+          <a class="btn btn--light" href="https://wa.me/<%= agent.wa %>" target="_blank" rel="noopener">Call <%= agent.phone %> <span class="arrow">↗</span></a>
+          <a class="btn" href="https://wa.me/<%= agent.wa %>" target="_blank" rel="noopener" style="background:transparent;border-color:var(--on-accent);color:var(--on-accent);">Request a quote</a>
+        </div>
+        <p class="cta__meta" style="margin-top:24px;">Area representative: <%= agent.name %> &nbsp;·&nbsp; <%= agent.phone %> &nbsp;·&nbsp; <a href="https://eternalgy.me" target="_blank" rel="noopener">eternalgy.me</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
