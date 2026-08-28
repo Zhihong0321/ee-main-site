@@ -56,6 +56,23 @@
     </article>
   </div>
 
+  <!-- WHY CHOOSE US -->
+  <% if (why && why.length) { %>
+  <div style="margin-top: 32px;">
+    <span class="eyebrow no-tick" style="font-size: 11px; color: var(--accent-deep);">Why Eternalgy in <%= record.town %></span>
+    <h2 style="font-family: var(--font-display); font-size: 20px; font-weight: 500; color: var(--ink); margin: 10px 0 0;">Why choose Eternalgy for solar PV in <%= record.town %>?</h2>
+    <div style="display: grid; gap: 12px; margin-top: 16px;">
+      <% why.forEach(function(w) { %>
+      <article class="reveal" style="background: var(--panel); border: 1px solid var(--line); padding: 18px; display:flex; flex-direction:column; gap:8px;">
+        <span style="font-family: var(--font-mono); font-size: 10.5px; letter-spacing:.08em; text-transform:uppercase; color: var(--accent-deep);"><%= w.tag %></span>
+        <h3 style="font-family: var(--font-display); font-size: 16px; font-weight: 500; color: var(--ink); margin:0;"><%= w.title %></h3>
+        <p style="font-size: 13.5px; color: var(--ink-2); line-height: 1.55; margin:0;"><%= w.text %></p>
+      </article>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+
   <!-- FAQ -->
   <div style="display: grid; gap: 12px; margin-top: 32px;">
     <span class="eyebrow no-tick" style="font-size: 11px; color: var(--accent-deep);">Solar PV in <%= record.town %> — FAQ</span>

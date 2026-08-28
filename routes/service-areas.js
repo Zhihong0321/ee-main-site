@@ -49,6 +49,46 @@ const SERVICES = [
   'In-house electrical engineering (CIDB G3 licensed)'
 ];
 
+// Verified selling points & credentials — source of truth: Eternalgy PR
+// hub (ee-pr.up.railway.app) — live metrics, ad copy repo & compliance vault.
+const WHY_CHOOSE_US = [
+  {
+    tag: 'ZERO SUB-CONTRACTORS',
+    title: '100% in-house engineering',
+    text: 'Self-operated in-house electrical & structural engineering team — we never sub-contract your installation.'
+  },
+  {
+    tag: 'GUARANTEED',
+    title: 'Leak-proof + insured',
+    text: '1-year leak-proof workmanship guarantee plus 3-year MSIG solar all-risk insurance on every installation.'
+  },
+  {
+    tag: 'GOVERNMENT-GRADE',
+    title: 'CIDB Grade G7',
+    text: 'Highest CIDB Grade G7 contractor with unlimited tender capacity — Building (B04), Civil (CE21) & Electrical (M15).'
+  },
+  {
+    tag: 'SEDA-REGISTERED',
+    title: 'RPVSP + PV investor',
+    text: 'SEDA-registered RPVSP for NEM 3.0 (Rakyat, GOVER, NOVA) & SELCO; approved PV investor for zero-capex PPA and leasing.'
+  },
+  {
+    tag: 'TAX SAVINGS',
+    title: '60% GITA allowance',
+    text: 'MyHijau MGTC-certified equipment — eligible for 60% GITA tax allowance on qualifying systems.'
+  },
+  {
+    tag: 'PROVEN',
+    title: 'RM 28M+ · 10.75 MWp · 925+',
+    text: 'RM 28.15M+ customer revenue, 10.75 MWp installed and 925+ projects delivered nationwide.'
+  },
+  {
+    tag: 'TRUSTED',
+    title: 'Maybank · SAJ · Golden Bull',
+    text: 'Maybank preferred solar partner, SAJ Malaysia sole distributor, SHRDC CoE and Golden Bull Award winner.'
+  }
+];
+
 module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
   const agentFor = (record) => record.agent || DEFAULT_AGENT;
 
@@ -111,6 +151,14 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       {
         q: `How do I get a solar quote in ${record.town}?`,
         a: `Call or WhatsApp ${agent.name} at ${agent.phone}. We will arrange a free consultation and site survey for Solar PV in ${record.town} / ${record.town} 太阳能.`
+      },
+      {
+        q: `Why choose Eternalgy for solar PV in ${record.town}?`,
+        a: `Eternalgy is a 100% in-house CIDB Grade G7 contractor (zero sub-contractors), SEDA-registered RPVSP & PV investor, and MyHijau-certified for 60% GITA tax allowance. Every installation includes a 1-year leak-proof workmanship guarantee and 3-year MSIG solar all-risk insurance, backed by RM 28.15M+ revenue, 10.75 MWp installed and 925+ projects across Malaysia — with ${agent.name} as your local area representative in ${record.town}.`
+      },
+      {
+        q: `Is Eternalgy licensed to install solar PV in ${record.town}?`,
+        a: `Yes. Eternalgy holds Malaysia's highest CIDB Grade G7 license (unlimited tender capacity, including M15 electrical & grid interconnection), a SEDA RPVSP registration for NEM 3.0 & SELCO submissions, and is a Maybank-selected solar partner with certified in-house engineers — so Solar PV in ${record.town} is delivered to full national compliance standards.`
       }
     ];
   }
@@ -163,6 +211,7 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       },
       coverage: coverageSentence(record),
       keywords: [`Solar PV in ${record.town}`, `${record.town} 太阳能`],
+      whyChooseUs: WHY_CHOOSE_US,
       services: SERVICES,
       faqs: faqsFor(record, agent),
       nearby: nearby.map((t) => ({
@@ -202,6 +251,11 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
     lines.push('');
     lines.push('## What we offer in ' + record.town);
     SERVICES.forEach((s) => lines.push('- ' + s));
+    lines.push('');
+    lines.push(`## Why choose Eternalgy in ${record.town}`);
+    WHY_CHOOSE_US.forEach((w) => {
+      lines.push(`- **${w.title}** (${w.tag}): ${w.text}`);
+    });
     lines.push('');
     lines.push(`## Our service area covers ${record.town}`);
     lines.push(`Residents and businesses in ${record.town} can rely on ${agent.name}, our area representative, plus a nationwide CIDB G3 engineering team.`);
@@ -512,6 +566,7 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       nearby,
       coverage,
       faqs,
+      why: WHY_CHOOSE_US,
       title: `${record.town} 太阳能 | Solar PV in ${record.town}, ${record.stateName}`,
       meta_description: `${record.town} 太阳能 · Solar PV in ${record.town}, ${record.stateName}. Area representative ${agent.name} (${agent.phone}) covers ${record.town} in ${record.district}. Free site survey and quote.`,
       meta_keywords: `${record.town} 太阳能, Solar PV in ${record.town}, solar PV ${record.town}, ${record.town} solar, ${record.stateName} solar PV`,
