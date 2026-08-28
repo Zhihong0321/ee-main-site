@@ -86,6 +86,7 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       if (record.note === 'partially') s += ` Coverage of ${record.town} is partial.`;
       else s += ` Local note: ${record.note}.`;
     }
+    s += ` Search: Solar PV in ${record.town} · ${record.town} 太阳能.`;
     return s;
   }
 
@@ -93,19 +94,23 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
     return [
       {
         q: `Does Eternalgy install solar PV in ${record.town}?`,
-        a: `Yes. Our service region includes ${record.town} in ${record.district}, ${record.stateName}. ${agent.name} is the area representative for this ${localityLabel(record)}, and Eternalgy's nationwide engineering team delivers the project.`
+        a: `Yes. Solar PV in ${record.town} is within our service region (${record.district}, ${record.stateName}). ${agent.name} is the area representative for this ${localityLabel(record)}, and Eternalgy's nationwide engineering team delivers the project.`
+      },
+      {
+        q: `${record.town} 太阳能谁负责？`,
+        a: `${record.town} 太阳能由 ${agent.name} 负责（区域代表）。致电或 WhatsApp ${agent.phone} 即可预约免费勘查与报价。Solar PV in ${record.town} is handled by ${agent.name}.`
       },
       {
         q: `Who is the solar PV area representative in ${record.town}?`,
-        a: `${agent.name} is Eternalgy's area representative for ${record.town}. Call or WhatsApp ${agent.phone} for a free consultation, site survey and solar PV quote.`
+        a: `${agent.name} is Eternalgy's area representative for Solar PV in ${record.town} and ${record.town} 太阳能. Call or WhatsApp ${agent.phone} for a free consultation, site survey and quote.`
       },
       {
         q: `How much does solar PV cost in ${record.town}?`,
-        a: `Cost depends on roof size, energy usage and system capacity. A typical commercial system in ${record.town} is quoted after a free site survey — call ${agent.name} at ${agent.phone} for a no-obligation estimate.`
+        a: `Cost depends on roof size, energy usage and system capacity. A typical commercial system for Solar PV in ${record.town} is quoted after a free site survey — call ${agent.name} at ${agent.phone} for a no-obligation estimate.`
       },
       {
         q: `How do I get a solar quote in ${record.town}?`,
-        a: `Call or WhatsApp ${agent.name} at ${agent.phone}. We will arrange a free consultation and site survey in ${record.town}, ${record.stateName}.`
+        a: `Call or WhatsApp ${agent.name} at ${agent.phone}. We will arrange a free consultation and site survey for Solar PV in ${record.town} / ${record.town} 太阳能.`
       }
     ];
   }
@@ -157,6 +162,7 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
         role: `Area representative for ${record.town}, ${record.stateName}`
       },
       coverage: coverageSentence(record),
+      keywords: [`Solar PV in ${record.town}`, `${record.town} 太阳能`],
       services: SERVICES,
       faqs: faqsFor(record, agent),
       nearby: nearby.map((t) => ({
@@ -177,7 +183,10 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
     const agent = agentFor(record);
     const payload = townPayload(record, baseUrl, st);
     const lines = [];
-    lines.push(`# Solar PV Installation in ${record.town}, ${record.stateName}`);
+    lines.push(`# Solar PV in ${record.town}`);
+    lines.push(`# ${record.town} 太阳能`);
+    lines.push('');
+    lines.push(`**Keywords:** Solar PV in ${record.town} · ${record.town} 太阳能`);
     lines.push('');
     lines.push(payload.coverage);
     lines.push('');
@@ -242,8 +251,10 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
         {
           '@type': 'Service',
           '@id': serviceId,
-          name: `Solar PV Installation & EPC in ${record.town}`,
+          name: `Solar PV in ${record.town}`,
+          alternateName: `${record.town} 太阳能`,
           serviceType: 'Solar PV Installation & EPC',
+          keywords: `Solar PV in ${record.town}, ${record.town} 太阳能, solar PV ${record.stateName}`,
           provider: { '@id': org['@id'] },
           brand: { '@id': org['@id'] },
           areaServed: [
@@ -295,9 +306,11 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
           '@type': 'WebPage',
           '@id': webpageId,
           url: townUrl,
-          name: `Solar PV in ${record.town}, ${record.stateName}`,
+          name: `Solar PV in ${record.town} | ${record.town} 太阳能`,
+          alternateName: [`${record.town} 太阳能`, `Solar PV in ${record.town}`],
           description: payload.coverage,
-          inLanguage: 'en-MY',
+          inLanguage: ['en-MY', 'zh-CN', 'ms-MY'],
+          keywords: `Solar PV in ${record.town}, ${record.town} 太阳能`,
           isPartOf: { '@id': baseUrl + '#website' },
           about: { '@id': serviceId },
           mainEntity: { '@id': serviceId },
@@ -443,8 +456,9 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
         }))
       });
     } else if (format === 'raw' || format === 'md') {
-      let md = `# Solar PV Service Areas in ${st.stateName}\n\n`;
-      md += `Eternalgy covers ${st.townCount} towns in ${st.stateName}, Malaysia. Each page names the area representative for that locality.\n\n`;
+      let md = `# Solar PV in ${st.stateName}\n`;
+      md += `# ${st.stateName} 太阳能\n\n`;
+      md += `Eternalgy covers ${st.townCount} towns in ${st.stateName}, Malaysia. Search: Solar PV in ${st.stateName} · ${st.stateName} 太阳能. Each page names the area representative for that locality.\n\n`;
       st.districts.forEach((d) => {
         md += '## ' + d.district + '\n';
         d.towns.forEach((t) => {
@@ -458,8 +472,9 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
 
     res.render('agent-state', {
       st,
-      title: `Solar PV Service Areas in ${st.stateName} - Eternalgy`,
-      meta_description: `Eternalgy solar PV area representatives serve ${st.townCount} towns in ${st.stateName}, Malaysia. Find your town and call the named agent for a free quote.`,
+      title: `${st.stateName} 太阳能 | Solar PV in ${st.stateName} - Eternalgy`,
+      meta_description: `${st.stateName} 太阳能 · Solar PV in ${st.stateName}. Eternalgy area representatives serve ${st.townCount} towns. Find your town and call the named agent for a free quote.`,
+      meta_keywords: `${st.stateName} 太阳能, Solar PV in ${st.stateName}, solar PV ${st.stateName}`,
       schemaData,
       currentTab: 'agent',
       geoPlacename: st.stateName,
@@ -497,8 +512,9 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       nearby,
       coverage,
       faqs,
-      title: `Solar PV in ${record.town}, ${record.stateName} | ${agent.name}`,
-      meta_description: `Solar PV installation in ${record.town}, ${record.stateName}. Area representative ${agent.name} (${agent.phone}) covers ${record.town} in ${record.district}. Free site survey and quote.`,
+      title: `${record.town} 太阳能 | Solar PV in ${record.town}, ${record.stateName}`,
+      meta_description: `${record.town} 太阳能 · Solar PV in ${record.town}, ${record.stateName}. Area representative ${agent.name} (${agent.phone}) covers ${record.town} in ${record.district}. Free site survey and quote.`,
+      meta_keywords: `${record.town} 太阳能, Solar PV in ${record.town}, solar PV ${record.town}, ${record.town} solar, ${record.stateName} solar PV`,
       schemaData,
       currentTab: 'agent',
       ogType: 'website',

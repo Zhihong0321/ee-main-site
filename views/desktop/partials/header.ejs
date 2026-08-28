@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %></title>
   <meta name="description" content="<%= typeof meta_description !== 'undefined' ? meta_description : 'Specialized hub for Solar PV EPC solutions, tips, engineering insights, and real-time renewable energy news.' %>">
+  <% if (typeof meta_keywords !== 'undefined' && meta_keywords) { %>
+  <meta name="keywords" content="<%= meta_keywords %>">
+  <% } %>
   <meta name="robots" content="<%= (typeof noindex !== 'undefined' && noindex) ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' %>">
   
   <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Solar PV EPC & Renewable Energy News Portal' %>">
