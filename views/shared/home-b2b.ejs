@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18435272787"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-18435272787');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="description" content="<%= meta_description %>">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= meta_description %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= canonicalUrl %>">
+  <meta property="og:locale" content="en_MY">
+  <meta property="og:site_name" content="Eternalgy">
+  <meta property="og:image" content="<%= baseUrl %>/images/b2b/studio-macro.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= title %>">
+  <meta name="twitter:description" content="<%= meta_description %>">
+
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/home-b2b.css">
+  <link rel="preload" as="image" href="/images/b2b/studio-macro.webp">
+
+  <link rel="canonical" href="<%= canonicalUrl %>">
+  <link rel="alternate" type="application/rss+xml" title="Renewable Energy News RSS Feed" href="<%= baseUrl %>/feed.xml">
+  <link rel="alternate" type="application/json" title="Renewable Energy News JSON Feed" href="<%= baseUrl %>/feed.json">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="<%= baseUrl %>/sitemap.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown Content" href="<%= canonicalUrl %>?format=md">
+  <link rel="alternate" type="application/json" title="JSON Content" href="<%= canonicalUrl %>?format=json">
+
+  <% if (typeof schemaData !== 'undefined' && schemaData) { %>
+  <script type="application/ld+json">
+    <%- JSON.stringify(schemaData) %>
+  </script>
+  <% } %>
+</head>
+<body>
+<script>document.documentElement.classList.add('js')</script>
+
+<header class="hero">
+  <img src="/images/b2b/studio-macro.webp" alt="Corner of a solar module: machined black frame, tempered glass edge and cell busbars under a single strip light" width="1920" height="1280" fetchpriority="high">
+  <nav class="nav" aria-label="Main">
+    <a href="/"><img src="/logo.png" alt="Eternalgy" width="117" height="42"></a>
+    <ul>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#credentials">Credentials</a></li>
+      <li><a href="#insights">Insights</a></li>
+      <li><a class="cta-l" href="#contact">Request assessment</a></li>
+    </ul>
+    <details class="menu-d">
+      <summary>Menu</summary>
+      <div class="panel">
+        <a href="/about-solar-pv-epc-company">Company and EPC services</a>
+        <a href="/agent">Service areas</a>
+        <a href="/tips">Engineering notes</a>
+        <a href="/news">Energy news</a>
+        <a href="/faq">FAQ</a>
+        <a href="#contact">Request an assessment</a>
+      </div>
+    </details>
+  </nav>
+  <div class="hero-in">
+    <h1><span class="ln"><span>Solar infrastructure</span></span><span class="ln"><span>for industry.</span></span></h1>
+    <div class="side">
+      <p class="lede">Engineering, financing and operation of solar PV for factories, warehouses and commercial estates in Malaysia.</p>
+      <div class="acts"><a class="btn btn--light" href="#contact">Request a site assessment</a><a class="tlink" href="https://pub-31ab1252a5544ca19749b476315d9b01.r2.dev/pr-attachments/041d2d8a-07b3-4c6a-9895-9d9f2a2f2bd9/Eternalgy_Corporate_Profile_v4_Full.pdf" target="_blank" rel="noopener">Company profile (PDF)</a></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="stats wrap" aria-labelledby="stats-h">
+    <h2 id="stats-h" class="h-head"><span class="soft">Three years.</span><br>Twelve megawatts.</h2>
+    <div class="ledger num">
+      <div class="row"><span class="w">12</span><span class="c"><b>MWp+</b> of solar PV installed and commissioned</span></div>
+      <div class="row"><span class="w">1,100</span><span class="c"><b>+</b> projects delivered across Malaysia</span></div>
+      <div class="row"><span class="w">35</span><span class="c"><b>RM million+</b> in customer revenue since 2023</span></div>
+      <div class="row"><span class="w">G7</span><span class="c"><b>CIDB grade</b>, the highest, with unlimited tender capacity</span></div>
+    </div>
+  </section>
+
+  <section class="caps wrap" id="capabilities" aria-labelledby="caps-h">
+    <h2 id="caps-h" class="h-head">Capabilities</h2>
+    <div class="group">
+      <h3>Engineering and construction</h3>
+      <ul>
+        <li tabindex="0" data-d="Full EPC for metal-deck and concrete roofs: structural assessment, design, supply, installation and grid connection.">Rooftop EPC</li>
+        <li tabindex="0" data-d="Ground-mounted arrays on industrial land, on our own mounting engineering.">Ground-mount systems</li>
+        <li tabindex="0" data-d="Solar carports and covered walkways for business parks and car parks.">Carports</li>
+        <li tabindex="0" data-d="LV switchgear, cabling and TNB bi-directional interconnection by our in-house electrical team.">Electrical works</li>
+        <li tabindex="0" data-d="Connection Assessment and Power System Studies prepared and submitted to TNB for larger systems.">TNB CAS and PSS studies</li>
+      </ul>
+      <p class="sum">Rooftop, ground-mount and carport EPC with our own electrical team and TNB studies.</p>
+    </div>
+    <div class="group">
+      <h3>Financing</h3>
+      <ul>
+        <li tabindex="0" data-d="We finance, build and operate the system; you buy the electricity at a rate below the tariff. No capital outlay.">Zero-capex PPA</li>
+        <li tabindex="0" data-d="Approved on SEDA's Registered PV Investor directory to own and operate systems on your premises.">SEDA RPVI investor</li>
+        <li tabindex="0" data-d="Preferred installer for Maybank's solar financing products.">Maybank financing</li>
+        <li tabindex="0" data-d="MyHijau-certified equipment (MyHS00025/25) qualifies outright purchases for the 60% Green Investment Tax Allowance.">60% GITA allowance</li>
+      </ul>
+      <p class="sum">Zero-capex PPA, bank financing and the 60% GITA tax allowance.</p>
+    </div>
+    <div class="group">
+      <h3>Operations</h3>
+      <ul>
+        <li tabindex="0" data-d="Preventive maintenance, cleaning and thermal inspection on a fixed schedule.">O&amp;M contracts</li>
+        <li tabindex="0" data-d="Inverter-level monitoring with monthly performance reports against the design yield.">Performance monitoring</li>
+        <li tabindex="0" data-d="One number to call; the engineers who built the system respond to faults.">Fault response</li>
+        <li tabindex="0" data-d="SAJ battery storage for peak shaving and backup, with SHRDC-trained technicians.">Battery storage</li>
+        <li tabindex="0" data-d="AC and DC charging for fleets and staff, integrated with on-site generation.">EV charging</li>
+      </ul>
+      <p class="sum">O&amp;M contracts, performance reporting, storage and EV charging.</p>
+    </div>
+    <p class="cap-note" id="capnote" aria-live="polite">Select a capability for the scope we deliver.</p>
+  </section>
+
+  <section class="sectors wrap" id="sectors" aria-labelledby="sec-h">
+    <div class="side">
+      <h2 id="sec-h" class="h-head">Sectors</h2>
+      <div class="shot"><img id="shot" src="/images/b2b/aerial-factory.webp" alt="Manufacturing plant with a fully covered solar roof" width="1600" height="1067" loading="lazy"></div>
+    </div>
+    <div class="slist" id="slist">
+      <div class="srow" tabindex="0" data-img="/images/b2b/aerial-factory.webp" data-alt="Manufacturing plant with a fully covered solar roof"><div><h3>Manufacturing plants</h3><p>High daytime load and large metal-deck roofs: the fastest payback in the portfolio.</p></div><span class="k">EPC · PPA</span></div>
+      <div class="srow" tabindex="0" data-img="/images/b2b/aerial-warehouse.webp" data-alt="Logistics warehouse roof covered with solar modules"><div><h3>Logistics and warehousing</h3><p>Long, unobstructed roofs and cold-chain loads, built around live operations.</p></div><span class="k">EPC · O&amp;M</span></div>
+      <div class="srow" tabindex="0" data-img="/images/b2b/aerial-commercial.webp" data-alt="Commercial complex with rooftop solar and a solar carport"><div><h3>Commercial property</h3><p>Rooftops and carports for offices, retail and mixed-use estates.</p></div><span class="k">EPC · Carport</span></div>
+      <div class="srow" tabindex="0" data-img="/images/b2b/aerial-cold-storage.webp" data-alt="Food processing and cold storage facility with rooftop solar"><div><h3>Food processing and cold storage</h3><p>Round-the-clock refrigeration paired with solar and battery storage.</p></div><span class="k">EPC · BESS</span></div>
+      <div class="srow" tabindex="0" data-img="/images/b2b/aerial-industrial-park.webp" data-alt="Industrial park at dusk with a large solar roof"><div><h3>Industrial parks</h3><p>Multi-tenant estates under one engineering and operations contract.</p></div><span class="k">PPA · O&amp;M</span></div>
+    </div>
+  </section>
+
+  <section class="process wrap" id="process" aria-labelledby="proc-h">
+    <h2 id="proc-h" class="h-head">From feasibility to handover</h2>
+    <div class="steps">
+      <article class="step"><figure><img src="/images/b2b/step-feasibility.webp" alt="Engineer measuring a factory roof" loading="lazy" width="1067" height="1600"></figure><h3>Feasibility</h3><p>Roof survey, load profile from twelve months of TNB data, yield and payback model.</p></article>
+      <article class="step"><figure><img src="/images/b2b/step-design.webp" alt="Single-line diagram and roof layout drawings" loading="lazy" width="1067" height="1600"></figure><h3>Engineering design</h3><p>Structural check, string layout and single-line diagram, signed off in-house.</p></article>
+      <article class="step"><figure><img src="/images/b2b/step-approvals.webp" alt="Engineer testing a main switchboard" loading="lazy" width="1067" height="1600"></figure><h3>Approvals</h3><p>SEDA submission as a registered RPVSP, TNB studies and interconnection.</p></article>
+      <article class="step"><figure><img src="/images/b2b/step-construction.webp" alt="Crane lifting solar modules onto a factory roof" loading="lazy" width="1067" height="1600"></figure><h3>Construction</h3><p>Our own crews under an OSH-C certified supervisor. No sub-contractors.</p></article>
+      <article class="step"><figure><img src="/images/b2b/step-commissioning.webp" alt="Engineer inspecting a wall of string inverters" loading="lazy" width="1067" height="1600"></figure><h3>Commissioning</h3><p>Testing, SEDA approval and the TNB bi-directional meter. Handover dossier.</p></article>
+      <article class="step"><figure><img src="/images/b2b/step-om.webp" alt="Technician inspecting modules with a thermal camera" loading="lazy" width="1067" height="1600"></figure><h3>Operation</h3><p>Monitoring, thermal inspection and cleaning for the life of the system.</p></article>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="band-h">
+    <img src="/images/b2b/aerial-warehouse.webp" alt="Aerial view of a warehouse roof covered in solar modules" loading="lazy" width="1600" height="1067">
+    <div class="cap">
+      <h2 id="band-h" class="h-head">Built, commissioned,<br>and running.</h2>
+      <p>Over 12 MWp across more than 1,100 projects, maintained by the team that built them.</p>
+    </div>
+  </section>
+
+  <section class="creds wrap" id="credentials" aria-labelledby="cred-h">
+    <h2 id="cred-h" class="h-head"><span>Top grade,</span><span>on record.</span></h2>
+    <table class="rv">
+      <tbody>
+        <tr><td class="num">2026</td><td>CIDB Grade G7, unlimited tender capacity</td><td>CIDB Malaysia · B04, CE21, M15</td><td class="num">0120250324-WP152634</td></tr>
+        <tr><td></td><td>OSH-C certified safety supervisor, in-house</td><td>Occupational safety and health</td><td>Sep 2026</td></tr>
+        <tr class="gap"><td colspan="4"></td></tr>
+        <tr><td class="num">2025</td><td>MyHijau certified equipment</td><td>MGTC · SAJ inverter range</td><td class="num">MyHS00025/25</td></tr>
+        <tr class="gap"><td colspan="4"></td></tr>
+        <tr><td class="num">2024</td><td>Registered PV Service Provider</td><td>SEDA Malaysia</td><td class="num">SEDA/RPVSP/2024/321</td></tr>
+        <tr><td></td><td>Registered PV Investor</td><td>SEDA Malaysia</td><td>RPVI directory</td></tr>
+        <tr><td></td><td>Golden Bull, Outstanding Bull</td><td>Malaysia Golden Bull Award</td><td>Awarded</td></tr>
+        <tr class="gap"><td colspan="4"></td></tr>
+        <tr><td>Partners</td><td>SAJ Malaysia sole distributor</td><td>SAJ Electric · Shanghai</td><td>50 MW + 10 MWh</td></tr>
+        <tr><td></td><td>Selected solar PV partner</td><td>Maybank</td><td>Preferred installer</td></tr>
+        <tr><td></td><td>Centre of Excellence partner</td><td>SHRDC Shah Alam</td><td>Battery training</td></tr>
+        <tr><td></td><td>Corporate member</td><td>Malaysian Photovoltaic Industry Association</td><td>MPiA</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="acct wrap" aria-labelledby="acct-h">
+    <h2 id="acct-h" class="h-head">One contractor,<br>accountable.</h2>
+    <div class="points">
+      <article class="point rv"><h3>Zero sub-contractors</h3><p>Electrical and structural engineering, installation and service by our own staff.</p></article>
+      <article class="point rv"><h3>Workmanship guaranteed</h3><p>1-year leak-proof workmanship guarantee and 3-year MSIG Solar All-Risk Insurance on every installation.</p></article>
+      <article class="point rv"><h3>Supply chain we control</h3><p>Sole distributor for SAJ in Malaysia, with warehouses in Johor and Selangor for fast replacement.</p></article>
+      <article class="point rv"><h3>Safety to listed-company standard</h3><p>An OSH-C certified supervisor on our own payroll, on every major site.</p></article>
+    </div>
+  </section>
+
+  <%
+    // Engineering notes lead; news fills the remaining rows.
+    const insightTips = (tips || []).slice(0, 4).map(t => Object.assign({ kind: 'Engineering' }, t));
+    const insights = insightTips.concat(
+      (news || []).slice(0, 6 - insightTips.length).map(n => Object.assign({ kind: 'News' }, n))
+    );
+  %>
+  <section class="notes wrap" id="insights" aria-labelledby="ins-h">
+    <h2 id="ins-h" class="h-head">Insights</h2>
+    <div>
+      <% insights.forEach(function(item) { %>
+        <div class="nrow"><a href="/<%= item.slug %>"><%= item.title %></a><span><%= item.kind %></span></div>
+      <% }); %>
+      <a class="tlink more" href="/tips">All engineering notes</a>
+      &nbsp;&nbsp;<a class="tlink more" href="/news">Energy news</a>
+    </div>
+  </section>
+
+  <section class="cta wrap" id="contact" aria-labelledby="cta-h">
+    <h2 id="cta-h" class="h-head">Request a site<br>assessment.</h2>
+    <div>
+      <p>Send your site address and twelve months of TNB bills. Our engineers return a feasibility study with system size, yield and payback.</p>
+      <div class="acts"><a class="btn" href="https://wa.me/601121000099?text=Hi%20Eternalgy%2C%20I%27d%20like%20a%20site%20assessment%20for%20solar%20PV." target="_blank" rel="noopener">Request an assessment</a><a class="tlink" href="mailto:enquiry@eternalgy.me">enquiry@eternalgy.me</a><a class="tlink" href="tel:+601121000099">+60 11-2100 0099</a></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="offices wrap">
+    <p><b>Johor Bahru (HQ)</b>21-01, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor</p>
+    <p><b>Kuala Lumpur</b>Unit 2.08, Level 2, Menara Maxisegar, Jalan Pandan Indah 4/2, 55100 Kuala Lumpur</p>
+    <p><b>Seremban</b>252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Negeri Sembilan</p>
+    <p><b>Kluang</b>No. 26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor</p>
+  </div>
+  <div class="foot">
+    <span>Eternalgy Sdn Bhd · 202301029164 (1523087-A)</span>
+    <nav aria-label="Footer"><a href="/about-solar-pv-epc-company">Company</a><a href="/agent">Service areas</a><a href="/tips">Notes</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="mailto:pr@eternalgy.me">Press</a></nav>
+    <span class="r">© 2026 eternalgy.me</span>
+  </div>
+  <div class="foot-alt">
+    <span>For AI agents and crawlers:</span>
+    <a href="?format=md" rel="nofollow">Markdown</a>
+    <a href="?format=json" rel="nofollow">JSON</a>
+    <a href="/llms.txt">llms.txt</a>
+    <a href="/sitemap.xml">Sitemap</a>
+    <a href="/feed.json">JSON feed</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var note=document.getElementById('capnote');
+  document.querySelectorAll('.group li').forEach(function(li){var s=function(){note.textContent=li.dataset.d};li.addEventListener('mouseenter',s);li.addEventListener('focus',s)});
+  var shot=document.getElementById('shot');
+  document.querySelectorAll('.srow').forEach(function(r){var s=function(){if(shot.getAttribute('src')!==r.dataset.img){shot.style.opacity=0;setTimeout(function(){shot.src=r.dataset.img;shot.alt=r.dataset.alt;shot.style.opacity=1},180)}};r.addEventListener('mouseenter',s);r.addEventListener('focus',s)});
+  document.querySelectorAll('.menu-d .panel a').forEach(function(a){a.addEventListener('click',function(){a.closest('details').removeAttribute('open')})});
+  document.querySelectorAll('main h2, .row, .group, .srow, .step, .band .cap p, .nrow, .offices p, .cta p').forEach(function(el){el.classList.add('rv')});
+  var els=document.querySelectorAll('.rv');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  els.forEach(function(el,i){el.style.transitionDelay=(i%4*80)+'ms';io.observe(el)});
+})();
+</script>
+</body>
+</html>

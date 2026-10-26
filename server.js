@@ -548,7 +548,8 @@ app.get('/', async (req, res) => {
     }
 
     res.render('index', {
-      title: "Eternalgy | Solar PV EPC Company Malaysia – C&I Rooftop & O&M",
+      title: "Eternalgy | Solar Infrastructure for Industry – C&I Solar EPC Malaysia",
+      meta_description: "CIDB Grade G7 solar EPC contractor for factories, warehouses and commercial estates in Malaysia: engineering, zero-capex PPA financing and O&M. 12 MWp+ installed.",
       companyAbout,
       tips,
       news,
