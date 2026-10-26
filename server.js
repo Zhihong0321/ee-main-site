@@ -791,7 +791,7 @@ app.get('/about-solar-pv-epc-company', async (req, res) => {
       branches, 
       certifications, 
       title: 'Company Profile & EPC Services - Eternalgy', 
-      meta_description: 'Seda Registered PV Investor & CIDB G3 licensed electrical engineer team, headquarted in Mount Austin Johor Bahru.', 
+      meta_description: 'SEDA Registered PV Investor & CIDB Grade G7 contractor with an in-house electrical engineering team, headquartered in Mount Austin, Johor Bahru.', 
       schemaData, 
       currentTab: 'epc' 
     });
