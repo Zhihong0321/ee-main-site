@@ -1084,7 +1084,8 @@ app.get('/sitemap.xml', async (req, res) => {
       '/news': maxNewsDate,
       '/tips': maxTipsDate,
       '/about-solar-pv-epc-company': maxOverallDate,
-      '/faq': maxFaqDate
+      '/faq': maxFaqDate,
+      '/solar-simulator': maxOverallDate
     };
 
     res.setHeader('Content-Type', 'application/xml');
