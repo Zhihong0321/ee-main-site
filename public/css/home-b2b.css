@@ -237,3 +237,4 @@ h1,h2,h3,p{margin:0}
   .person--lead h3{font-size:30px}
   .offices{grid-template-columns:1fr 1fr}
 }
+.person .ph--cutout img{object-fit:contain;object-position:center bottom}
