@@ -416,7 +416,8 @@ h1, h2, h3 {
 
 /* ---------- locations / footer ---------- */
 .foot { background: var(--ink); color: var(--paper); }
-.loc-grid { display:grid; grid-template-columns: repeat(3,1fr); gap: clamp(20px,3vw,40px); }
+.loc-grid { display:grid; grid-template-columns: repeat(5,1fr); gap: clamp(20px,3vw,40px); }
+@media (max-width: 1100px){ .loc-grid{ grid-template-columns: repeat(3,1fr); } }
 @media (max-width: 760px){ .loc-grid{ grid-template-columns:1fr; } }
 .loc__tag { font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); }
 .loc__addr { color:#aab2ac; font-size:15px; margin-top:12px; line-height:1.6; max-width: 34ch; }

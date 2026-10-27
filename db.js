@@ -215,7 +215,7 @@ async function initDb() {
       const branchesSeeds = [
         {
           name: 'HQ Johor Bahru',
-          address: '21-01, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor',
+          address: '01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor',
           phone: '+601121000099',
           email: 'enquiry@eternalgy.me',
           latitude: 1.551815,

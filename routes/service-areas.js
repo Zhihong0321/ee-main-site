@@ -178,7 +178,7 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       },
       address: {
         '@type': 'PostalAddress',
-        streetAddress: '21-01, Jalan Mutiara Emas 10/19, Taman Mount Austin',
+        streetAddress: '01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin',
         addressLocality: 'Johor Bahru',
         addressRegion: 'Johor',
         postalCode: '81100',
