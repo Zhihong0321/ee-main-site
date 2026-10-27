@@ -2,6 +2,19 @@
 
 Status: **Approved 27 Oct 2026**, with the defaults for the open items (HQ 01-23, Melaka with no street address, RPVSP "Registered", GM name only, rounded numbers, GITA kept with its date, English only).
 
+## Solar Simulator section (added 27 Oct 2026, pages 5–8)
+
+The profile is now 20 pages. The four Solar Simulator pages (approved separately; source `simulator.html`) sit after Capabilities, as a showcase of in-house software and precision simulation, so every later page moves up four (Schemes is now page 9 … Back cover page 20).
+
+| Page | Content | Source |
+|---|---|---|
+| 5 | Your bill after solar, simulated from the tariff: the six stages, what the engine models, the RM150/month → RM36,000 over 20 years illustration | Solar Calculator v2 repo: `Why-Eternalgy-Solar-Simulation-is-Precise.md`, `domestic-solar-calculation-process.md`, `tnb_domestic_rp4_bill.py` |
+| 6 | Homes: RM500 April 2026 bill worked through (1,058 kWh, 10.4 kWp, RM504.67 → RM143.09, RM361.58/month) | Live calculator run, 27 Oct 2026 |
+| 7 | Business: RM5,000 bill hour by hour (9,671 kWh, 45.5 kWp, RM2,387.14/month every day; RM1,978.92 Mon–Fri) | Live calculator run and the same hourly model |
+| 8 | Why the numbers hold up: six reasons, percentage vs simulation table, limits | As page 5 |
+
+No Eternalgy prices or payback are shown. Capabilities ("Software and IoT engineering") and the consultation step on How we deliver now mention the simulator.
+
 ## Additions after the gap review (approved 27 Oct 2026)
 
 A comparison with eternalgy.me, the PR hub (ee-pr.up.railway.app) and the v4 and 2025 profiles found these gaps; all ten were added. Contact stays admin@eternalgy.com; coverage stays "Peninsular Malaysia"; the unnamed listed-company project and the 2025 training-culture page stay out.
