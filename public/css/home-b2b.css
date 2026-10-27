@@ -263,3 +263,19 @@ h1,h2,h3,p{margin:0}
   .mtable th,.mtable td{padding:10px 8px;font-size:15px}
   .mtable td:nth-child(2){width:auto}
 }
+
+/* simulator section (content only) */
+.simteaser{margin-top:var(--gap);background:var(--field);color:var(--field-ink);padding-block:clamp(96px,10vw,152px)}
+.simt-in{display:grid;grid-template-columns:6fr 6fr;gap:var(--m);align-items:start}
+.lede-d{margin-top:28px;font-size:var(--step-lead);line-height:1.38;color:#d9dde1;max-width:46ch}
+.simt-steps{list-style:none;margin:32px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;color:#d9dde1}
+.simt-steps b{display:block;color:#fff;font-weight:600}
+.simteaser .acts{display:flex;gap:28px;align-items:center;margin-top:36px;flex-wrap:wrap}
+.simt-ex{display:grid;gap:12px}
+.ex{background:#12171c;padding:clamp(24px,2.6vw,36px)}
+.ex-k{color:var(--field-muted)}
+.ex-n{font-size:clamp(3rem,1.6rem + 4vw,5.25rem);font-weight:500;letter-spacing:-0.045em;line-height:1;margin-top:10px}
+.ex-s{margin-top:10px;color:#d9dde1}
+.ex-note{color:var(--field-muted);font-size:var(--step-small)}
+@media (max-width:1100px){.simt-in{grid-template-columns:1fr}}
+@media (max-width:820px){.simt-steps{grid-template-columns:1fr}.ex-n{font-size:12vw}}
