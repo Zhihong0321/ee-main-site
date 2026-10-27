@@ -2342,7 +2342,7 @@ app.get('/:slug', async (req, res, next) => {
   }
 
   try {
-    const articlePromise = db.pool.query("SELECT * FROM main_site_articles WHERE slug = $1", [slug]);
+    const articlePromise = db.pool.query("SELECT * FROM main_site_articles WHERE slug = $1 AND published = true", [slug]);
     const productPromise = db.pool.query("SELECT * FROM main_site_products WHERE slug = $1", [slug]);
     const projectPromise = db.pool.query("SELECT * FROM main_site_projects WHERE slug = $1", [slug]);
 
