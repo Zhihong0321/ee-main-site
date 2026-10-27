@@ -46,41 +46,41 @@ const SERVICES = [
   'Commercial & industrial rooftop solar PV (EPC)',
   'Zero-capex solar investment (RPVI / PPA)',
   'Solar PV operation & maintenance (O&M)',
-  'In-house electrical engineering (CIDB G3 licensed)'
+  'In-house electrical engineering (CIDB G7, Suruhanjaya Tenaga certified)'
 ];
 
-// Verified selling points & credentials — source of truth: Eternalgy PR
-// hub (ee-pr.up.railway.app) — live metrics, ad copy repo & compliance vault.
+// Verified selling points & credentials — source of truth: Corporate Profile v4
+// (Oct 2026), current CIDB PPK (G7, Jul 2026), MyHIJAU 2026-2027 and SSM records.
 const WHY_CHOOSE_US = [
   {
-    tag: 'ZERO SUB-CONTRACTORS',
-    title: '100% in-house engineering',
-    text: 'Self-operated in-house electrical & structural engineering team — we never sub-contract your installation.'
+    tag: 'ONE TEAM',
+    title: 'In-house engineering',
+    text: 'Certified in-house engineers and crews, one point of accountability from design to handover — no finger-pointing between vendors.'
   },
   {
     tag: 'GUARANTEED',
-    title: 'Leak-proof + insured',
-    text: '1-year leak-proof workmanship guarantee plus 3-year MSIG solar all-risk insurance on every installation.'
+    title: 'Warranty you can hold us to',
+    text: '3-year installation workmanship, 1-year roof leak cover, 10-year SAJ inverter and 30-year Jinko module power warranties.'
   },
   {
     tag: 'GOVERNMENT-GRADE',
     title: 'CIDB Grade G7',
-    text: 'Highest CIDB Grade G7 contractor with unlimited tender capacity — Building (B04), Civil (CE21) & Electrical (M15).'
+    text: 'Highest CIDB Grade G7 contractor with unlimited tender capacity: Building (B04), Civil (CE21) and Electrical (M15).'
   },
   {
     tag: 'SEDA-REGISTERED',
     title: 'RPVSP + PV investor',
-    text: 'SEDA-registered RPVSP for NEM 3.0 (Rakyat, GOVER, NOVA) & SELCO; approved PV investor for zero-capex PPA and leasing.'
+    text: 'SEDA-registered RPVSP for ATAP and SELCO submissions; approved PV investor for zero-capex solar investment.'
   },
   {
     tag: 'TAX SAVINGS',
     title: '60% GITA allowance',
-    text: 'MyHijau MGTC-certified equipment — eligible for 60% GITA tax allowance on qualifying systems.'
+    text: 'MyHIJAU-certified solar PV EPCC services (MGTC). Solar qualifies for 60% GITA and battery storage for 100%, until 31 December 2026.'
   },
   {
     tag: 'PROVEN',
-    title: 'RM 28M+ · 10.75 MWp · 925+',
-    text: 'RM 28.15M+ customer revenue, 10.75 MWp installed and 925+ projects delivered nationwide.'
+    title: '12 MWp+ · 1,100+ · 60+ C&I',
+    text: '12 MWp+ installed, 1,100+ sites commissioned and 60+ commercial and industrial projects completed.'
   },
   {
     tag: 'TRUSTED',
@@ -154,11 +154,11 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
       },
       {
         q: `Why choose Eternalgy for solar PV in ${record.town}?`,
-        a: `Eternalgy is a 100% in-house CIDB Grade G7 contractor (zero sub-contractors), SEDA-registered RPVSP & PV investor, and MyHijau-certified for 60% GITA tax allowance. Every installation includes a 1-year leak-proof workmanship guarantee and 3-year MSIG solar all-risk insurance, backed by RM 28.15M+ revenue, 10.75 MWp installed and 925+ projects across Malaysia — with ${agent.name} as your local area representative in ${record.town}.`
+        a: `Eternalgy is a CIDB Grade G7 contractor with its own certified engineering team, a SEDA-registered RPVSP and PV investor, and MyHIJAU-certified for solar PV EPCC services. Every installation carries a 3-year workmanship warranty and 1-year roof leak cover, backed by 12 MWp+ installed, 1,100+ sites commissioned and 60+ C&I projects across Malaysia — with ${agent.name} as your local area representative in ${record.town}.`
       },
       {
         q: `Is Eternalgy licensed to install solar PV in ${record.town}?`,
-        a: `Yes. Eternalgy holds Malaysia's highest CIDB Grade G7 license (unlimited tender capacity, including M15 electrical & grid interconnection), a SEDA RPVSP registration for NEM 3.0 & SELCO submissions, and is a Maybank-selected solar partner with certified in-house engineers — so Solar PV in ${record.town} is delivered to full national compliance standards.`
+        a: `Yes. Eternalgy holds Malaysia's highest CIDB Grade G7 license (unlimited tender capacity, including M15 electrical & grid interconnection), a SEDA RPVSP registration for ATAP and SELCO submissions, Suruhanjaya Tenaga certification for electrical wiring works, and is a Maybank-selected solar partner with certified in-house engineers — so Solar PV in ${record.town} is delivered to full national compliance standards.`
       }
     ];
   }
@@ -258,7 +258,7 @@ module.exports = function registerServiceAreaRoutes(app, getBaseUrl) {
     });
     lines.push('');
     lines.push(`## Our service area covers ${record.town}`);
-    lines.push(`Residents and businesses in ${record.town} can rely on ${agent.name}, our area representative, plus a nationwide CIDB G3 engineering team.`);
+    lines.push(`Residents and businesses in ${record.town} can rely on ${agent.name}, our area representative, plus a nationwide CIDB Grade G7 engineering team.`);
     lines.push('');
     lines.push('## FAQ');
     payload.faqs.forEach((f) => {

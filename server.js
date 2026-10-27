@@ -115,6 +115,12 @@ function getBaseUrl(req) {
   return `https://${host}`;
 }
 
+// Helper: Branch rows with a missing or masked phone (e.g. "+601****0099") fall back to the main line
+const MAIN_PHONE = '+601121000099';
+function withCallablePhones(rows) {
+  return rows.map(b => (!b.phone || /\*/.test(b.phone)) ? Object.assign({}, b, { phone: MAIN_PHONE }) : b);
+}
+
 // Middleware: Set Global View Parameters for Canonicalization
 app.use((req, res, next) => {
   const baseUrl = getBaseUrl(req);
@@ -179,7 +185,7 @@ function getSchemaData(item, type, baseUrl) {
             "@type": "ImageObject",
             "url": `${baseUrl}/logo.png`
           },
-          "foundingDate": "2023-09-15",
+          "foundingDate": "2023-07-31",
           "sameAs": [
             "https://eternalgy.com",
             "https://solarpanels.my",
@@ -227,7 +233,7 @@ function getSchemaData(item, type, baseUrl) {
             "@type": "ImageObject",
             "url": `${baseUrl}/logo.png`
           },
-          "foundingDate": "2023-09-15",
+          "foundingDate": "2023-07-31",
           "sameAs": [
             "https://eternalgy.com",
             "https://solarpanels.my",
@@ -432,7 +438,7 @@ app.get('/', async (req, res) => {
     const news = newsRes.rows;
     const products = productsRes.rows;
     const projects = projectsRes.rows;
-    const branches = branchesRes.rows;
+    const branches = withCallablePhones(branchesRes.rows);
 
     const localBusinesses = branches.map(b => {
       return {
@@ -465,8 +471,8 @@ app.get('/', async (req, res) => {
           "url": baseUrl,
           "logo": `${baseUrl}/logo.png`,
           "description": "Premium Engineering, Procurement, and Construction (EPC) firm for commercial and utility-scale solar PV.",
-          "foundingDate": "2023-09-15",
-          "numberOfEmployees": "60",
+          "foundingDate": "2023-07-31",
+          "numberOfEmployees": "62",
           "sameAs": [
             "https://eternalgy.com",
             "https://solarpanels.my",
@@ -708,7 +714,7 @@ app.get('/about-solar-pv-epc-company', async (req, res) => {
     const overview = infoMap['overview'] || null;
     const mission = infoMap['mission'] || null;
     const vision = infoMap['vision'] || null;
-    const branches = branchesRes.rows;
+    const branches = withCallablePhones(branchesRes.rows);
     const certifications = certsRes.rows;
 
     const localBusinesses = branches.map(b => {
