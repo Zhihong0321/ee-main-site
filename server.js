@@ -9,7 +9,6 @@ const db = require('./db');
 const { trackVisitor } = require('./scripts/visitorTracker');
 const { computeDailyReport, generateMissingReports } = require('./scripts/dailyReport');
 const registerServiceAreas = require('./routes/service-areas');
-const registerSolarSimulator = require('./routes/solar-simulator');
 const serviceAreas = require('./data/service-areas');
 
 const app = express();
@@ -1084,8 +1083,7 @@ app.get('/sitemap.xml', async (req, res) => {
       '/news': maxNewsDate,
       '/tips': maxTipsDate,
       '/about-solar-pv-epc-company': maxOverallDate,
-      '/faq': maxFaqDate,
-      '/solar-simulator': maxOverallDate
+      '/faq': maxFaqDate
     };
 
     res.setHeader('Content-Type', 'application/xml');
@@ -2327,7 +2325,6 @@ app.get('/visitor_analysis', (req, res) => {
 // 🗺️ SERVICE-AREA / LOCAL AGENT PAGES
 // ==========================================
 registerServiceAreas(app, getBaseUrl);
-registerSolarSimulator(app);
 
 // ==========================================
 // 🔗 DYNAMIC ROUTING & CATCH-ALL ROUTE
