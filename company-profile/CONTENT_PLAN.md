@@ -1,6 +1,23 @@
 # Eternalgy Corporate Profile 2026 — content plan
 
-Status: **DRAFT for approval.** No design work starts until this plan is approved.
+Status: **Approved 27 Oct 2026**, with the defaults for the open items (HQ 01-23, Melaka with no street address, RPVSP "Registered", GM name only, rounded numbers, GITA kept with its date, English only).
+
+## Additions after the gap review (approved 27 Oct 2026)
+
+A comparison with eternalgy.me, the PR hub (ee-pr.up.railway.app) and the v4 and 2025 profiles found these gaps; all ten were added. Contact stays admin@eternalgy.com; coverage stays "Peninsular Malaysia"; the unnamed listed-company project and the 2025 training-culture page stay out.
+
+| # | Addition | Page | Source |
+|---|---|---|---|
+| 1 | Milestones timeline, dated items only: incorporated 31 Jul 2023; SEDA RPVSP 2024; CIDB registered Mar 2025; MyHIJAU May 2025; SEDA RPVI 2025; Golden Bull 2025; SHRDC CoE 2025; MyHIJAU EPCC Jun 2026; CIDB G7 Jul 2026; OSH-C Sep 2026; 12 MWp+ / 1,100+ Oct 2026. Numbers become a row of five above it. | 3 | SSM, CIDB, MYH, P25 p.6, OSH, GB, WEB, LIVE |
+| 2 | Mission statement beside the vision | 2 | P25 p.8, website company page |
+| 3 | CIDB G7: no limit on tender value | 3, 7 | PR hub |
+| 4 | Zero-capex model named: power purchase agreements and solar leasing | 4 | PR hub (RPVI entry) |
+| 5 | EV charging in full | 4 | V4 p.28 |
+| 6 | Office map of the five offices (silhouette redrawn from the v4 map) | 16 | V4 p.10 |
+| 7 | Maybank selection criteria: component quality, installation safety, workmanship | 8 | P25 p.11 |
+| 8 | Software and IoT engineering; digital operations (cloud invoicing, inventory, stock-keeping, scheduling, digital reporting) | 4, 6 | P25 p.3, p.21; SSM nature of business; CO governance |
+| 9 | Engineers' remaining credentials and "including international clients" | 10 | V4 p.14 |
+| 10 | CEO: from one office to five; "simple, bankable and genuinely mesra client" | 9 | V4 p.13 |
 
 Format: A4 portrait (210 × 297 mm), 16 pages (a multiple of 4, so it also prints as a booklet). English.
 Design: the new eternalgy.me language (General Sans, white / ink / near-black fields, documentary photography, alternating-tone tables, no eyebrow labels, no numbering, no rules).

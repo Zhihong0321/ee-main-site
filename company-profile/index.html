@@ -77,20 +77,26 @@ b,strong{font-weight:600}
 .who .cols{display:grid;grid-template-columns:7fr 5fr;gap:10mm;margin-bottom:14mm}
 .who .vision{font-size:9pt;color:var(--muted)}
 .who .vision b{display:block;color:var(--ink);font-weight:600;margin-bottom:1.5mm}
+.who .vm{display:grid;gap:5mm}
 .who .t td.k{width:28%}
 
 /* ---------- 3 numbers ---------- */
-.nums .display{margin-bottom:20mm}
-.ledger{display:grid;row-gap:6.5mm}
-.ledger .row{display:grid;grid-template-columns:96mm 1fr;column-gap:8mm;align-items:baseline}
-.ledger .w{text-align:right;font-size:64pt;font-weight:500;letter-spacing:-0.05em;line-height:.9}
-.ledger .c{font-size:11pt;line-height:1.3;max-width:50mm}
-.ledger .c b{display:block;font-weight:600}
-.nums .note{position:absolute;left:var(--m);right:var(--m);bottom:22mm;max-width:120mm}
+.nums .display{margin-bottom:13mm}
+.figs{display:grid;grid-template-columns:1fr 1.25fr 1fr 1fr 1fr;gap:5mm;margin-bottom:13mm}
+.figs .w{display:block;font-size:40pt;font-weight:500;letter-spacing:-0.05em;line-height:.9;margin-bottom:3mm}
+.figs p{font-size:8.3pt;line-height:1.3;color:#c9cfd4}
+.figs b{display:block;font-weight:600;color:#fff}
+.tl{width:100%;border-collapse:collapse;font-size:9pt;line-height:1.35}
+.tl td{padding:2.1mm 3mm;vertical-align:top}
+.tl tbody tr:not(.gap):nth-child(odd) td{background:#11161a}
+.tl td.y{width:20mm;font-size:13pt;font-weight:500;letter-spacing:-0.02em;line-height:1.1;background:none!important}
+.tl td.m{width:24mm;color:var(--field-muted)}
+.tl tr.gap td{height:2.5mm;padding:0;background:none}
+.nums .note{position:absolute;left:var(--m);right:var(--m);bottom:18mm;max-width:120mm}
 
 /* ---------- 4 capabilities ---------- */
 .caps{padding:0}
-.caps .ph{height:104mm}
+.caps .ph{height:84mm}
 .caps .ph img{object-position:50% 70%}
 .caps .in{padding:13mm var(--m) 0}
 .caps .head{margin-bottom:11mm}
@@ -99,6 +105,10 @@ b,strong{font-weight:600}
 .caps li{font-size:9.6pt;line-height:1.35;padding:2.4mm 0}
 .caps li b{display:block;font-weight:500}
 .caps li span{color:var(--muted)}
+.caps .ev{margin-top:9mm;background:var(--ink);color:#fff;padding:5mm 6mm;display:grid;grid-template-columns:44mm 1fr;column-gap:8mm}
+.caps .ev h3{font-size:11.5pt;font-weight:500;margin:0}
+.caps .ev p{font-size:8.8pt;color:#d4d9dd}
+.caps .ev .for{grid-column:2;margin-top:1.5mm;color:#aeb6bd}
 
 /* ---------- 5 schemes ---------- */
 .schemes .head{margin-bottom:4mm}
@@ -149,9 +159,9 @@ b,strong{font-weight:600}
 
 /* ---------- 9 ceo ---------- */
 .ceo{padding:0}
-.ceo .cut{position:absolute;right:-30mm;bottom:0;height:186mm;width:auto}
+.ceo .cut{position:absolute;right:-34mm;bottom:0;height:180mm;width:auto}
 .ceo .in{position:relative;padding:var(--m);width:112mm}
-.ceo ul{width:84mm}
+.ceo ul{width:76mm}
 .ceo .role{font-size:11pt;color:var(--muted);margin:3mm 0 12mm}
 .ceo blockquote{margin:0 0 11mm;font-size:14pt;line-height:1.3;letter-spacing:-0.01em;font-weight:500}
 .ceo ul{display:grid;gap:4mm}
@@ -167,7 +177,7 @@ b,strong{font-weight:600}
 .lead-row p{font-size:8.5pt;color:#aeb6bd}
 .lead-row > div:last-child p{color:var(--muted)}
 .eng{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
-.eng .ph{height:58mm;margin-bottom:4mm}
+.eng .ph{height:52mm;margin-bottom:4mm}
 .eng .ph img{object-position:50% 25%}
 .eng h3{font-size:12pt;font-weight:500;letter-spacing:-0.01em}
 .eng .role{color:var(--muted);margin:.5mm 0 3mm}
@@ -230,15 +240,25 @@ b,strong{font-weight:600}
 
 /* ---------- 16 back cover ---------- */
 .back .display{font-size:50pt;margin-bottom:9mm}
-.back .lead{max-width:120mm;color:#dfe3e6;margin-bottom:12mm}
-.contact{display:grid;grid-template-columns:1fr auto;gap:10mm;align-items:end;margin-bottom:16mm}
+.back .lead{max-width:120mm;color:#dfe3e6;margin-bottom:10mm}
+.contact{display:grid;grid-template-columns:1fr auto;gap:10mm;align-items:end;margin-bottom:11mm}
 .contact p{font-size:17pt;font-weight:500;letter-spacing:-0.02em;line-height:1.3}
 .contact .webs{font-size:10pt;font-weight:400;color:var(--field-muted);margin-top:2mm}
 .qr{background:#fff;padding:3mm;width:30mm}
 .qr img{width:100%}
 .qr + p{font-size:7pt;color:var(--field-muted);margin-top:1.5mm}
-.offices{display:grid;grid-template-columns:repeat(3,1fr);gap:7mm 6mm}
-.offices p{font-size:8.3pt;line-height:1.4;color:#c9cfd4}
+.where{display:grid;grid-template-columns:1fr 62mm;gap:10mm;align-items:start}
+.offices{display:grid;gap:4.5mm}
+.offices p{font-size:8.3pt;line-height:1.4;color:#c9cfd4;max-width:80mm}
+.map{position:relative;width:62mm}
+.map img{width:100%}
+.pin{position:absolute;font-size:7.5pt;line-height:1;color:#fff;white-space:nowrap;transform:translateY(-50%)}
+.pin::before{content:"";position:absolute;top:50%;width:2.2mm;height:2.2mm;margin-top:-1.1mm;border-radius:50%;background:#fff}
+.pin.l{transform:translate(-100%,-50%);padding-right:3.6mm}
+.pin.l::before{right:-1.1mm}
+.pin.r{padding-left:3.6mm}
+.pin.r::before{left:-1.1mm}
+.pin.hq{font-weight:600}
 .offices b{display:block;color:#fff;font-weight:600;margin-bottom:1mm}
 .back .logo{position:absolute;left:var(--m);bottom:18mm;height:7mm;width:auto}
 </style>
@@ -264,7 +284,10 @@ b,strong{font-weight:600}
   <h2 class="display">One contractor,<br><span class="soft">from design to decades<br>of output.</span></h2>
   <div class="cols">
     <p class="lead">Eternalgy Sdn Bhd is a Johor Bahru-headquartered solar PV EPCC company. We design, supply, build, commission and maintain solar systems for commercial, industrial, public-sector, developer and residential clients across Peninsular Malaysia, with one team and one point of accountability.</p>
-    <p class="vision"><b>Vision</b>To be Malaysia's leading renewable energy company, empowering communities and industries through innovative, reliable and affordable solar and energy storage solutions.</p>
+    <div class="vm">
+      <p class="vision"><b>Vision</b>To be Malaysia's leading renewable energy company, empowering communities and industries through innovative, reliable and affordable solar and energy storage solutions.</p>
+      <p class="vision"><b>Mission</b>To deliver high-quality, sustainable and innovative solar and energy storage solutions that create lasting value for our clients and communities, through expert engineering, reliable service and continuous improvement.</p>
+    </div>
   </div>
   <table class="t">
     <tbody>
@@ -285,13 +308,31 @@ b,strong{font-weight:600}
 <!-- 3 In numbers -->
 <section class="page field nums">
   <h2 class="display"><span class="soft">Three years.</span><br>Twelve megawatts.</h2>
-  <div class="ledger num">
-    <div class="row"><span class="w">12</span><span class="c"><b>MWp+</b>solar PV installed and commissioned</span></div>
-    <div class="row"><span class="w">1,100</span><span class="c"><b>+ sites</b>commissioned across Peninsular Malaysia</span></div>
-    <div class="row"><span class="w">60</span><span class="c"><b>+ projects</b>commercial and industrial, completed</span></div>
-    <div class="row"><span class="w">35</span><span class="c"><b>RM million+</b>customer revenue since 2023</span></div>
-    <div class="row"><span class="w">G7</span><span class="c"><b>CIDB grade</b>the highest, for large multi-discipline projects</span></div>
+  <div class="figs num">
+    <div><span class="w">12</span><p><b>MWp+</b>solar PV installed and commissioned</p></div>
+    <div><span class="w">1,100</span><p><b>+ sites</b>commissioned across Peninsular Malaysia</p></div>
+    <div><span class="w">60</span><p><b>+ projects</b>commercial and industrial, completed</p></div>
+    <div><span class="w">35</span><p><b>RM million+</b>customer revenue since 2023</p></div>
+    <div><span class="w">G7</span><p><b>CIDB grade</b>the highest, with no limit on tender value</p></div>
   </div>
+  <table class="tl">
+    <tbody>
+      <tr><td class="y num">2023</td><td class="m">31 July</td><td>Incorporated as Eternalgy Sdn Bhd in Johor Bahru</td></tr>
+      <tr class="gap"><td colspan="3"></td></tr>
+      <tr><td class="y num">2024</td><td class="m"></td><td>Registered PV Service Provider, SEDA Malaysia</td></tr>
+      <tr class="gap"><td colspan="3"></td></tr>
+      <tr><td class="y num">2025</td><td class="m">March</td><td>Registered with CIDB Malaysia: Building, Civil Engineering, Mechanical and Electrical</td></tr>
+      <tr><td></td><td class="m">May</td><td>MyHIJAU certified by MGTC</td></tr>
+      <tr><td></td><td class="m"></td><td>Registered PV Investor, SEDA Malaysia</td></tr>
+      <tr><td></td><td class="m"></td><td>Golden Bull Award, Outstanding Bull, for 2024 performance</td></tr>
+      <tr><td></td><td class="m"></td><td>Centre of Excellence partner, SHRDC Shah Alam</td></tr>
+      <tr class="gap"><td colspan="3"></td></tr>
+      <tr><td class="y num">2026</td><td class="m">June</td><td>MyHIJAU certificate for solar PV EPCC services</td></tr>
+      <tr><td></td><td class="m">July</td><td>CIDB Grade G7</td></tr>
+      <tr><td></td><td class="m">September</td><td>In-house Occupational Safety &amp; Health Coordinator (OSH-C)</td></tr>
+      <tr><td></td><td class="m">October</td><td>12 MWp+ installed and 1,100+ sites commissioned</td></tr>
+    </tbody>
+  </table>
   <p class="small note">Installed capacity, sites commissioned and customer revenue from Eternalgy's project records as at 21 October 2026.</p>
   <div class="folio"><span>Eternalgy Corporate Profile 2026</span><span>3</span></div>
 </section>
@@ -315,7 +356,7 @@ b,strong{font-weight:600}
       <div>
         <h3>Financing and schemes</h3>
         <ul>
-          <li><b>Zero-capex solar</b><span>As a SEDA Registered PV Investor we finance, build and operate; you buy the power.</span></li>
+          <li><b>Zero-capex solar</b><span>Power purchase agreements and solar leasing: as a SEDA Registered PV Investor we finance, build and operate the system.</span></li>
           <li><b>Maybank solar financing</b><span>Preferred solar PV partner.</span></li>
           <li><b>GITA allowances</b><span>60% for solar, 100% for storage.</span></li>
           <li><b>ATAP and SELCO</b><span>Recommended from your load profile.</span></li>
@@ -329,9 +370,14 @@ b,strong{font-weight:600}
           <li><b>Six-monthly inspection</b><span>Connections, cleaning, performance audit.</span></li>
           <li><b>Thermal drone scanning</b><span>Faults found before they cost output.</span></li>
           <li><b>48-hour fault response</b><span>For urgent cases, system down.</span></li>
-          <li><b>EV charging</b><span>From a single unit to fleet sites.</span></li>
+          <li><b>Software and IoT engineering</b><span>In-house digital systems for logistics, invoicing and reporting.</span></li>
         </ul>
       </div>
+    </div>
+    <div class="ev">
+      <h3>EV charging</h3>
+      <p>Scalable, smart charging from a single home unit to networked business sites: intelligent load management and energy optimisation, premium components with multiple safety protections.</p>
+      <p class="for">For residential, commercial, industrial, public and fleet sites.</p>
     </div>
   </div>
   <div class="folio"><span>Eternalgy Corporate Profile 2026</span><span>4</span></div>
@@ -390,8 +436,8 @@ b,strong{font-weight:600}
       <p>String inverters on large, uniform roof areas and micro inverters on shaded or complex sections, in a single system. Each roof section gets the right conversion technology: higher yield, less single-point dependence and panel-level data.</p>
     </div>
     <div>
-      <h3>Supply chain we control</h3>
-      <p>Sole distributor for SAJ in Malaysia. Digitalised logistics, with cloud invoicing, cloud inventory and automated stock-keeping, and warehouses in Johor and Selangor for fast replacement.</p>
+      <h3>Supply chain we control, digitally</h3>
+      <p>Sole distributor for SAJ in Malaysia, with warehouses in Johor and Selangor for fast replacement. Our in-house software engineering runs cloud invoicing, cloud inventory, automated stock-keeping, scheduling and fully digital reporting.</p>
     </div>
   </div>
   <div class="folio"><span>Eternalgy Corporate Profile 2026</span><span>6</span></div>
@@ -408,7 +454,7 @@ b,strong{font-weight:600}
   <table class="t">
     <thead><tr><th>Company credential</th><th>Issuer</th><th>Detail</th></tr></thead>
     <tbody>
-      <tr><td>Grade G7 contractor: B04, CE21, M15<br>Grade G2: E04</td><td>CIDB Malaysia</td><td class="num">Reg. 0120250324-WP152634<br>Effective 22 Jul 2026, valid to 25 Mar 2027</td></tr>
+      <tr><td>Grade G7 contractor, no limit on tender value: B04, CE21, M15<br>Grade G2: E04</td><td>CIDB Malaysia</td><td class="num">Reg. 0120250324-WP152634<br>Effective 22 Jul 2026, valid to 25 Mar 2027</td></tr>
       <tr><td>MyHIJAU: Engineering, Procurement, Construction and Commissioning of Solar PV services</td><td>MGTC</td><td class="num">MyHS00025/25<br>Issued 19 Jun 2026, valid to 18 Jun 2027</td></tr>
       <tr><td>Registered PV Service Provider (RPVSP)</td><td>SEDA Malaysia</td><td>Registered</td></tr>
       <tr><td>Registered PV Investor (RPVI)</td><td>SEDA Malaysia</td><td>Listed in the RPVI directory</td></tr>
@@ -441,7 +487,7 @@ b,strong{font-weight:600}
     <tbody>
       <tr><td><b>Outstanding Bull Award</b>, for 2024 performance</td><td>Golden Bull Award 2025</td></tr>
       <tr><td><b>Centre of Excellence partner</b>, for our contribution to the battery energy storage training facility</td><td>SHRDC, Shah Alam</td></tr>
-      <tr><td><b>Preferred solar PV partner</b> for Maybank solar financing products</td><td>Maybank</td></tr>
+      <tr><td><b>Preferred solar PV partner</b> for Maybank solar financing products, selected on component quality, installation safety and workmanship</td><td>Maybank</td></tr>
       <tr><td><b>Sole distributor in Malaysia</b>, under a 50 MW + 10 MWh PV and storage agreement announced in Shanghai</td><td>SAJ Electric</td></tr>
       <tr><td><b>Technology partner</b> for Tiger Neo 3.0 modules, AAA bankability tier</td><td>JinkoSolar</td></tr>
     </tbody>
@@ -466,6 +512,7 @@ b,strong{font-weight:600}
       <li><b>Client discipline</b>A career in the Malaysian insurance industry, with multiple industry awards, built the client-facing rigour and risk-conscious mindset that shape how Eternalgy is run.</li>
       <li><b>Cross-border network</b>An investor with a network across Malaysia and China, which informs how we source bankable equipment such as JinkoSolar modules and SAJ inverters.</li>
       <li><b>Engineering first</b>Technical decisions are made by certified engineers, equipment is chosen for bankability, and every project is built to hold up to banks, authorities and the client's own facilities team.</li>
+      <li><b>From one office to five</b>Under his leadership Eternalgy has grown from a single Johor Bahru office to five offices across four states. His ambition is straightforward: make solar ownership simple, bankable and genuinely mesra client, one engineered roof at a time.</li>
     </ul>
   </div>
   <div class="folio"><span>Eternalgy Corporate Profile 2026</span><span>9</span></div>
@@ -483,12 +530,13 @@ b,strong{font-weight:600}
       <div class="ph mono"><img src="assets/ahmad-safwan.webp" alt="Ahmad Safwan bin Ahmad Nazri"></div>
       <h3>Ahmad Safwan bin Ahmad Nazri</h3>
       <p class="role">Solar Design Engineer</p>
-      <p>7+ years in PV design, across sales support, design, construction, tendering and O&amp;M. Kerian, Tanah Merah and Gebeng solar farms, and 50+ commercial and industrial sites.</p>
+      <p>7+ years in PV design, across sales support, design, construction, tendering and O&amp;M. Kerian, Tanah Merah and Gebeng solar farms, and 50+ commercial and industrial sites, including international clients.</p>
       <ul>
         <li>Masters in Mechanical Engineering</li>
         <li>SEDA GCPV certified designer</li>
         <li>ST Competent Energy Manager</li>
         <li>CAAM RCOC-B drone operator</li>
+        <li>CIDB Green Card · OGSP</li>
         <li>OSH-C course, September 2026</li>
       </ul>
     </div>
@@ -503,6 +551,8 @@ b,strong{font-weight:600}
         <li>SEDA GCPV wireman and chargeman</li>
         <li>SEDA GCPV installation and maintenance</li>
         <li>MBOT certified technician</li>
+        <li>CIDB Green Card · NIOSH OGSP and NTSP</li>
+        <li>Certified first aider</li>
       </ul>
     </div>
   </div>
@@ -683,12 +733,22 @@ b,strong{font-weight:600}
     </div>
     <div><div class="qr"><img src="assets/whatsapp-qr.svg" alt="WhatsApp QR code"></div><p>Scan to WhatsApp us</p></div>
   </div>
-  <div class="offices">
-    <p><b>Johor Bahru (HQ)</b>01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor</p>
-    <p><b>Seremban</b>252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Negeri Sembilan</p>
-    <p><b>Kluang</b>No. 26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor</p>
-    <p><b>Klang</b>8, Jalan Permata 8A/KS09, Jln Kg Air Hitam, Taman Perindustrian, 41200 Klang, Selangor</p>
-    <p><b>Melaka</b>Melaka office</p>
+  <div class="where">
+    <div class="offices">
+      <p><b>Johor Bahru (HQ)</b>01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor</p>
+      <p><b>Kluang</b>No. 26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor</p>
+      <p><b>Melaka</b>Melaka office</p>
+      <p><b>Seremban</b>252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Negeri Sembilan</p>
+      <p><b>Klang</b>8, Jalan Permata 8A/KS09, Jln Kg Air Hitam, Taman Perindustrian, 41200 Klang, Selangor</p>
+    </div>
+    <div class="map">
+      <img src="assets/peninsula.png" alt="Map of Peninsular Malaysia with Eternalgy's five offices">
+      <span class="pin l" style="left:30.7%;top:64.1%">Klang</span>
+      <span class="pin l" style="left:46.8%;top:69.3%">Seremban</span>
+      <span class="pin l" style="left:51%;top:78.9%">Melaka</span>
+      <span class="pin r" style="left:69.3%;top:79.3%">Kluang</span>
+      <span class="pin l hq" style="left:85.6%;top:93.2%">Johor Bahru HQ</span>
+    </div>
   </div>
   <img class="logo" src="assets/logo-white.png" alt="Eternalgy">
   <div class="folio"><span></span><span>Eternalgy Sdn Bhd · 202301029164 (1523087-A)</span></div>
