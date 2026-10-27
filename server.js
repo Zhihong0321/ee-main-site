@@ -9,6 +9,7 @@ const db = require('./db');
 const { trackVisitor } = require('./scripts/visitorTracker');
 const { computeDailyReport, generateMissingReports } = require('./scripts/dailyReport');
 const registerServiceAreas = require('./routes/service-areas');
+const registerSolarSimulator = require('./routes/solar-simulator');
 const serviceAreas = require('./data/service-areas');
 
 const app = express();
@@ -2325,6 +2326,7 @@ app.get('/visitor_analysis', (req, res) => {
 // 🗺️ SERVICE-AREA / LOCAL AGENT PAGES
 // ==========================================
 registerServiceAreas(app, getBaseUrl);
+registerSolarSimulator(app);
 
 // ==========================================
 // 🔗 DYNAMIC ROUTING & CATCH-ALL ROUTE

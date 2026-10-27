@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18435272787"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-18435272787');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <meta name="description" content="<%= meta_description %>">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+
+  <meta property="og:title" content="<%= title %>">
+  <meta property="og:description" content="<%= meta_description %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= canonicalUrl %>">
+  <meta property="og:locale" content="en_MY">
+  <meta property="og:site_name" content="Eternalgy">
+  <meta property="og:image" content="<%= baseUrl %>/images/b2b/studio-macro.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= title %>">
+  <meta name="twitter:description" content="<%= meta_description %>">
+
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/home-b2b.css">
+  <% if (typeof extraCss !== 'undefined' && extraCss) { %><link rel="stylesheet" href="<%= extraCss %>"><% } %>
+  <% if (typeof preloadHero === 'undefined' || preloadHero) { %><link rel="preload" as="image" href="/images/b2b/studio-macro.webp"><% } %>
+
+  <link rel="canonical" href="<%= canonicalUrl %>">
+  <link rel="alternate" type="application/rss+xml" title="Renewable Energy News RSS Feed" href="<%= baseUrl %>/feed.xml">
+  <link rel="alternate" type="application/json" title="Renewable Energy News JSON Feed" href="<%= baseUrl %>/feed.json">
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="<%= baseUrl %>/sitemap.xml">
+  <link rel="alternate" type="text/markdown" title="Markdown Content" href="<%= canonicalUrl %>?format=md">
+  <link rel="alternate" type="application/json" title="JSON Content" href="<%= canonicalUrl %>?format=json">
+
+  <% if (typeof schemaData !== 'undefined' && schemaData) { %>
+  <script type="application/ld+json">
+    <%- JSON.stringify(schemaData) %>
+  </script>
+  <% } %>
+</head>

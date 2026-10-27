@@ -1,79 +1,10 @@
-<!DOCTYPE html>
-<html lang="en-MY">
-<head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18435272787"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'AW-18435272787');
-  </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-  <meta name="description" content="<%= meta_description %>">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-
-  <meta property="og:title" content="<%= title %>">
-  <meta property="og:description" content="<%= meta_description %>">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="<%= canonicalUrl %>">
-  <meta property="og:locale" content="en_MY">
-  <meta property="og:site_name" content="Eternalgy">
-  <meta property="og:image" content="<%= baseUrl %>/images/b2b/studio-macro.webp">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="<%= title %>">
-  <meta name="twitter:description" content="<%= meta_description %>">
-
-  <link rel="preconnect" href="https://api.fontshare.com">
-  <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
-  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/home-b2b.css">
-  <link rel="preload" as="image" href="/images/b2b/studio-macro.webp">
-
-  <link rel="canonical" href="<%= canonicalUrl %>">
-  <link rel="alternate" type="application/rss+xml" title="Renewable Energy News RSS Feed" href="<%= baseUrl %>/feed.xml">
-  <link rel="alternate" type="application/json" title="Renewable Energy News JSON Feed" href="<%= baseUrl %>/feed.json">
-  <link rel="sitemap" type="application/xml" title="Sitemap" href="<%= baseUrl %>/sitemap.xml">
-  <link rel="alternate" type="text/markdown" title="Markdown Content" href="<%= canonicalUrl %>?format=md">
-  <link rel="alternate" type="application/json" title="JSON Content" href="<%= canonicalUrl %>?format=json">
-
-  <% if (typeof schemaData !== 'undefined' && schemaData) { %>
-  <script type="application/ld+json">
-    <%- JSON.stringify(schemaData) %>
-  </script>
-  <% } %>
-</head>
+<%- include('partials/b2b-head') %>
 <body>
 <script>document.documentElement.classList.add('js')</script>
 
 <header class="hero">
   <img src="/images/b2b/studio-macro.webp" alt="Corner of a solar module: machined black frame, tempered glass edge and cell busbars under a single strip light" width="1920" height="1280" fetchpriority="high">
-  <nav class="nav" aria-label="Main">
-    <a href="/"><img src="/logo.png" alt="Eternalgy" width="117" height="42"></a>
-    <ul>
-      <li><a href="#capabilities">Capabilities</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#process">Process</a></li>
-      <li><a href="#credentials">Credentials</a></li>
-      <li><a href="#team">Team</a></li>
-      <li><a class="cta-l" href="#contact">Request assessment</a></li>
-    </ul>
-    <details class="menu-d">
-      <summary>Menu</summary>
-      <div class="panel">
-        <a href="/about-solar-pv-epc-company">Company and EPC services</a>
-        <a href="/agent">Service areas</a>
-        <a href="/tips">Engineering notes</a>
-        <a href="/news">Energy news</a>
-        <a href="/faq">FAQ</a>
-        <a href="#contact">Request an assessment</a>
-      </div>
-    </details>
-  </nav>
+<%- include('partials/b2b-nav', { anchorBase: '' }) %>
   <div class="hero-in">
     <h1><span class="ln"><span>Solar infrastructure</span></span><span class="ln"><span>for industry.</span></span></h1>
     <div class="side">
@@ -91,8 +22,26 @@
       <div class="row"><span class="w">1,100</span><span class="c"><b>+</b> sites commissioned across Peninsular Malaysia</span></div>
       <div class="row"><span class="w">60</span><span class="c"><b>+</b> commercial and industrial projects completed</span></div>
       <div class="row"><span class="w">35</span><span class="c"><b>RM million+</b> in customer revenue since 2023</span></div>
-      <div class="row"><span class="w">G7</span><span class="c"><b>CIDB grade</b>, the highest, for large multi-discipline projects</span></div>
+      <div class="row"><span class="w">G7</span><span class="c"><b>CIDB grade</b>, the highest, with no limit on tender value</span></div>
     </div>
+  </section>
+
+  <section class="miles wrap" aria-labelledby="miles-h">
+    <h2 id="miles-h" class="h-sub">Milestones</h2>
+    <table class="mtable">
+      <tbody>
+        <tr><th scope="row" class="num">2023</th><td>31 July</td><td>Incorporated as Eternalgy Sdn Bhd in Johor Bahru</td></tr>
+        <tr><th scope="row" class="num">2024</th><td></td><td>Registered PV Service Provider, SEDA Malaysia</td></tr>
+        <tr><th scope="row" class="num">2025</th><td>March</td><td>Registered with CIDB Malaysia: Building, Civil Engineering, Mechanical and Electrical</td></tr>
+        <tr><th scope="row"></th><td>May</td><td>MyHIJAU certified by MGTC</td></tr>
+        <tr><th scope="row"></th><td></td><td>Registered PV Investor, SEDA Malaysia · Golden Bull Award, Outstanding Bull, for 2024 performance · Centre of Excellence partner, SHRDC Shah Alam</td></tr>
+        <tr><th scope="row" class="num">2026</th><td>June</td><td>MyHIJAU certificate for solar PV EPCC services</td></tr>
+        <tr><th scope="row"></th><td>July</td><td>CIDB Grade G7</td></tr>
+        <tr><th scope="row"></th><td>September</td><td>In-house Occupational Safety &amp; Health Coordinator (OSH-C)</td></tr>
+        <tr><th scope="row"></th><td>October</td><td>12 MWp+ installed and 1,100+ sites commissioned</td></tr>
+      </tbody>
+    </table>
+    <p class="note">Installed capacity, sites commissioned and customer revenue from Eternalgy's project records as at 21 October 2026.</p>
   </section>
 
   <section class="caps wrap" id="capabilities" aria-labelledby="caps-h">
@@ -111,13 +60,13 @@
     <div class="group">
       <h3>Financing and schemes</h3>
       <ul>
-        <li tabindex="0" data-d="As a SEDA Registered PV Investor we finance, build and operate the system; you buy the power at a lower rate. No capital outlay.">Zero-capex solar investment</li>
+        <li tabindex="0" data-d="Power purchase agreements and solar leasing: as a SEDA Registered PV Investor we finance, build and operate the system. No capital outlay.">Zero-capex solar: PPA and leasing</li>
         <li tabindex="0" data-d="Selected as a preferred solar PV partner for all Maybank solar financing products.">Maybank solar financing</li>
         <li tabindex="0" data-d="Solar qualifies for a 60% Green Investment Tax Allowance and battery storage for 100%, set off against 70% of statutory income, for capital spent until 31 December 2026.">GITA: 60% solar, 100% storage</li>
         <li tabindex="0" data-d="ATAP exports surplus for bill credits; SELCO is full self-consumption. We recommend from your load profile.">ATAP and SELCO</li>
         <li tabindex="0" data-d="Corporate green electricity schemes: CRESS for single large buyers, CREAM for aggregated SME demand.">CRESS and CREAM</li>
       </ul>
-      <p class="sum">Zero-capex solar investment, Maybank financing, GITA allowances, and advice on ATAP, SELCO, CRESS and CREAM.</p>
+      <p class="sum">Zero-capex PPA and leasing, Maybank financing, GITA allowances, and advice on ATAP, SELCO, CRESS and CREAM.</p>
     </div>
     <div class="group">
       <h3>Operations</h3>
@@ -126,11 +75,27 @@
         <li tabindex="0" data-d="Connection checks, cleaning inspection and a performance audit every six months.">Six-monthly inspection</li>
         <li tabindex="0" data-d="Thermal drone scans find defective cells, connection faults, storm damage and delamination before they cost output.">Thermal drone scanning</li>
         <li tabindex="0" data-d="Urgent cases with the system down are attended within 48 hours; standard claims are resolved in 3 to 5 working days.">48-hour fault response</li>
-        <li tabindex="0" data-d="Scalable charging from a single unit to networked business and fleet sites, with intelligent load management.">EV charging</li>
+        <li tabindex="0" data-d="Scalable, smart charging from a single home unit to networked business and fleet sites, with intelligent load management and multiple safety protections.">EV charging</li>
+        <li tabindex="0" data-d="In-house systems for cloud invoicing, inventory, scheduling and reporting, including our solar bill simulator.">Software and IoT engineering</li>
       </ul>
-      <p class="sum">eSAJ monitoring, six-monthly inspection, thermal drone scanning, 48-hour fault response and EV charging.</p>
+      <p class="sum">eSAJ monitoring, six-monthly inspection, thermal drone scanning, 48-hour fault response, EV charging, and in-house software.</p>
     </div>
     <p class="cap-note" id="capnote" aria-live="polite">Select a capability for the scope we deliver.</p>
+  </section>
+
+  <section class="simteaser" id="simulator" aria-labelledby="simt-h">
+    <div class="wrap simt-in">
+      <div>
+        <h2 id="simt-h" class="h-head">Your bill after solar,<br>simulated.</h2>
+        <p class="lede-d">Most solar quotes multiply your bill by a saving percentage. Our in-house Solar Simulator rebuilds your TNB bill from the tariff, follows every kilowatt-hour your system generates, and calculates the bill you will pay after solar, item by item.</p>
+        <div class="acts"><a class="btn btn--light" href="/solar-simulator#simulate">Simulate your bill</a><a class="tlink" href="/solar-simulator">How it works</a></div>
+      </div>
+      <div class="simt-ex">
+        <div class="ex"><p class="ex-k">Home · RM500 bill, April 2026</p><p class="ex-n">RM361.58</p><p class="ex-s">saved a month · RM504.67 → RM143.09 · 10.4 kWp</p></div>
+        <div class="ex"><p class="ex-k">Business · RM5,000 bill, open daily 8 am–6 pm</p><p class="ex-n">RM2,387.14</p><p class="ex-s">saved a month · RM4,999.68 → RM2,612.54 · 45.5 kWp</p></div>
+        <p class="ex-note">Worked examples from the Eternalgy Solar Simulator, TNB tariff in force October 2026. A forecast, confirmed by a site survey.</p>
+      </div>
+    </div>
   </section>
 
   <section class="sectors wrap" id="projects" aria-labelledby="proj-h">
@@ -151,7 +116,7 @@
   <section class="process wrap" id="process" aria-labelledby="proc-h">
     <h2 id="proc-h" class="h-head">From consultation to long-term output</h2>
     <div class="steps">
-      <article class="step"><figure><img src="/images/b2b/step-design.webp" alt="Engineering drawings on a desk" loading="lazy" width="1067" height="1600"></figure><h3>Consultation</h3><p>Share your electricity bill and goals. We recommend the scheme that fits your load profile.</p></article>
+      <article class="step"><figure><img src="/images/b2b/step-design.webp" alt="Engineering drawings on a desk" loading="lazy" width="1067" height="1600"></figure><h3>Consultation</h3><p>Share your electricity bill. We <a class="tlink" href="/solar-simulator">simulate your bill after solar</a> and recommend the scheme that fits.</p></article>
       <article class="step"><figure><img src="/images/b2b/step-feasibility.webp" alt="Engineer surveying a factory roof" loading="lazy" width="1067" height="1600"></figure><h3>Site survey and design</h3><p>Roof survey, load profile and sizing, with string and micro inverters matched to the roof.</p></article>
       <article class="step"><figure><img src="/images/b2b/step-approvals.webp" alt="Engineer testing a main switchboard" loading="lazy" width="1067" height="1600"></figure><h3>Proposal and contract</h3><p>A clear proposal with milestone-based payments, financing options and GITA incentives.</p></article>
       <article class="step"><figure><img src="/images/b2b/step-commissioning.webp" alt="Engineer inspecting string inverters" loading="lazy" width="1067" height="1600"></figure><h3>Approvals</h3><p>We prepare and submit SEDA and utility applications. Regulator timelines apply.</p></article>
@@ -172,27 +137,27 @@
     <h2 id="cred-h" class="h-head"><span>Top grade,</span><span>on record.</span></h2>
     <table class="rv">
       <tbody>
-        <tr><td class="num">2026</td><td>CIDB Grade G7 contractor (B04, CE21, M15) and G2 (E04)</td><td>CIDB Malaysia · valid to Mar 2027</td><td class="num">0120250324-WP152634</td></tr>
-        <tr><td></td><td>OSH-C certified safety supervisor, in-house</td><td>Occupational safety and health</td><td>Sep 2026</td></tr>
+        <tr><td class="num">2026</td><td>CIDB Grade G7 contractor, no limit on tender value (B04, CE21, M15); G2 (E04)</td><td>CIDB Malaysia · valid to Mar 2027</td><td class="num">0120250324-WP152634</td></tr>
         <tr><td></td><td>MyHIJAU certified: solar PV EPCC services</td><td>MGTC · valid to Jun 2027</td><td class="num">MyHS00025/25</td></tr>
         <tr class="gap"><td colspan="4"></td></tr>
         <tr><td class="num">2025</td><td>Golden Bull, Outstanding Bull Award</td><td>Malaysia Golden Bull Award</td><td>For 2024 performance</td></tr>
         <tr><td></td><td>Centre of Excellence partner</td><td>SHRDC Shah Alam</td><td>Battery storage training</td></tr>
         <tr class="gap"><td colspan="4"></td></tr>
         <tr><td class="num">2024</td><td>Registered PV Service Provider</td><td>SEDA Malaysia</td><td>Registered</td></tr>
-        <tr><td></td><td>Registered PV Investor</td><td>SEDA Malaysia</td><td>RPVI directory</td></tr>
+        <tr><td></td><td>Registered PV Investor</td><td>SEDA Malaysia</td><td>Listed in the RPVI directory</td></tr>
         <tr class="gap"><td colspan="4"></td></tr>
         <tr><td>Licences</td><td>Electrical wiring works</td><td>Suruhanjaya Tenaga</td><td>Certified</td></tr>
         <tr class="gap"><td colspan="4"></td></tr>
         <tr><td>Partners</td><td>SAJ Malaysia sole distributor</td><td>SAJ Electric · Shanghai</td><td>50 MW + 10 MWh</td></tr>
         <tr><td></td><td>Technology partner, Tiger Neo 3.0 modules</td><td>JinkoSolar · AAA bankability tier</td><td>30-year power warranty</td></tr>
         <tr><td></td><td>Preferred solar PV partner</td><td>Maybank solar financing</td><td>Selected</td></tr>
-        <tr><td></td><td>Corporate member</td><td>Malaysian Photovoltaic Industry Association</td><td>MPiA</td></tr>
+        <tr><td></td><td>Corporate member</td><td>Malaysian Photovoltaic Industry Association</td><td>MPiA, now MPSEA</td></tr>
         <tr class="gap"><td colspan="4"></td></tr>
         <tr><td>Our people</td><td>SEDA GCPV certified designer; wireman and chargeman; installation and maintenance</td><td>SEDA Malaysia</td><td>Certified</td></tr>
         <tr><td></td><td>Competent PW4; Competent Energy Manager</td><td>Suruhanjaya Tenaga</td><td>Certified</td></tr>
         <tr><td></td><td>CIDB Green Card · NIOSH OGSP and NTSP · MBOT technician</td><td>CIDB · NIOSH · MBOT</td><td>Certified</td></tr>
-        <tr><td></td><td>RCOC-B drone operator · first aider</td><td>CAAM</td><td>Certified</td></tr>
+        <tr><td></td><td>RCOC-B drone operator · first aider</td><td>CAAM · first aid</td><td>Certified</td></tr>
+        <tr><td></td><td>Occupational Safety &amp; Health Coordinator (OSH-C) course</td><td>Occupational safety and health</td><td>Sep 2026</td></tr>
       </tbody>
     </table>
   </section>
@@ -202,7 +167,7 @@
     <div class="points">
       <article class="point rv"><h3>Our own engineers</h3><p>A first-party engineering team from design to resolution. No finger-pointing between vendors.</p></article>
       <article class="point rv"><h3>Warranty you can hold us to</h3><p>3-year installation workmanship, 1-year roof leak cover, 10-year SAJ inverter and 30-year Jinko module power warranties.</p></article>
-      <article class="point rv"><h3>Supply chain we control</h3><p>Sole distributor for SAJ in Malaysia, with digitalised logistics and warehouses in Johor and Selangor for fast replacement.</p></article>
+      <article class="point rv"><h3>Supply chain we control</h3><p>Sole distributor for SAJ in Malaysia, with warehouses in Johor and Selangor for fast replacement. Our own software runs cloud invoicing, inventory, scheduling and reporting.</p></article>
       <article class="point rv"><h3>Faults found early</h3><p>eSAJ monitoring, six-monthly inspection and thermal drone scans. Urgent cases attended within 48 hours.</p></article>
     </div>
   </section>
@@ -213,7 +178,8 @@
       <article class="person rv">
         <div class="ph ph--cutout"><img src="/images/b2b/real/gan-lai-soon.webp" alt="Mr. Gan Lai Soon, Founder and CEO of Eternalgy" loading="lazy" width="603" height="418"></div>
         <h3>Mr. Gan Lai Soon</h3><p class="role">Founder and Chief Executive Officer</p>
-        <p>B.Sc. Electronics, Universiti Teknologi Malaysia. Leads Eternalgy engineering-first: technical decisions by certified engineers, equipment chosen for bankability.</p>
+        <p>&ldquo;Every roof is a power plant waiting to be engineered properly. Our job is to make that transition simple, bankable and built to last.&rdquo;</p>
+        <p>B.Sc. Electronics, Universiti Teknologi Malaysia. Under his leadership Eternalgy has grown from one Johor Bahru office to five across four states.</p>
       </article>
       <article class="person rv">
         <div class="ph"><img src="/images/b2b/real/ahmad-safwan.webp" alt="Ahmad Safwan bin Ahmad Nazri" loading="lazy" width="746" height="517"></div>
@@ -225,6 +191,13 @@
         <h3>Ahmad Faruoqi bin Ibrahim</h3><p class="role">Solar O&amp;M Engineer</p>
         <p>10+ years in on-grid and off-grid PV; 3,400+ systems handled and a 10 MW large-scale solar project. ST Competent PW4, SEDA GCPV wireman and chargeman.</p>
       </article>
+    </div>
+    <div class="crew">
+      <figure><img src="/images/b2b/real/golden-bull-2025-team.webp" alt="The Eternalgy team at the Golden Bull Award 2025" loading="lazy" width="1240" height="815"><figcaption>The Eternalgy team at the Golden Bull Award 2025.</figcaption></figure>
+      <div>
+        <p class="crew-n">62 people across five offices: engineering, project delivery and site supervision, sales, and administration.</p>
+        <p>Mr. Lim Kim Chang, General Manager, leads day-to-day operations. Our own first-party engineering team works from design to resolution, with no finger-pointing between vendors.</p>
+      </div>
     </div>
   </section>
 
@@ -255,28 +228,7 @@
   </section>
 </main>
 
-<footer>
-  <div class="offices wrap">
-    <p><b>Johor Bahru (HQ)</b>01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor</p>
-    <p><b>Seremban</b>252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Negeri Sembilan</p>
-    <p><b>Kluang</b>No. 26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor</p>
-    <p><b>Melaka</b>Melaka office</p>
-    <p><b>Klang</b>8, Jalan Permata 8A/KS09, Jln Kg Air Hitam, Taman Perindustrian, 41200 Klang, Selangor</p>
-  </div>
-  <div class="foot">
-    <span>Eternalgy Sdn Bhd · 202301029164 (1523087-A)</span>
-    <nav aria-label="Footer"><a href="/about-solar-pv-epc-company">Company</a><a href="/agent">Service areas</a><a href="/tips">Notes</a><a href="/news">News</a><a href="/faq">FAQ</a><a href="mailto:pr@eternalgy.me">Press</a></nav>
-    <span class="r">© 2026 eternalgy.com · solarpanels.my</span>
-  </div>
-  <div class="foot-alt">
-    <span>For AI agents and crawlers:</span>
-    <a href="?format=md" rel="nofollow">Markdown</a>
-    <a href="?format=json" rel="nofollow">JSON</a>
-    <a href="/llms.txt">llms.txt</a>
-    <a href="/sitemap.xml">Sitemap</a>
-    <a href="/feed.json">JSON feed</a>
-  </div>
-</footer>
+<%- include('partials/b2b-footer') %>
 
 <script>
 (function(){
