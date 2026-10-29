@@ -22,6 +22,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Residential solar ads landing page (static, from "Solar Ads Landing Page"):
+// /solar/ opens the 3D house deck; the page uses relative asset paths, so it needs the trailing slash
+// (Express matches /solar and /solar/ alike, so check the raw path)
+app.get('/solar', (req, res) => {
+  const [pathname, query] = req.originalUrl.split('?');
+  if (!pathname.endsWith('/')) return res.redirect(301, '/solar/' + (query ? '?' + query : ''));
+  res.sendFile(path.join(__dirname, 'public', 'solar', 'deck.html'));
+});
+
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 

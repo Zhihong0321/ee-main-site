@@ -1,0 +1,26 @@
+/* Simplified Chinese edition (deck-zh.html), loaded after deck.css.
+   All text is set in Noto Serif SC (Google Fonts, sliced per character range so only the glyphs a page
+   uses are downloaded); IBM Plex Mono stays for numerals, with Noto Serif SC behind it for any Chinese
+   that lands in a mono label. */
+:root{
+  --sans:'Noto Serif SC','IBM Plex Sans',serif;
+  --mono:'IBM Plex Mono','Noto Serif SC',ui-monospace,monospace;
+}
+body{line-height:1.7}
+h1,h2,h3{letter-spacing:.02em}
+h1{line-height:1.3}
+h2{line-height:1.35}
+.lede{line-height:1.8}
+/* mono labels were tuned for Latin capitals; Chinese needs less tracking */
+.mk,.tagline,.out__label,.calc__panel h3,.assume summary,.offices summary,.progress,.tmlegend,.tlc__chip{letter-spacing:.04em}
+.btn,.tb,.xtoggle{letter-spacing:.04em}
+.fig .l,.stack p,.rules span,.faq .ans,.src{line-height:1.7}
+/* the wind grade shows the Chinese name only */
+.wgrade i[data-g=zh]{color:var(--ink);font-weight:500}
+
+@media (max-width:1100px) and (min-height:521px),(max-aspect-ratio:5/6){
+  #rail::before{content:"主要栏目"}
+  #chap button{font-size:13px}
+}
+/* headings break only at the <wbr> phrase points written into deck-zh.html (anywhere, if a phrase can't fit) */
+h1,h2,.formcard__title{word-break:keep-all;overflow-wrap:anywhere}

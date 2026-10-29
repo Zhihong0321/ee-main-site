@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en-MY">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Thank you — Eternalgy</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0e1310">
+<link rel="icon" href="assets/img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/google-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/fonts.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.add('js')</script>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/main.js" defer></script>
+</head>
+<body data-page="thank-you">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.08-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35m-5.42 7.4h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 012.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 005.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.48-8.41z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h3l1.4 4-2 1.3a11 11 0 005.2 5.2l1.3-2 4 1.4v3a2 2 0 01-2.2 2A15.5 15.5 0 014.6 5.7a2 2 0 012-2.2z"/></symbol>
+  </defs>
+</svg>
+
+<header class="simple-head">
+  <div class="container header__in">
+    <a class="header__logo" href="index.html" aria-label="Eternalgy home"><img src="assets/img/logo-dark.png" alt="Eternalgy — Eternal Energy" width="560" height="78"></a>
+    <a class="nav" href="index.html" style="text-decoration:none;font-weight:500">Back to main page</a>
+  </div>
+</header>
+
+<main class="ty">
+  <div class="container">
+    <div class="ty__card">
+      <div class="ty__ok"><svg class="ic"><use href="#i-check"/></svg></div>
+
+      <!-- Normal: details were delivered to our team -->
+      <div data-ty-normal>
+        <h1>Thank you<span data-ty-name></span> — your request is in.</h1>
+        <p class="lead">A named area engineer will contact you on WhatsApp to arrange your free 25-year solar assessment.</p>
+      </div>
+
+      <!-- Fallback: no lead endpoint configured, or the network failed -->
+      <div data-ty-fallback hidden>
+        <h1>Almost done<span data-ty-name></span> — send your details on WhatsApp.</h1>
+        <p class="lead">Tap the button below to send your details to our engineers. That's how we receive your request.</p>
+      </div>
+
+      <div class="ty__cta">
+        <a class="btn btn--wa" href="https://wa.me/601121000099" data-ty-wa rel="noopener"><svg class="ic ic--fill"><use href="#i-wa"/></svg> Chat with an engineer on WhatsApp</a>
+        <a class="btn btn--line" href="tel:+601121000099" data-call><svg class="ic"><use href="#i-phone"/></svg> Call +60 11-2100 0099</a>
+      </div>
+
+      <ol class="ty__steps">
+        <li><span class="n">01</span><div><b>Have your latest TNB bill ready</b><p>A clear photo of the bill is enough — it shows your real usage, which is what we design around.</p></div></li>
+        <li><span class="n">02</span><div><b>We review your usage and roof</b><p>We check whether solar suits your home and tell you honestly if it doesn't. If it does, we arrange a site survey.</p></div></li>
+        <li><span class="n">03</span><div><b>You get the 25-year view in writing</b><p>Components, warranties and long-run numbers — laid out so you can compare against any other quote.</p></div></li>
+      </ol>
+
+      <p style="margin-top:32px;color:var(--soft);font-size:.95rem">While you wait: try the <a href="index.html#calculator" style="color:var(--accent-deep);font-weight:600">25-year calculator</a>, or check our credentials yourself on the <a href="https://www.seda.gov.my" target="_blank" rel="noopener" style="color:var(--accent-deep);font-weight:600">SEDA</a> and <a href="https://www.cidb.gov.my" target="_blank" rel="noopener" style="color:var(--accent-deep);font-weight:600">CIDB</a> websites.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="legal">
+      <p>Eternalgy Sdn Bhd · Co. Reg. 202301029164 (1523087-A) · 21-01, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor. Eternalgy is an independent private company, not a government agency.</p>
+      <p>© <span data-year>2026</span> Eternalgy Sdn Bhd · <a href="privacy.html">Privacy Notice / Notis Privasi</a></p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
