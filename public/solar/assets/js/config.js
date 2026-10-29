@@ -16,9 +16,9 @@ window.EG_CONFIG = {
   leadEndpoint: '/api/leads',        // eternalgy.me saves each lead to the main_site_leads table
 
   // --- Google Ads / Google tag ---------------------------------------------------
-  gtagId: '',                        // e.g. 'AW-1234567890'
+  gtagId: 'AW-18435272787',          // e.g. 'AW-1234567890'
   conversions: {                     // full send_to values: 'AW-1234567890/AbCdEfGhIjKl'
-    lead: '',                        // fires once on thank-you.html (primary conversion)
+    lead: 'AW-18435272787/vKInCPra460dENPgz9ZE', // "Solar Lead Form" - fires once on thank-you.html (primary conversion)
     whatsapp: '',                    // fires on every WhatsApp click (secondary conversion)
     call: ''                         // fires on every tel: click (secondary conversion)
   },
