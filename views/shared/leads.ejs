@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en-MY">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Leads - Eternalgy</title>
+  <style>
+    :root { --paper: #ecebe5; --ink: #161616; --ink-2: #55615a; --rule: #cfcdc4; --green: #1f7a4d; --bad: #b3261e; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif; }
+    main { max-width: 1400px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-weight: 400; font-size: 26px; margin: 0 0 4px; }
+    .meta { color: var(--ink-2); margin: 0 0 20px; font-size: 13px; }
+    .meta a { color: var(--ink-2); }
+    form.key { max-width: 360px; margin: 12vh auto 0; display: grid; gap: 10px; }
+    input[type=password] { font: inherit; padding: 10px 12px; border: 1px solid var(--rule); background: #fff; }
+    button { font: inherit; padding: 10px 14px; border: 0; background: var(--ink); color: #fff; cursor: pointer; }
+    .err { color: var(--bad); font-size: 13px; margin: 0; }
+    .wrap { overflow-x: auto; border-top: 1px solid var(--ink); }
+    table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: top; white-space: nowrap; }
+    th { font-weight: 500; color: var(--ink-2); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    td.wrapcell { white-space: normal; min-width: 180px; color: var(--ink-2); }
+    .yes { color: var(--green); font-weight: 500; }
+    .empty { padding: 32px 0; color: var(--ink-2); }
+  </style>
+</head>
+<body>
+<main>
+<% if (!authorized) { %>
+  <form class="key" method="post" action="/leads">
+    <h1>Leads</h1>
+    <label for="key">Access key</label>
+    <input id="key" name="key" type="password" autocomplete="current-password" autofocus required>
+    <% if (error) { %><p class="err"><%= error %></p><% } %>
+    <button type="submit">View submissions</button>
+  </form>
+<% } else { %>
+  <h1>Free assessment submissions</h1>
+  <p class="meta"><%= leads.length %> shown, newest first<%= leads.length === limit ? ` (latest ${limit})` : '' %> · times in Malaysia (GMT+8) · <a href="/leads/logout">Sign out</a></p>
+  <% if (!leads.length) { %>
+    <p class="empty">No submissions yet.</p>
+  <% } else { %>
+  <div class="wrap">
+    <table>
+      <thead><tr><th>#</th><th>Received</th><th>Name</th><th>Phone</th><th>TNB bill</th><th>Property</th><th>State</th><th>Has quote</th><th>Form</th><th>Ad / source</th><th>Page</th></tr></thead>
+      <tbody>
+      <% leads.forEach(function (l) { %>
+        <tr>
+          <td><%= l.id %></td>
+          <td><%= new Date(l.created_at).toLocaleString('en-MY', { timeZone: 'Asia/Kuala_Lumpur', dateStyle: 'medium', timeStyle: 'short' }) %></td>
+          <td><%= l.name %></td>
+          <td><a href="https://wa.me/<%= String(l.phone).replace(/\D/g, '') %>" target="_blank" rel="noopener"><%= l.phone %></a></td>
+          <td><%= l.bill %></td>
+          <td><%= l.property %></td>
+          <td><%= l.state %></td>
+          <td><%- l.has_quote ? '<span class="yes">Yes</span>' : 'No' %></td>
+          <td><%= l.source %></td>
+          <td class="wrapcell"><%= [l.utm_source, l.utm_campaign, l.utm_term].filter(Boolean).join(' · ') || (l.gclid ? 'Google Ads (gclid)' : '-') %></td>
+          <td class="wrapcell"><%= l.page %></td>
+        </tr>
+      <% }) %>
+      </tbody>
+    </table>
+  </div>
+  <% } %>
+<% } %>
+</main>
+</body>
+</html>

@@ -1298,6 +1298,39 @@ app.get('/api/leads', authenticateApiKey, async (req, res) => {
   }
 });
 
+// Private page listing the leads, behind an access key (kept in an httpOnly cookie after sign-in).
+// The key comes only from the LEADS_ACCESS_KEY env var; without it nobody can sign in.
+const LEADS_ACCESS_KEY = process.env.LEADS_ACCESS_KEY || '';
+const leadsToken = () => require('crypto').createHash('sha256').update('eg-leads:' + LEADS_ACCESS_KEY).digest('hex');
+const hasLeadsAccess = (req) => !!LEADS_ACCESS_KEY && (req.headers.cookie || '').split(/;\s*/).includes('eg_leads=' + leadsToken());
+
+app.get('/leads', async (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  const view = { authorized: false, error: null, leads: [], limit: 1000 };
+  if (!hasLeadsAccess(req)) return res.render('../shared/leads', view);
+  try {
+    const dbRes = await db.pool.query('SELECT * FROM main_site_leads ORDER BY created_at DESC LIMIT $1', [view.limit]);
+    res.render('../shared/leads', { ...view, authorized: true, leads: dbRes.rows });
+  } catch (err) {
+    console.error('Failed to load leads:', err);
+    res.status(500).send('Failed to load leads');
+  }
+});
+
+app.post('/leads', (req, res) => {
+  res.set('Cache-Control', 'no-store');
+  if (!LEADS_ACCESS_KEY || (req.body && req.body.key) !== LEADS_ACCESS_KEY) {
+    return res.status(401).render('../shared/leads', { authorized: false, error: 'Wrong access key.', leads: [], limit: 1000 });
+  }
+  res.cookie('eg_leads', leadsToken(), { httpOnly: true, sameSite: 'strict', secure: req.secure, maxAge: 30 * 24 * 3600 * 1000, path: '/leads' });
+  res.redirect(303, '/leads');
+});
+
+app.get('/leads/logout', (req, res) => {
+  res.clearCookie('eg_leads', { path: '/leads' });
+  res.redirect(303, '/leads');
+});
+
 // ==========================================
 // 🛡️ SECURE CRUD API FOR AI MAINTENANCE AGENT
 // ==========================================
