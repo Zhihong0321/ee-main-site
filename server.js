@@ -456,7 +456,7 @@ app.get('/', async (req, res) => {
         "name": `Eternalgy - ${b.name}`,
         "image": `${baseUrl}/logo.png`,
         "telephone": b.phone || "+601121000099",
-        "email": b.email || "enquiry@eternalgy.me",
+        "email": b.email || "admin@eternalgy.me",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": b.address
@@ -733,7 +733,7 @@ app.get('/about-solar-pv-epc-company', async (req, res) => {
         "name": `Eternalgy - ${b.name}`,
         "image": `${baseUrl}/logo.png`,
         "telephone": b.phone || "+601121000099",
-        "email": b.email || "enquiry@eternalgy.me",
+        "email": b.email || "admin@eternalgy.me",
         "address": {
           "@type": "PostalAddress",
           "streetAddress": b.address

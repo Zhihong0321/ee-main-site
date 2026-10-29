@@ -217,7 +217,7 @@ async function initDb() {
           name: 'HQ Johor Bahru',
           address: '01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor',
           phone: '+601121000099',
-          email: 'enquiry@eternalgy.me',
+          email: 'admin@eternalgy.me',
           latitude: 1.551815,
           longitude: 103.785103
         },
@@ -225,7 +225,7 @@ async function initDb() {
           name: 'Seremban Branch',
           address: '252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Seremban, Negeri Sembilan',
           phone: '+601121000099',
-          email: 'enquiry@eternalgy.me',
+          email: 'admin@eternalgy.me',
           latitude: 2.697486,
           longitude: 101.916943
         },
@@ -233,7 +233,7 @@ async function initDb() {
           name: 'Kluang Branch',
           address: 'No.26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor',
           phone: '+601121000099',
-          email: 'enquiry@eternalgy.me',
+          email: 'admin@eternalgy.me',
           latitude: 2.046200,
           longitude: 103.328400
         },
@@ -241,7 +241,7 @@ async function initDb() {
           name: 'Kuala Lumpur Branch',
           address: 'Unit 2.08, Level 2, Menara Maxisegar, Jalan Pandan Indah 4/2, 55100 Kuala Lumpur',
           phone: '+601121000099',
-          email: 'enquiry@eternalgy.me',
+          email: 'admin@eternalgy.me',
           latitude: 3.128766,
           longitude: 101.751645
         }

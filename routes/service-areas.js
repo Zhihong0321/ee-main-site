@@ -14,7 +14,7 @@ const DEFAULT_AGENT = {
 const COMPANY = {
   name: 'Eternalgy Sdn Bhd',
   legalName: 'Eternalgy Sdn Bhd',
-  email: 'enquiry@eternalgy.me',
+  email: 'admin@eternalgy.me',
   phone: '+60 11-2100 0099',
   wa: '601121000099',
   sameAs: [
