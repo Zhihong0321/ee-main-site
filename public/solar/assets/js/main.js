@@ -259,7 +259,11 @@
         method: 'POST', mode: 'no-cors', keepalive: true, signal: ctrl ? ctrl.signal : undefined,
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
-      }).then(function () { clearTimeout(timer); done('endpoint'); })
+      }).then(function (r) {
+        clearTimeout(timer);
+        // same-origin responses are readable: a server-side error also hands over to WhatsApp
+        done(r.type !== 'opaque' && !r.ok ? 'whatsapp' : 'endpoint');
+      })
         .catch(function () { clearTimeout(timer); done('whatsapp'); });
     });
   }

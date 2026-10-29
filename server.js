@@ -1253,6 +1253,52 @@ app.get('/feed.json', async (req, res) => {
 
 
 // ==========================================
+// 📥 LEADS: free assessment form on the /solar/ landing page
+// ==========================================
+
+// Public: the form POSTs JSON as text/plain (no CORS preflight)
+app.post('/api/leads', express.text({ type: 'text/plain', limit: '20kb' }), async (req, res) => {
+  let p = req.body;
+  if (typeof p === 'string') {
+    try { p = JSON.parse(p); } catch (e) { return res.status(400).json({ error: 'Invalid JSON' }); }
+  }
+  if (!p || typeof p !== 'object') return res.status(400).json({ error: 'Invalid body' });
+
+  const str = (v, max) => (typeof v === 'string' ? v.trim().slice(0, max) : '');
+  const name = str(p.name, 200);
+  const phone = str(p.phone, 40);
+  if (name.length < 2 || phone.replace(/\D/g, '').length < 9) {
+    return res.status(400).json({ error: 'Name and phone are required' });
+  }
+
+  try {
+    const dbRes = await db.pool.query(
+      `INSERT INTO main_site_leads
+        (name, phone, bill, property, state, has_quote, source, page, gclid, utm_source, utm_campaign, utm_term, ip_address, payload)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`,
+      [name, phone, str(p.bill, 100), str(p.property, 100), str(p.state, 100), p.has_quote === 'yes',
+       str(p.source, 100), str(p.page, 2048), str(p.gclid, 255), str(p.utm_source, 255),
+       str(p.utm_campaign, 255), str(p.utm_term, 255), (req.ip || '').slice(0, 45), p]
+    );
+    res.status(201).json({ ok: true, id: dbRes.rows[0].id });
+  } catch (err) {
+    console.error('Failed to save lead:', err);
+    res.status(500).json({ error: 'Could not save lead' });
+  }
+});
+
+// Protected: read captured leads, newest first (?limit=, default 100)
+app.get('/api/leads', authenticateApiKey, async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit, 10) || 100, 1000);
+    const dbRes = await db.pool.query('SELECT * FROM main_site_leads ORDER BY created_at DESC LIMIT $1', [limit]);
+    res.json(dbRes.rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
 // 🛡️ SECURE CRUD API FOR AI MAINTENANCE AGENT
 // ==========================================
 

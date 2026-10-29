@@ -635,6 +635,31 @@ The capital expenditure for residential battery energy storage systems (BESS) is
       CREATE INDEX IF NOT EXISTS idx_daily_reports_date ON main_site_daily_reports(report_date DESC);
     `);
 
+    // 10. Table: main_site_leads (Free assessment requests from the /solar/ landing page)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS main_site_leads (
+        id           SERIAL PRIMARY KEY,
+        created_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
+        name         VARCHAR(200) NOT NULL,
+        phone        VARCHAR(40) NOT NULL,
+        bill         VARCHAR(100),
+        property     VARCHAR(100),
+        state        VARCHAR(100),
+        has_quote    BOOLEAN NOT NULL DEFAULT false,
+        source       VARCHAR(100),
+        page         VARCHAR(2048),
+        gclid        VARCHAR(255),
+        utm_source   VARCHAR(255),
+        utm_campaign VARCHAR(255),
+        utm_term     VARCHAR(255),
+        ip_address   VARCHAR(45),
+        payload      JSONB NOT NULL DEFAULT '{}'::jsonb
+      );
+    `);
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_leads_created_at ON main_site_leads(created_at DESC);
+    `);
+
     await client.query('COMMIT');
   } catch (e) {
     await client.query('ROLLBACK');

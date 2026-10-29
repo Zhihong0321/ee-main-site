@@ -13,7 +13,7 @@ window.EG_CONFIG = {
   // Google Sheets + email setup). If empty, or if the request fails, the form
   // falls back to opening WhatsApp with the lead details pre-filled, so a lead is
   // never silently lost.
-  leadEndpoint: '',
+  leadEndpoint: '/api/leads',        // eternalgy.me saves each lead to the main_site_leads table
 
   // --- Google Ads / Google tag ---------------------------------------------------
   gtagId: '',                        // e.g. 'AW-1234567890'
