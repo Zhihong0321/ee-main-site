@@ -1326,6 +1326,20 @@ app.post('/leads', (req, res) => {
   res.redirect(303, '/leads');
 });
 
+// Remove a false/spam lead. The SameSite=Strict cookie keeps cross-site forms from triggering this.
+app.post('/leads/:id/delete', async (req, res) => {
+  if (!hasLeadsAccess(req)) return res.redirect(303, '/leads');
+  const id = parseInt(req.params.id, 10);
+  if (!id) return res.status(400).send('Invalid lead id');
+  try {
+    await db.pool.query('DELETE FROM main_site_leads WHERE id = $1', [id]);
+    res.redirect(303, '/leads');
+  } catch (err) {
+    console.error('Failed to delete lead:', err);
+    res.status(500).send('Failed to delete lead');
+  }
+});
+
 app.get('/leads/logout', (req, res) => {
   res.clearCookie('eg_leads', { path: '/leads' });
   res.redirect(303, '/leads');

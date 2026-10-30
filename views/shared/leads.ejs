@@ -24,6 +24,9 @@
     td.wrapcell { white-space: normal; min-width: 180px; color: var(--ink-2); }
     .yes { color: var(--green); font-weight: 500; }
     .empty { padding: 32px 0; color: var(--ink-2); }
+    form.del { margin: 0; }
+    form.del button { padding: 2px 8px; font-size: 12px; background: none; color: var(--bad); border: 1px solid var(--rule); }
+    form.del button:hover { border-color: var(--bad); }
   </style>
 </head>
 <body>
@@ -44,7 +47,7 @@
   <% } else { %>
   <div class="wrap">
     <table>
-      <thead><tr><th>#</th><th>Received</th><th>Name</th><th>Phone</th><th>TNB bill</th><th>Property</th><th>State</th><th>Has quote</th><th>Form</th><th>Ad / source</th><th>Page</th></tr></thead>
+      <thead><tr><th>#</th><th>Received</th><th>Name</th><th>Phone</th><th>TNB bill</th><th>Property</th><th>State</th><th>Has quote</th><th>Form</th><th>Ad / source</th><th>Page</th><th></th></tr></thead>
       <tbody>
       <% leads.forEach(function (l) { %>
         <tr>
@@ -59,6 +62,11 @@
           <td><%= l.source %></td>
           <td class="wrapcell"><%= [l.utm_source, l.utm_campaign, l.utm_term].filter(Boolean).join(' · ') || (l.gclid ? 'Google Ads (gclid)' : '-') %></td>
           <td class="wrapcell"><%= l.page %></td>
+          <td>
+            <form class="del" method="post" action="/leads/<%= l.id %>/delete" onsubmit="return confirm(this.dataset.msg)" data-msg="Delete lead #<%= l.id %> (<%= l.name %>)? This cannot be undone.">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
         </tr>
       <% }) %>
       </tbody>
