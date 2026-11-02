@@ -247,7 +247,15 @@
       var done = function (delivery) {
         remember(delivery);
         track('lead_submitted', { source: payload.source, delivery: delivery });
-        location.href = 'thank-you.html';
+        // Primary conversion fires here, on the form page, and the redirect waits for Google
+        // to acknowledge it (max 1.5s). thank-you.html only fires it if this never ran.
+        var left = false, go = function () { if (!left) { left = true; location.href = 'thank-you.html'; } };
+        if (window.gtag && CFG.conversions && CFG.conversions.lead) {
+          try { sessionStorage.setItem('eg_conv', '1'); } catch (e) { /* ignore */ }
+          conversion('lead', { value: 1.0, currency: 'MYR', event_callback: go });
+          track('generate_lead', { source: payload.source, bill: bill });
+          setTimeout(go, 1500);
+        } else go();
       };
 
       submit.disabled = true; statusEl.textContent = '';
