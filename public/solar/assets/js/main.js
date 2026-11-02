@@ -34,7 +34,9 @@
   }
   function conversion(kind, extra) {
     var sendTo = CFG.conversions && CFG.conversions[kind];
-    if (window.gtag && sendTo) window.gtag('event', 'conversion', Object.assign({ send_to: sendTo }, extra || {}));
+    if (window.gtag && sendTo) [].concat(sendTo).forEach(function (s) {
+      if (s) window.gtag('event', 'conversion', Object.assign({ send_to: s }, extra || {}));
+    });
     if (isLocal) console.debug('[conversion]', kind, sendTo || '(no label configured)');
   }
   loadGtag(CFG.gtagId, CFG.gtagExtraIds);

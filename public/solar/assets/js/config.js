@@ -19,7 +19,10 @@ window.EG_CONFIG = {
   gtagId: 'AW-18435272787',          // e.g. 'AW-1234567890'
   gtagExtraIds: ['AW-18435346191'],  // more Google tag IDs configured on the same gtag.js
   conversions: {                     // full send_to values: 'AW-1234567890/AbCdEfGhIjKl'
-    lead: 'AW-18435272787/vKInCPra460dENPgz9ZE', // "Solar Lead Form" - fires once on thank-you.html (primary conversion)
+    lead: [                          // fires once on thank-you.html (primary conversion); a list sends to each
+      'AW-18435272787/vKInCPra460dENPgz9ZE', // "Solar Lead Form"
+      'AW-18435272787/QQroCIipq7AdENPgz9ZE'  // "Submit lead form (eternalgy.me/)"
+    ],
     whatsapp: '',                    // fires on every WhatsApp click (secondary conversion)
     call: ''                         // fires on every tel: click (secondary conversion)
   },
