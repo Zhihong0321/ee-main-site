@@ -17,6 +17,7 @@ window.EG_CONFIG = {
 
   // --- Google Ads / Google tag ---------------------------------------------------
   gtagId: 'AW-18435272787',          // e.g. 'AW-1234567890'
+  gtagExtraIds: ['AW-18435346191'],  // more Google tag IDs configured on the same gtag.js
   conversions: {                     // full send_to values: 'AW-1234567890/AbCdEfGhIjKl'
     lead: 'AW-18435272787/vKInCPra460dENPgz9ZE', // "Solar Lead Form" - fires once on thank-you.html (primary conversion)
     whatsapp: '',                    // fires on every WhatsApp click (secondary conversion)

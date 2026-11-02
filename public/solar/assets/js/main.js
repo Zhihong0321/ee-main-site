@@ -16,7 +16,7 @@
   /* ------------------------------------------------------------------ */
   /* Google tag + event tracking                                         */
   /* ------------------------------------------------------------------ */
-  function loadGtag(id) {
+  function loadGtag(id, extraIds) {
     if (!id) return;
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
@@ -26,6 +26,7 @@
     document.head.appendChild(s);
     window.gtag('js', new Date());
     window.gtag('config', id);
+    (extraIds || []).forEach(function (x) { window.gtag('config', x); });
   }
   function track(name, params) {
     if (window.gtag) window.gtag('event', name, params || {});
@@ -36,7 +37,7 @@
     if (window.gtag && sendTo) window.gtag('event', 'conversion', Object.assign({ send_to: sendTo }, extra || {}));
     if (isLocal) console.debug('[conversion]', kind, sendTo || '(no label configured)');
   }
-  loadGtag(CFG.gtagId);
+  loadGtag(CFG.gtagId, CFG.gtagExtraIds);
 
   /* ------------------------------------------------------------------ */
   /* Attribution: capture gclid / UTM once and keep it for the session    */
