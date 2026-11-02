@@ -17,7 +17,7 @@
   /* Google tag + event tracking                                         */
   /* ------------------------------------------------------------------ */
   function loadGtag(id, extraIds) {
-    if (!id) return;
+    if (!id || window.gtag) return; // pages normally ship the standard snippet in <head>; this is the fallback
     window.dataLayer = window.dataLayer || [];
     window.gtag = function () { window.dataLayer.push(arguments); };
     var s = document.createElement('script');
