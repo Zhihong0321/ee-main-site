@@ -78,6 +78,12 @@ async function initDb() {
     await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS noindex BOOLEAN DEFAULT FALSE;`);
     await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS marketing_line TEXT;`);
     await client.query(`ALTER TABLE main_site_articles ADD COLUMN IF NOT EXISTS marketing_line_cn TEXT;`);
+
+    // 1b. Official contact email moved to eternalgy@atap.solar (only rewrites the old values, so later edits stick).
+    await client.query(
+      `UPDATE main_site_branches SET email = 'eternalgy@atap.solar'
+       WHERE email IN ('admin@eternalgy.me', 'enquiry@eternalgy.me', 'pr@eternalgy.me')`
+    );
     await client.query(`
       CREATE UNIQUE INDEX IF NOT EXISTS idx_main_site_articles_source_url
       ON main_site_articles(source_url) WHERE source_url IS NOT NULL;
@@ -217,7 +223,7 @@ async function initDb() {
           name: 'HQ Johor Bahru',
           address: '01-23, Jalan Mutiara Emas 10/19, Taman Mount Austin, 81100 Johor Bahru, Johor',
           phone: '+601121000099',
-          email: 'admin@eternalgy.me',
+          email: 'eternalgy@atap.solar',
           latitude: 1.551815,
           longitude: 103.785103
         },
@@ -225,7 +231,7 @@ async function initDb() {
           name: 'Seremban Branch',
           address: '252 First Floor, Uptown Avenue, Jalan S2 B12, Seremban 2, 70300 Seremban, Negeri Sembilan',
           phone: '+601121000099',
-          email: 'admin@eternalgy.me',
+          email: 'eternalgy@atap.solar',
           latitude: 2.697486,
           longitude: 101.916943
         },
@@ -233,7 +239,7 @@ async function initDb() {
           name: 'Kluang Branch',
           address: 'No.26, Jalan Tasik Indah 1/1, Taman Tasik Indah, 86000 Kluang, Johor',
           phone: '+601121000099',
-          email: 'admin@eternalgy.me',
+          email: 'eternalgy@atap.solar',
           latitude: 2.046200,
           longitude: 103.328400
         },
@@ -241,7 +247,7 @@ async function initDb() {
           name: 'Kuala Lumpur Branch',
           address: 'Unit 2.08, Level 2, Menara Maxisegar, Jalan Pandan Indah 4/2, 55100 Kuala Lumpur',
           phone: '+601121000099',
-          email: 'admin@eternalgy.me',
+          email: 'eternalgy@atap.solar',
           latitude: 3.128766,
           longitude: 101.751645
         }
